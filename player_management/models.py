@@ -36,13 +36,13 @@ class Organiation(models.Model):
 """A Team is an organization owned by a Club. it consists of a list
    of players which is antemporary assignment of a player to a team"""
 class Team(models.Model):
-
+    pass
 
 class Club(models.Model):
-
+    pass
 
 class Association(models.Model):
-
+    pass
 """A player is a role of aperson in context of the sport.
    it holds"""
 class Player(models.Model):

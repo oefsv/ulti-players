@@ -5,7 +5,7 @@ from django.views import generic
 from django.http import HttpResponse
 
 def index(response):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return HttpResponse("Hello, world. You're at the frisbee index.")
 
 
 class IndexView(generic.TemplateView):
