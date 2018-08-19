@@ -15,11 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url, include
+from rest_framework import routers
+from ultimate_frisbee_management import views
 
+router = routers.DefaultRouter()
+router.register('users', views.UserViewSet)
+router.register('groups', views.GroupViewSet)
 
 urlpatterns = [
-    path('', include('player_management.urls')),
+    path('',  include(router.urls)),
     path('player_management/', include('player_management.urls')),
     path('admin/', admin.site.urls),
-    path(r'^api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
 ]
