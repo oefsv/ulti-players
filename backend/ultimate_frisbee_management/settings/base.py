@@ -26,14 +26,14 @@ SECRET_KEY = '*sg+%tkn(-7cn=k$^2!zk-z5i65f4y4cu+2v!@mw)xq$rb=u4='
 DEBUG = True
 
 ALLOWED_HOSTS = ['venv.hbqg3zr3a3.us-west-2.elasticbeanstalk.com',
-                 'localhost']
+                 'localhost',
+                 '127.0.0.1',]
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'player_management.apps.PlayerManagementConfig',
-    'financial.apps.FinancialConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

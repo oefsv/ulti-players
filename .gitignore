@@ -2,13 +2,18 @@
 .idea
 .vscode
 
-#database
-sqlite3.db
-db.sqlite3
+### BACKEND
 
-#python
+# Database
+/*.db
+
+# python
 **/__pycache__
-venv
+backend/frisbee-venv/**
+
+# Django
+backend/static
+
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
