@@ -25,9 +25,6 @@ SECRET_KEY = '*sg+%tkn(-7cn=k$^2!zk-z5i65f4y4cu+2v!@mw)xq$rb=u4='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

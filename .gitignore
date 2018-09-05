@@ -1,7 +1,16 @@
+#ide
 .idea
 .vscode
+
+#database
 sqlite3.db
 db.sqlite3
+
+#python
 **/__pycache__
 venv
-adsad
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

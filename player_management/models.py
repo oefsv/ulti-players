@@ -21,7 +21,7 @@ class Person(models.Model):
 
     """  contact information"""
     email = models.EmailField()
-    zip = models.PositiveIntegerField(max_length=10)
+    zip = models.PositiveIntegerField()
 
 
 """ An organization is an abstract concept for people or parties
