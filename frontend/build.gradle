@@ -13,10 +13,16 @@ wrapper {
 
 apply plugin: "com.moowork.node"
 
+task setupUi(type: YarnTask) {
+    yarnCommand = ['install']
+    args = []
+}
+
 task startUi(type: YarnTask) {
     yarnCommand = ['start']
     args = []
 }
+tasks.startUi.dependsOn setupUi
 
 task buildUi(type: YarnTask) {
     yarnCommand = ['build:prod']
