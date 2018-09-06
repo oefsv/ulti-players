@@ -1,0 +1,14 @@
+:host {
+  padding: 1em;
+}
+
+:host > * {
+  margin-bottom: 1em;
+}
+.formfield {
+  width: 100%;
+}
+
+.result {
+    font-family: monospace;
+}

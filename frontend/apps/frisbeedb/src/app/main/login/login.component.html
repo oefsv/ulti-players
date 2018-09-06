@@ -1,0 +1,36 @@
+<div class="root mat-app-background">
+  <div class="container">
+    <mat-card class="card mat-elevation-z6">
+
+      <div class="icon-container">
+        <img src="assets/oefsv_circle.svg" alt="" width="70px" height="70px">
+      </div>
+
+      <mat-card-content>
+        <div class="row">
+          <mat-form-field>
+            <input matInput placeholder="Email-Adresse" name="username">
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field>
+            <input matInput placeholder="Passwort" name="password" type="password">
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <button mat-raised-button color="primary" (click)="onLogin()">Anmelden</button>
+          <div *ngIf="loading" class="loading">
+            <mat-spinner diameter="32"></mat-spinner>
+          </div>
+
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <mat-divider></mat-divider>
+        <a mat-button color="primary" class="password-reset">Passwort vergessen / Neu registrieren</a>
+
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>

@@ -1,0 +1,71 @@
+@import 'defines';
+
+:host {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.root {
+  flex-grow: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  max-width: 500px;
+  min-width: 350px;
+
+  position: relative;
+}
+
+.card {
+  position: relative;
+}
+
+$size: 60px;
+.icon-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-top: -$size !important;
+  text-align: center;
+}
+
+.icon {
+  @include md-icon-size($size);
+
+  background-color: white;
+  border-radius: $size;
+}
+
+.row {
+  position: relative;
+  display: flex;
+
+  padding: 1em;
+}
+
+.row:first-child {
+  margin-top: 2em;
+}
+
+.row > * {
+  flex-grow: 1;
+}
+
+.row .loading {
+  flex-grow: 0;
+  margin-left: 1em;
+}
+
+.password-reset {
+  display: block;
+}

@@ -1,0 +1,7 @@
+{
+  "rulesDirectory": ["node_modules/codelyzer"],
+  "extends": ["angular-tslint-rules"],
+  "rules": {
+    //"import-blacklist": [true, "rxjs/Rx"]
+  }
+}

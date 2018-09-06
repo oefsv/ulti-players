@@ -1,0 +1,23 @@
+@import '~@angular/material/_theming.scss';
+
+//
+:host {
+
+    color: white;
+    background-color: #454545;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    width: 400px;
+}

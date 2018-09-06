@@ -1,0 +1,38 @@
+<div class="example-container" [class.example-is-mobile]="(isHandset$ | async)">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="snav.toggle()"><mat-icon class="big-icon">menu</mat-icon></button>
+      <span>Frisbee-db</span>
+      <span class="spacer"></span>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon class="big-icon">account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/ui/user">
+          <mat-icon>settings</mat-icon>
+          <span>Profile settings</span>
+        </button>
+        <button mat-menu-item (click)="doLogout()">
+          <mat-icon>notifications_off</mat-icon>
+          <span>Abmelden</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar-row>
+
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="(isHandset$ | async) ? 56 : 0">
+    <mat-sidenav #snav [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)" #sidenav [fixedInViewport]="(isHandset$ | async)"
+      fixedTopGap="56">
+      <mat-nav-list>
+        <a mat-list-item routerLink=".">Link 1</a>
+        <a mat-list-item routerLink="/ui/association">Vereine</a>
+        <a mat-list-item routerLink="/ui/rest-test">REST-Test</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

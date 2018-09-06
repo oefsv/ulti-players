@@ -1,0 +1,19 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@frisbee-db/models": ["libs/models/src/index.ts"],
+      "@frisbee-db-lib/*": ["libs/models/src/lib/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

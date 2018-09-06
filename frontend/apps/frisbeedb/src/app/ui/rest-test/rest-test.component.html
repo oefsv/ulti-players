@@ -1,0 +1,24 @@
+<div>
+  <mat-form-field class="formfield">
+    <input matInput placeholder="URL" #url value="http://localhost:8000/api-auth/login/">
+  </mat-form-field>
+
+</div>
+
+<button mat-button color="primary" (click)="executeGet()">GET</button>
+
+<mat-divider></mat-divider>
+
+<div *ngIf="headers">
+  Response headers:
+  <ul>
+    <li *ngFor="let header of headers">{{header}}</li>
+  </ul>
+</div>
+
+<div>
+  Cookie: {{cookie}}
+</div>
+<div [style.color]="error ? 'red' : ''" class="result">
+  {{code}}
+</div>

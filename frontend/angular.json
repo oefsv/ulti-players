@@ -1,0 +1,180 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "frisbeedb": {
+      "root": "apps/frisbeedb/",
+      "sourceRoot": "apps/frisbeedb/src",
+      "projectType": "application",
+      "prefix": "frisbee",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/frisbeedb",
+            "index": "apps/frisbeedb/src/index.html",
+            "main": "apps/frisbeedb/src/main.ts",
+            "polyfills": "apps/frisbeedb/src/polyfills.ts",
+            "tsConfig": "apps/frisbeedb/tsconfig.app.json",
+            "assets": [
+              "apps/frisbeedb/src/favicon.ico",
+              "apps/frisbeedb/src/assets"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["./src/styles", "./apps/frisbeedb/src/styles"]
+            },
+            "styles": [
+              {
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
+              "apps/frisbeedb/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/frisbeedb/src/environments/environment.ts",
+                  "with": "apps/frisbeedb/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "frisbeedb:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "frisbeedb:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "frisbeedb:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/frisbeedb/src/test.ts",
+            "polyfills": "apps/frisbeedb/src/polyfills.ts",
+            "tsConfig": "apps/frisbeedb/tsconfig.spec.json",
+            "karmaConfig": "apps/frisbeedb/karma.conf.js",
+            "styles": [
+              {
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
+              "apps/frisbeedb/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "apps/frisbeedb/src/favicon.ico",
+              "apps/frisbeedb/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/frisbeedb/tsconfig.app.json",
+              "apps/frisbeedb/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
+    "frisbeedb-e2e": {
+      "root": "apps/frisbeedb-e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "apps/frisbeedb-e2e/protractor.conf.js",
+            "devServerTarget": "frisbeedb:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "frisbeedb:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/frisbeedb-e2e/tsconfig.e2e.json",
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
+    "models": {
+      "root": "libs/models",
+      "sourceRoot": "libs/models/src",
+      "projectType": "library",
+      "prefix": "frisbee-db-ui",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/models/src/test.ts",
+            "tsConfig": "libs/models/tsconfig.spec.json",
+            "karmaConfig": "libs/models/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/models/tsconfig.lib.json",
+              "libs/models/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "inlineStyle": false,
+      "prefix": "aio",
+      "styleext": "scss",
+      "spec": false
+    },
+    "@schematics/angular:directive": {
+      "prefix": "aio"
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/schematics"
+  },
+  "defaultProject": "frisbeedb"
+}
