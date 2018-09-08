@@ -1,0 +1,3 @@
+rootProject.name = 'ulti-players'
+
+include 'frontend'

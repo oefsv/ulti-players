@@ -1,0 +1,16 @@
+repositories {
+    mavenCentral()
+}
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+task createZip(type: Zip) {
+    archiveName = "ulti-players.zip"
+    destinationDir = file("${projectDir}/build")
+
+    from "${projectDir}/frontend/dist/apps/frisbeedb"
+
+    dependsOn(':frontend:buildUi')
+}
