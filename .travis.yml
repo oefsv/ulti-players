@@ -5,7 +5,7 @@ cache:
   yarn: true
   directories:
     - "frontend/node_modules"
-script: cd frontend && yarn install && yarn build:prod
+script: cd frontend && yarn install && yarn build:prod && cd ..
 
 before_deploy:
 - cd frontend/dist
