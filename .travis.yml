@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - "10"
+cache:
+  yarn: true
+  directories:
+    - "frontend/node_modules"
+script: cd frontend && yarn install && yarn build:prod && cd ..
+
+before_deploy:
+- cd frontend/dist
+- tar -cvf ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar *
+
+deploy:
+  provider: releases
+  api_key:
+    secure: $deploy_key
+  file:
+    - ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar
+  skip_cleanup: true
+  on:
+    tags: true
