@@ -5,8 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --show-circular-dependencies",
+    "build": "ng build --show-circular-dependencies --stats-json",
     "build:prod": "ng build --show-circular-dependencies --prod --aot --build-optimizer",
+    "build:stats": "ng build --show-circular-dependencies --prod --aot --build-optimizer --stats-json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
