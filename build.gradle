@@ -8,7 +8,7 @@ wrapper {
 
 task createZip(type: Zip) {
     archiveName = "ulti-players.zip"
-    destinationDir = file("${projectDir}/build")
+    destinationDir = file("${buildDir}")
 
     from "${projectDir}/frontend/dist/apps/frisbeedb"
 

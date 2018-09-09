@@ -8,7 +8,7 @@ cache:
 script: cd frontend && yarn install && yarn build:prod && cd ..
 
 before_deploy:
-- cd frontend/dist
+- cd frontend/dist/apps/frisbeedb
 - tar -cvf ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar *
 
 deploy:

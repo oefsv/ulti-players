@@ -1,7 +1,7 @@
 # compiled output
 /frontend/dist
 **/node_modules
-/build
+build
 /out-tsc
 
 # IDE - VSCode
@@ -41,7 +41,7 @@ testem.log
 ### BACKEND
 
 # Database
-/*.db
+/backend/*.db
 
 # python
 **/__pycache__

@@ -1,0 +1,78 @@
+plugins {
+    id 'ru.vyarus.use-python' version '1.2.0'
+}
+
+apply plugin: 'ru.vyarus.use-python'
+
+python {
+   // minimal required python version (m.m.m)
+   //minPythonVersion
+   // minimal required pip version (m.m.m)
+   //minPipVersion = '9'   
+   
+   showInstalledVersions = true
+   // always call module install, even if correct version is already installed
+   alwaysInstallModules = false
+   
+   scope = VIRTUALENV
+   // automatically install virtualenv module (if pip modules declared and scope allows)   
+   installVirtualenv = true
+   envPath = 'frisbee-venv'
+   // copy virtualenv instead of symlink (when created)
+   //envCopy = false
+
+    pip 'defusedxml:0.5.0'
+    pip 'Django:2.1'
+    pip 'django-filter:2.0.0'
+    pip 'django-rest-framework:0.1.0'
+    pip 'djangorestframework:3.8.2'
+    pip 'factory-boy:2.11.1'
+    pip 'Faker:0.9.0'
+    pip 'Markdown:2.6.11'
+    pip 'python-dateutil:2.7.3'
+    pip 'pytz:2018.5'
+    pip 'six:1.11.0'
+    pip 'text-unidecode:1.2'
+}
+
+task init {
+    dependsOn checkPython
+}
+
+task makeMigrations(type: PythonTask) {
+    dependsOn init
+    command = "manage.py makemigrations"
+}
+task migrate(type: PythonTask) {
+    dependsOn makeMigrations
+    command = "manage.py migrate"
+}
+
+task initDev {
+    dependsOn migrate
+}
+
+task startDevServer(type: PythonTask) {
+    // dependsOn makeMigrations
+    command = "manage.py runserver"
+}
+
+task clean(type: Delete) {
+    delete buildDir
+}
+
+task assembleServer(type: Copy) {
+    dependsOn(clean)
+    dependsOn(checkPython)
+    
+    from("${projectDir}") {
+        include "player_management/**"
+        include "ultimate_frisbee_management/**"
+        include "**.py"
+        include "**.txt"
+        include "**.sh"
+    }
+
+    into file("${buildDir}/rest")
+}
+
