@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*sg+%tkn(-7cn=k$^2!zk-z5i65f4y4cu+2v!@mw)xq$rb=u4='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
