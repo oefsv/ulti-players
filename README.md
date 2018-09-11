@@ -1,9 +1,14 @@
 
 | Travis        | AppVeyor      |
 |:-------------:|:-------------:|
-| [![Build Status](https://travis-ci.org/Exiv2/exiv2.svg?branch=master)](https://travis-ci.org/Exiv2/exiv2) | - |
+| [![Build Status](https://travis-ci.org/oefsv/ulti-players.svg?branch=master)](https://travis-ci.org/oefsv/ulti-players) | - |
 
 # Test
+
+You need to install
++ python
++ yarn
+
 
 To start the dev server for the UI, use:
 ```
