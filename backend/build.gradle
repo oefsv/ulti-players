@@ -52,11 +52,6 @@ task initDev {
     dependsOn migrate
 }
 
-task startDevServer(type: PythonTask) {
-    // dependsOn makeMigrations
-    command = "manage.py runserver"
-}
-
 task clean(type: Delete) {
     delete buildDir
 }

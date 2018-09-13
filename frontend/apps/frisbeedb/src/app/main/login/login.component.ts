@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
         // If no redirect has been set, use the default
         const redirect = this.authService.redirectUrl
           ? this.authService.redirectUrl
-          : '/ui/association';
+          : '/ui/clubs';
 
         // Set our navigation extras object
         // that passes on our global query params and fragment

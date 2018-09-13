@@ -1,6 +1,8 @@
+import { ClubManageComponent } from './club-manage/club-manage.component';
+import { ClubListModule } from './club-list/club-list.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AssociationListComponent } from './association-list/association-list.component';
+import { ClubListComponent } from './club-list/club-list.component';
 import { NavigationComponent } from './navigation.component';
 import { UserComponent } from './user/user.component';
 
@@ -10,7 +12,8 @@ const routes: Routes = [
     component: NavigationComponent,
     // canActivate: [AuthGuard],
     children: [
-      { path: 'association', component: AssociationListComponent },
+      { path: 'clubs', component: ClubListComponent },
+      { path: 'clubs/:id', component: ClubManageComponent },
       { path: 'user', component: UserComponent },
       {
         path: 'rest-test',
