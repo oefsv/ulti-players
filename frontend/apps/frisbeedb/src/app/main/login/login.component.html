@@ -9,20 +9,24 @@
       <mat-card-content>
         <div class="row">
           <mat-form-field>
-            <input matInput placeholder="Email-Adresse" name="username">
+            <input matInput placeholder="Email-Adresse" name="username" #user [formControl]="userControl" required>
+            <mat-error *ngIf="userControl.invalid">Email Adresse ungültig!</mat-error>
           </mat-form-field>
         </div>
         <div class="row">
           <mat-form-field>
-            <input matInput placeholder="Passwort" name="password" type="password">
+            <input matInput placeholder="Passwort" name="password" type="password" #password [formControl]="passwordControl" required>
           </mat-form-field>
         </div>
         <div class="row">
-          <button mat-raised-button color="primary" (click)="onLogin()">Anmelden</button>
+          <button mat-raised-button color="primary" (click)="onLogin()" [disabled]="userControl.invalid || passwordControl.invalid">Anmelden</button>
           <div *ngIf="loading" class="loading">
             <mat-spinner diameter="32"></mat-spinner>
           </div>
-
+        </div>
+        <div>
+          <div *ngIf="loginError" style="background-color: red">Fehler beim Anmelden!</div>
+          
         </div>
       </mat-card-content>
       <mat-card-actions>

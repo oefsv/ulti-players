@@ -6,6 +6,12 @@ wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }
 
+task startDevServer(type:Exec) {
+  workingDir 'nginx'
+
+  commandLine 'nginx', '-c', 'nginx-dev.conf'
+}
+
 task createZip(type: Zip) {
     archiveName = "ulti-players.zip"
     destinationDir = file("${buildDir}")

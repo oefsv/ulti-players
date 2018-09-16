@@ -1,39 +1,35 @@
-import { Router } from '@angular/router';
-import { Injectable } from '@angular/core';
-
-import { Observable, of } from 'rxjs';
-import { delay, map, mapTo, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { LoginResult, LoginUserResult } from '@frisbee-db-lib/models/login.model';
 
 @Injectable()
 export class AuthService {
   isLoggedIn = false;
+  currentUser: LoginUserResult;
 
-  // store the URL so we can redirect after logging in
   redirectUrl: string;
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
-  login(): Observable<boolean> {
-    // return this.httpClient
-    //   .get(
-    //     'http://venv.hbqg3zr3a3.us-west-2.elasticbeanstalk.com/api-auth/login/',
-    //     {
-    //       headers: {
-    //         'Request-Type': 'application/json'
-    //       }
-    //     }
-    //   )
-    //   .pipe(
-    //     tap(result => {
-    //       console.log(result);
-    //     }),
-    //     map(obj => true)
-    //   );
-    return of(true).pipe(
-      delay(1000),
-      tap(val => (this.isLoggedIn = true))
-    );
+  login(username: string, password: string): Observable<boolean> {
+    return this.httpClient
+      .post<LoginResult>(
+        '/rest/api-token-auth-custom',
+        {
+          username,
+          password
+      }
+      )
+      .pipe(
+        tap(result => {
+          this.currentUser = result.user;
+          this.isLoggedIn = true;
+        }),
+        map(obj => true)
+      );
   }
 
   logout(): void {
