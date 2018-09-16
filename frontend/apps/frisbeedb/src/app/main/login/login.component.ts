@@ -1,6 +1,7 @@
 import { AuthService } from './../../common/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'frisbee-login',
@@ -8,37 +9,47 @@ import { NavigationExtras, Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) {}
+
+  @ViewChild('user') userRef: ElementRef;
+  @ViewChild('password') passwordRef: ElementRef;
 
   loading: boolean;
+  loginError: boolean;
 
-  ngOnInit() {
+  userControl = new FormControl('', [Validators.required /*, Validators.email*/]);
+  passwordControl = new FormControl('', [Validators.required /*, Validators.email*/]);
+
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
     this.loading = false;
   }
 
-  onLogin() {
+  onLogin(): void {
     this.loading = true;
+    this.loginError = false;
 
-    this.authService.login().subscribe(() => {
+    const user = (this.userRef.nativeElement as HTMLInputElement).value;
+    const password = (this.passwordRef.nativeElement as HTMLInputElement).value;
+
+    this.authService.login(user, password).subscribe(() => {
       this.loading = false;
 
       if (this.authService.isLoggedIn) {
-        // Get the redirect URL from our auth service
-        // If no redirect has been set, use the default
         const redirect = this.authService.redirectUrl
           ? this.authService.redirectUrl
-          : '/ui/association';
+          : '/ui/clubs';
 
-        // Set our navigation extras object
-        // that passes on our global query params and fragment
         const navigationExtras: NavigationExtras = {
           queryParamsHandling: 'preserve',
           preserveFragment: true
         };
 
-        // Redirect the user
         this.router.navigate([redirect], navigationExtras);
       }
+    }, (error: any) => {
+      this.loading = false;
+      this.loginError = true;
     });
   }
 }

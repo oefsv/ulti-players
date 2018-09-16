@@ -16,6 +16,7 @@ import { AuthService } from './common/auth.service';
 import { LoginComponent } from './main/login/login.component';
 import { PageNotFoundComponent } from './main/page-not-found/page-not-found.component';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -42,15 +43,20 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    ReactiveFormsModule,
     MatDividerModule
   ],
   providers: [AuthGuard, AuthService],
   exports: [
     RouterModule,
-    MatProgressSpinnerModule,
-    MatInputModule,
     MatCardModule,
     MatIconModule,
+    MatButtonModule,
+    LayoutModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
     MatDividerModule
   ]
 })
