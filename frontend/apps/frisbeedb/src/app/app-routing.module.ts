@@ -8,7 +8,8 @@ import {
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatSnackBarModule
 } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './common/auth-guard.service';
@@ -44,7 +45,8 @@ const routes: Routes = [
     MatInputModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSnackBarModule
   ],
   providers: [AuthGuard, AuthService],
   exports: [
@@ -57,7 +59,8 @@ const routes: Routes = [
     MatInputModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSnackBarModule
   ]
 })
 export class NameRoutingModule {}

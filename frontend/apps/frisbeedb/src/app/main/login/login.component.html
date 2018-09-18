@@ -10,12 +10,13 @@
         <div class="row">
           <mat-form-field>
             <input matInput placeholder="Email-Adresse" name="username" #user [formControl]="userControl" required>
-            <mat-error *ngIf="userControl.invalid">Email Adresse ungültig!</mat-error>
+            <mat-error *ngIf="userControl.invalid">Bitte eine gültige Email Adresse angeben!</mat-error>
           </mat-form-field>
         </div>
         <div class="row">
           <mat-form-field>
             <input matInput placeholder="Passwort" name="password" type="password" #password [formControl]="passwordControl" required>
+            <mat-error *ngIf="passwordControl.invalid">Passwort darf nicht leer sein!</mat-error>
           </mat-form-field>
         </div>
         <div class="row">
@@ -23,10 +24,6 @@
           <div *ngIf="loading" class="loading">
             <mat-spinner diameter="32"></mat-spinner>
           </div>
-        </div>
-        <div>
-          <div *ngIf="loginError" style="background-color: red">Fehler beim Anmelden!</div>
-          
         </div>
       </mat-card-content>
       <mat-card-actions>
