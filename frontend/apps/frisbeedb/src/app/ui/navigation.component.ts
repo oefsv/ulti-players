@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../common/auth.service';
@@ -14,7 +14,10 @@ import { AuthService } from '../common/auth.service';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit {
+
+  profilePic: string | undefined;
+
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map(result => result.matches));
@@ -24,7 +27,13 @@ export class NavigationComponent {
     private authService: AuthService
   ) {}
 
+  ngOnInit(): void {
+    const hash = this.authService.getEmailHash();
+    this.profilePic = hash !== undefined ? `https://www.gravatar.com/avatar/${hash}?s=32&d=mp` : undefined;
+  }
+
   doLogout(): void {
     this.authService.logout();
   }
+
 }

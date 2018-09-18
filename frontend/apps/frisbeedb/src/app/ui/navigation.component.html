@@ -5,7 +5,9 @@
       <span>Frisbee-db</span>
       <span class="spacer"></span>
       <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon class="big-icon">account_circle</mat-icon>
+        <mat-icon class="big-icon" *ngIf="profilePic === undefined">account_circle</mat-icon>
+        <img [src]="profilePic" height="32" width="32" *ngIf="profilePic !== undefined" class="gravatar-img">
+
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item routerLink="/ui/user">

@@ -5,7 +5,7 @@ from urllib.request import Request
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpRequest, HttpResponse
 from rest_framework import viewsets, views
 from .serializers import User, GroupSerializer, UserSerializer
 from rest_framework import permissions
@@ -18,6 +18,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
+import hashlib
+from django.http.response import JsonResponse
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -25,7 +27,7 @@ class UserViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     """
     queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = User
+    serializer_class = UserSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -48,6 +50,7 @@ class CustomObtainAuthToken(ObtainAuthToken):
 def startSession(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
+    
     user = auth.authenticate(username=username, password=password)
     if user is not None and user.is_active:
         # Correct password, and the user is marked "active"
@@ -56,12 +59,13 @@ def startSession(request):
         request.session.set_expiry(86400)  # sets the exp. value of the session
         response = HttpResponse("logged in.")
         serializer = UserSerializer(user, context={'request': request})
-        set_cookie(response,'user', serializer.data)
         set_cookie(response, 'session_id', request.session.session_key )
-        return response
+
+        md5hash = hashlib.md5(str(serializer.data['email']).encode('utf-8')).hexdigest()
+        return JsonResponse({'user': serializer.data, 'email5': md5hash})
     else:
         # Show an error page
-        return HttpResponseRedirect("/invalid")
+        return HttpResponseForbidden('Unauthorized!')
 
 
 def set_cookie(response, key, value, days_expire = 7):

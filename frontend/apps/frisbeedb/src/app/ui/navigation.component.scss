@@ -39,3 +39,7 @@ h1.example-app-name {
 .big-icon {
   @include md-icon-size(32px);
 }
+
+.gravatar-img {
+  border-radius: 16px;
+}

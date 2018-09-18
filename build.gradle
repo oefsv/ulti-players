@@ -8,8 +8,12 @@ wrapper {
 
 task startDevServer(type:Exec) {
   workingDir 'nginx'
+  commandLine 'nginx'
+}
 
-  commandLine 'nginx', '-c', 'nginx-dev.conf'
+task stopDevServer(type:Exec) {
+  workingDir 'nginx'
+  commandLine 'nginx', '-s', 'stop'
 }
 
 task createZip(type: Zip) {

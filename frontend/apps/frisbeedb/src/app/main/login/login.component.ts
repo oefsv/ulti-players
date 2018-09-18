@@ -2,6 +2,7 @@ import { AuthService } from './../../common/auth.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material';
 
 @Component({
   selector: 'frisbee-login',
@@ -14,12 +15,15 @@ export class LoginComponent implements OnInit {
   @ViewChild('password') passwordRef: ElementRef;
 
   loading: boolean;
-  loginError: boolean;
+  errorMessage: MatSnackBarRef<any> | undefined = undefined;
 
   userControl = new FormControl('', [Validators.required /*, Validators.email*/]);
   passwordControl = new FormControl('', [Validators.required /*, Validators.email*/]);
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.loading = false;
@@ -27,7 +31,10 @@ export class LoginComponent implements OnInit {
 
   onLogin(): void {
     this.loading = true;
-    this.loginError = false;
+    if (this.errorMessage !== undefined) {
+      this.errorMessage.dismiss();
+    }
+    this.errorMessage = undefined;
 
     const user = (this.userRef.nativeElement as HTMLInputElement).value;
     const password = (this.passwordRef.nativeElement as HTMLInputElement).value;
@@ -49,7 +56,7 @@ export class LoginComponent implements OnInit {
       }
     }, (error: any) => {
       this.loading = false;
-      this.loginError = true;
+      this.errorMessage = this.snackBar.open('Anmeldung fehlgeschlagen!');
     });
   }
 }
