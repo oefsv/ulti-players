@@ -20,7 +20,7 @@ from django.urls import path, include
 from django.conf.urls import url, include
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
-from .import views
+from . import views
 
 router = routers.DefaultRouter()
 router.register('users', views.UserViewSet)
@@ -30,8 +30,7 @@ urlpatterns = [
     path('',  include(router.urls)),
     path('player_management/', include('player_management.urls')),
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api-token-auth', obtain_auth_token, name='api-token-auth'),
-    path('api-token-auth-custom', views.CustomObtainAuthToken.as_view(), name='api-token-auth-custom'),
-
+    path('api/auth/', include('rest_framework.urls')),
+    path('api/auth/token/obtain',  views.CustomObtainAuthToken.as_view(), name='api-token-auth-custom'),
+    path('api/auth/session/login', views.startSession, name='api-session-auth-custom'),
 ]
