@@ -10,6 +10,7 @@ app_name = 'player_management'
 router = routers.DefaultRouter()
 router.register('Person', views.PersonViewSet)
 
+
 urlpatterns = [
     path('', views.index,  name='index'),
     path('api/', include(router.urls)),
