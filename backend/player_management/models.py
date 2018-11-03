@@ -6,12 +6,15 @@ from django.db import models
 from django.contrib.auth import models as authModels
 
 
-# Create your models here.
-
 class Person(models.Model):
+    """
+    A Person reflects one single real Person, there shall be no two person
+    objects for the same Person Persons CAN be linked to users of the application,
+     meaning that the person is a User of this application
+    """
     SEX = [
-        ['male']*2,
-        ['female']*2,
+        ['male'] * 2,
+        ['female'] * 2,
     ]
     """ personal information"""
     firstname = models.CharField(max_length=200)
@@ -21,52 +24,57 @@ class Person(models.Model):
 
     """  contact information"""
     email = models.EmailField()
-    zip = models.PositiveIntegerField()
-
-
-""" An organization is an abstract concept for people or parties
-    who organize themselves for a specific purpose.  Teams, clubs
-    and associations are the 3 different organization types in this model"""
+    zip = models.PositiveIntegerField(blank=True)
 
 
 class Organisation(models.Model):
+    """ An organization is an abstract concept for people or parties
+    who organize themselves for a specific purpose.  Teams, clubs
+    and associations are the 3 different organization types in this model"""
     name = models.CharField(max_length=300)
     founded_on = models.DateField()
-    disolved_on = models.DateField()  # TODO: proper english
+    dissolved_on = models.DateField()
     description = models.TextField()
 
-
-"""A Team is an organization owned by a Club. it consists of a list
-   of players which is antemporary assignment of a player to a team"""
-
-
-class Team(models.Model):
-    pass
+    class Meta:
+        abstract = True
 
 
-class Club(models.Model):
-    pass
+class Association(Organisation):
+    """ An Association (german: Verband) is an Organisation that represents individuals or
+    other organisations for a common Goal. In the Ultimate Frisbee context an Association
+    represents multiple Clubs."""
+
+    class Meta(Organisation.Meta):
+        db_table = 'Association'
 
 
-class Association(models.Model):
-    pass
+class Club(Organisation):
+    class Meta(Organisation.Meta):
+        db_table = 'Club'
 
 
-"""A player is a role of aperson in context of the sport.
-   it holds"""
+class Team(Organisation):
+    """ A Team is an organization owned by a Club. it consists of a list
+    of players which is antemporary assignment of a player to a team"""
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+
+    class Meta(Organisation.Meta):
+        db_table = 'Team'
 
 
 class Player(models.Model):
+    """A player is a role of aperson in context of the sport.
+    it holds"""
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
 
 
-""" A membership connects an organization with another organozation
-    or peraon. It is reported by, and  confirmed by a person 
+class Membership(models.Model):
+    """ A membership connects an organization with another organozation
+    or peraon. It is reported by, and  confirmed by a person
     it my have a from and until date. missing values asumen an infinite Membership period"""
 
-
-class Membership(models.Model):
     valid_until = models.DateField()
     valid_from = models.DateField()
     reporter: User = models.ForeignKey(
@@ -87,23 +95,18 @@ class Membership(models.Model):
         return self.valid_from <= date.now() <= self.valid_until
 
 
-class PlayerToTeamMembership(Membership):
-    player = models.ForeignKey(Person, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+class PersonToTeamMembership(Membership):
+    person = models.ForeignKey(
+        Person,
+        on_delete=models.CASCADE,
+        related_name="TeamMemberships")
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE
+    )
 
     class Meta(Membership.Meta):
         db_table = 'PlayerToTeamMembership'
-
-
-"""p """
-
-
-class TeamToClubTeamMembership(Membership):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE)
-
-    class Meta(Membership.Meta):
-        db_table = 'TeamToClubTeamMembership'
 
 
 class ClubToAssociationMembership(Membership):
@@ -116,11 +119,11 @@ class ClubToAssociationMembership(Membership):
 
 class PersonToAssociationMembership(Membership):
     ASSOCIATION_ROLES = (
-        ['President']*2,
-        ['Vicepresident']*2,
-        ['Treasurer']*2,
-        ['secretary']*2,
-        ['Member']*2,
+        ['President'] * 2,
+        ['Vicepresident'] * 2,
+        ['Treasurer'] * 2,
+        ['secretary'] * 2,
+        ['Member'] * 2,
     )
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     association = models.ForeignKey(Association, on_delete=models.CASCADE)

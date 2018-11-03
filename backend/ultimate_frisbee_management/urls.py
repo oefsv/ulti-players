@@ -27,8 +27,8 @@ router.register('users', views.UserViewSet)
 router.register('groups', views.GroupViewSet)
 
 urlpatterns = [
-    path('',  include(router.urls)),
-    path('player_management/', include('player_management.urls')),
+    path('api/core',  include(router.urls)),
+    path('api/player_management', include('player_management.urls')),
     path('admin/', admin.site.urls),
     path('api/auth/', include('rest_framework.urls')),
     path('api/auth/token/obtain',  views.CustomObtainAuthToken.as_view(), name='api-token-auth-custom'),
