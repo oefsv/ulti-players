@@ -8,12 +8,11 @@ from player_management import views
 app_name = 'player_management'
 
 router = routers.DefaultRouter()
-router.register('Person', views.PersonViewSet)
-
+router.register('persons', views.PersonViewSet)
+router.register('persontoassociationmemberships', views.PersonToAssociationMembershipViewSet)
 
 urlpatterns = [
     path('', views.index,  name='index'),
     path('api/', include(router.urls)),
-    #path('', views.IndexView.as_view(),  name='index'),
 
 ]

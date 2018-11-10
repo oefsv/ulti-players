@@ -93,8 +93,8 @@ class Membership(models.Model):
     or peraon. It is reported by, and  confirmed by a person
     it my have a from and until date. missing values asumen an infinite Membership period"""
 
-    valid_until = models.DateField()
     valid_from = models.DateField()
+    valid_until = models.DateField()
     reporter: User = models.ForeignKey(
         authModels.User,
         on_delete=models.CASCADE,

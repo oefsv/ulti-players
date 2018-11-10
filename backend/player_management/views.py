@@ -14,7 +14,7 @@ class IndexView(generic.TemplateView):
 
 import player_management.models as pm
 from rest_framework import viewsets
-from player_management.serializers import PersonSerializer
+from player_management.serializers import PersonSerializer, PersonToAssociationMembershipSerializer
 from rest_framework import permissions
 
 
@@ -24,4 +24,14 @@ class PersonViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.Person.objects.all()
     serializer_class = PersonSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
+
+
+class PersonToAssociationMembershipViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.PersonToAssociationMembership.objects.all()
+    serializer_class = PersonToAssociationMembershipSerializer
+    # permission_classes = (permissions.IsAuthenticated,)
+
