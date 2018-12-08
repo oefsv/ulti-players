@@ -9,7 +9,12 @@ app_name = 'player_management'
 
 router = routers.DefaultRouter()
 router.register('persons', views.PersonViewSet)
-router.register('persontoassociationmemberships', views.PersonToAssociationMembershipViewSet)
+router.register('associations', views.AssociationViewSet)
+router.register('clubs', views.ClubViewSet)
+router.register('teams', views.TeamViewSet)
+router.register('personToAssociationMemberships', views.PersonToAssociationMembershipViewSet)
+router.register('personToClubMemberships', views.PersonToClubMembershipViewSet)
+router.register('personToTeamMemberships', views.PersonToTeamMembershipViewSet)
 
 urlpatterns = [
     path('', views.index,  name='index'),

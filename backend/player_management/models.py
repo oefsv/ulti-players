@@ -57,7 +57,7 @@ class Association(Organisation):
     in the PersonToAssociationMembership which defines membership roles"""
     # TODO:
     board = models.ManyToManyField('Person', through='PersonToAssociationMembership')
-    club_members = models.ManyToManyField('Club',through='ClubToAssociationMembership')
+    member_clubs = models.ManyToManyField('Club', through='ClubToAssociationMembership')
     governing_associations = models.ManyToManyField(
         'self',
         symmetrical= False,
@@ -71,7 +71,7 @@ class Association(Organisation):
 
 
 class Club(Organisation):
-    members = models.ManyToManyField('Person', through='PersonToClubMembership')
+    member_persons = models.ManyToManyField('Person', through='PersonToClubMembership')
     associations_memberships = models.ManyToManyField('Club',through='ClubToAssociationMembership')
 
     class Meta(Organisation.Meta):
@@ -82,7 +82,7 @@ class Team(Organisation):
     """ A Team is an organization owned by a Club. it consists of a list
     of players which is antemporary assignment of a player to a team"""
     club_membership = models.ForeignKey(Club, on_delete=models.CASCADE)
-    members = models.ManyToManyField('Person', through='PersonToTeamMembership')
+    member_persons = models.ManyToManyField('Person', through='PersonToTeamMembership')
 
     class Meta(Organisation.Meta):
         db_table = 'pm_Team'
