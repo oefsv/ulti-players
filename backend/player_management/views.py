@@ -76,3 +76,19 @@ class PersonToTeamMembershipViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.PersonToTeamMembership.objects.all()
     serializer_class = serializers.PersonToTeamMembershipSerializer
+
+
+class ClubToAssociationMembershipViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.ClubToAssociationMembership.objects.all()
+    serializer_class = serializers.ClubToAssociationMembershipSerializer
+
+
+class AssociationToAssociationMembershipViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.AssociationToAssociationMembership.objects.all()
+    serializer_class = serializers.AssociationToAssociationMembershipSerializer

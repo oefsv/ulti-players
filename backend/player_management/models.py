@@ -21,8 +21,8 @@ class Person(models.Model):
     # personal information
     firstname = models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
-    birthdate = models.DateField() # TODO: validator to check that date is not in the future
     sex = models.CharField(max_length=6, choices=SEX)
+    birthdate = models.DateField() # TODO: validator to check that date is not in the future
 
     # Memberships
     club_memberships = models.ManyToManyField('Club', through='PersonToClubMembership')
@@ -56,7 +56,7 @@ class Association(Organisation):
     multiple Clubs. By Definition it is represented by a board committee. The board is reflected
     in the PersonToAssociationMembership which defines membership roles"""
     # TODO:
-    board = models.ManyToManyField('Person', through='PersonToAssociationMembership')
+    board_members = models.ManyToManyField('Person', through='PersonToAssociationMembership')
     member_clubs = models.ManyToManyField('Club', through='ClubToAssociationMembership')
     governing_associations = models.ManyToManyField(
         'self',
@@ -123,7 +123,7 @@ class PersonToAssociationMembership(Membership):
 
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     association = models.ForeignKey(Association, on_delete=models.CASCADE)
-    role = models.CharField(max_length=300, choices=ASSOCIATION_ROLES,default='Member')
+    role = models.CharField(max_length=300, choices=ASSOCIATION_ROLES)
 
     class Meta(Membership.Meta):
         db_table = 'pm_PersonToAssociationMembership'
