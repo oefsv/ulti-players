@@ -27,10 +27,13 @@ router.register('users', views.UserViewSet)
 router.register('groups', views.GroupViewSet)
 
 urlpatterns = [
-    path('',  include(router.urls)),
-    path('player_management/', include('player_management.urls')),
+
+    path('', include(router.urls)),  # identity and access management users, groups etc..
+    path('iam/',  include(router.urls)),  # identity and access management users, groups etc..
+    path('pm/', include('player_management.urls',namespace="player_management")), # player management
     path('admin/', admin.site.urls),
     path('api/auth/', include('rest_framework.urls')),
     path('api/auth/token/obtain',  views.CustomObtainAuthToken.as_view(), name='api-token-auth-custom'),
     path('api/auth/session/login', views.startSession, name='api-session-auth-custom'),
 ]
+
