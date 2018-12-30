@@ -53,8 +53,8 @@ class AssociationSerializer(serializers.HyperlinkedModelSerializer):
 
 class ClubSerializer(serializers.HyperlinkedModelSerializer):
 
-    url = serializers.HyperlinkedIdentityField(
-        view_name="player_management:club-detail")
+    #url = serializers.HyperlinkedIdentityField(
+    #    view_name="player_management:club-detail")
 
     member_persons = serializers.HyperlinkedIdentityField(
         view_name='player_management:persontoclubmembership-detail',
@@ -62,7 +62,7 @@ class ClubSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = pm.Club
-        fields = ('url','member_persons')
+        fields = ('id', 'name', 'description', 'member_persons') #'url',
 
 
 class TeamSerializer(serializers.HyperlinkedModelSerializer):
@@ -76,7 +76,7 @@ class TeamSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = pm.Team
-        fields = ('url','member_persons')
+        fields = ('id', 'name', 'description', 'url','member_persons')
 
 
 
