@@ -1,10 +1,34 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatCardModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatProgressSpinnerModule, MatToolbarModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatOptionModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSortModule,
+  MatTableModule,
+  MatToolbarModule,
+  MatDatepickerModule
+} from '@angular/material';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { ClubAddMembershipComponent } from './club-add-membership/club-add-membership.component';
 import { ClubListModule } from './club-list/club-list.module';
-import { NavigationRoutingModule, routedComponents } from './navigation-routing.module';
+import {
+  NavigationRoutingModule,
+  routedComponents
+} from './navigation-routing.module';
+import { PlayerEditComponent } from './player-edit/player-edit.component';
 
 @NgModule({
   imports: [
@@ -18,15 +42,31 @@ import { NavigationRoutingModule, routedComponents } from './navigation-routing.
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    // MatFormFieldModule,
+    MatRadioModule,
+    MatOptionModule,
+    MatSelectModule,
+
+    FormsModule,
+    MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
 
-    //AssociationListModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+
+    // AssociationListModule,
     ClubListModule,
-    NavigationRoutingModule
+    NavigationRoutingModule,
+    ReactiveFormsModule,
+
+    MatDatepickerModule
   ],
-  declarations: [...routedComponents],
+  declarations: [
+    ...routedComponents,
+    ClubAddMembershipComponent,
+    PlayerEditComponent
+  ],
   exports: [
     MatGridListModule,
     MatCardModule,
@@ -37,9 +77,17 @@ import { NavigationRoutingModule, routedComponents } from './navigation-routing.
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    // MatFormFieldModule,
+    MatRadioModule,
+    MatOptionModule,
+    MatSelectModule,
+    FormsModule,
+    MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+
+    MatDatepickerModule
+
   ]
 })
 export class NavigationModule {}

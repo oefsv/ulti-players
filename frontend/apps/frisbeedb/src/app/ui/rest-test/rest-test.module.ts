@@ -10,14 +10,17 @@ import {
 } from '@angular/material';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { AuthGuard } from '../../common/auth-guard.service';
 
 const routes: Routes = [
   {
     path: '',
-    component: RestTestComponent
-    // canActivate: [AuthGuard],
-  }
-];
+    component: RestTestComponent,
+    canActivate: [AuthGuard],
+    data: {
+      requiredPermissions: ['dev']
+    }
+}];
 
 @NgModule({
   imports: [

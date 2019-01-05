@@ -1,7 +1,6 @@
 import player_management.models as pm
 from rest_framework import serializers
 
-
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
     # TODO: nested relationships. SEE https://www.django-rest-framework.org/api-guide/relations/
@@ -53,16 +52,13 @@ class AssociationSerializer(serializers.HyperlinkedModelSerializer):
 
 class ClubSerializer(serializers.HyperlinkedModelSerializer):
 
-    #url = serializers.HyperlinkedIdentityField(
-    #    view_name="player_management:club-detail")
-
-    member_persons = serializers.HyperlinkedIdentityField(
-        view_name='player_management:persontoclubmembership-detail',
-        many=True)
+    # member_persons = serializers.HyperlinkedIdentityField(
+    #     view_name='player_management:persontoclubmembership-detail',
+    #     many=True)
 
     class Meta:
         model = pm.Club
-        fields = ('id', 'name', 'description', 'member_persons') #'url',
+        fields = ('id', 'name', 'description', 'founded_on', 'dissolved_on') #'url','member_persons'
 
 
 class TeamSerializer(serializers.HyperlinkedModelSerializer):

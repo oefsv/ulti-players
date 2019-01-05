@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'frisbee-club-manage',
-  templateUrl: './club-manage.component.html',
-  styleUrls: ['./club-manage.component.scss']
+  selector: 'frisbee-club-add-membership',
+  templateUrl: './club-add-membership.component.html',
+  styleUrls: ['./club-add-membership.component.scss']
 })
-export class ClubManageComponent implements OnInit, OnDestroy {
+export class ClubAddMembershipComponent implements OnInit, OnDestroy {
 
   club: string;
 

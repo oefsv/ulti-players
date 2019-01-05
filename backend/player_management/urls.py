@@ -10,6 +10,8 @@ app_name = 'player_management'
 router = routers.DefaultRouter() # todo change the view so its not called API Root https://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
 router.register('persons', views.PersonViewSet)
 router.register('associations', views.AssociationViewSet)
+
+
 router.register('clubs', views.ClubViewSet)
 router.register('teams', views.TeamViewSet)
 router.register('personToAssociationMemberships', views.PersonToAssociationMembershipViewSet)
@@ -18,7 +20,15 @@ router.register('personToTeamMemberships', views.PersonToTeamMembershipViewSet)
 router.register('clubToAssociationMemberships', views.ClubToAssociationMembershipViewSet)
 router.register('AssociationToAssociationMemberships', views.AssociationToAssociationMembershipViewSet)
 
+club_detail = views.ClubViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
+
 urlpatterns = [
     path('', views.index,  name='index'),
     path('api/', include(router.urls)),
+    path('club/<int:pk>/', club_detail, name='club-detail'),
 ]

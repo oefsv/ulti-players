@@ -1,0 +1,11 @@
+<div class="mat-display-1">
+  Aktuelle Vereine
+</div>
+
+<div *ngFor="let club of $clubs | async" >
+  {{club.name}}
+</div>
+
+<div class="mat-display-1">
+  Aktuelle Teams
+</div>
