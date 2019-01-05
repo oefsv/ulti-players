@@ -1,6 +1,8 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import {
   MatButtonModule,
   MatCardModule,
@@ -11,13 +13,12 @@ import {
   MatProgressSpinnerModule,
   MatSnackBarModule
 } from '@angular/material';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './common/auth-guard.service';
 import { AuthService } from './common/auth.service';
 import { LoginComponent } from './main/login/login.component';
 import { PageNotFoundComponent } from './main/page-not-found/page-not-found.component';
-import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -36,7 +37,12 @@ const routes: Routes = [
     }),
     CommonModule,
     HttpClientModule,
-    // HttpClientXsrfModule.withOptions(),
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'csrftoken',
+      headerName: 'X-CSRFTOKEN'
+    }),
+    MatNativeDateModule,
+
     MatCardModule,
     MatIconModule,
     MatButtonModule,
@@ -48,9 +54,14 @@ const routes: Routes = [
     MatDividerModule,
     MatSnackBarModule
   ],
-  providers: [AuthGuard, AuthService],
+  providers: [
+    AuthGuard,
+    AuthService,
+    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }
+  ],
   exports: [
     RouterModule,
+    MatNativeDateModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,

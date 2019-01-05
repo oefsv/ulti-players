@@ -1,0 +1,17 @@
+:host > form {
+    max-width: 600px;
+    position: relative;
+}
+
+.textfield {
+    width: 100%;
+}
+
+.radiolist > * {
+    display: block;
+    margin: 8px;
+}
+
+.row + .row {
+    margin-top: 16px;
+}

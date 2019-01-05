@@ -1,0 +1,44 @@
+<form>
+  <div class="row">
+    <mat-form-field class="textfield">
+      <input matInput placeholder="Vorname" required>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field class="textfield">
+      <input matInput placeholder="Nachname" required>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+      <mat-label>Geschlecht</mat-label>
+      <mat-radio-group required class="radiolist">
+          <mat-radio-button value="m">Mann</mat-radio-button>
+          <mat-radio-button value="f">Frau</mat-radio-button>
+        </mat-radio-group>
+  </div>
+
+  <div class="row">
+      <mat-form-field>
+        <input matInput placeholder="Geburtsjahr" required type="number" min="1900" max="2100">
+      </mat-form-field>
+  </div>
+
+  <div class="row">
+      <mat-form-field class="textfield">
+        <input matInput placeholder="E-Mail">
+      </mat-form-field>
+  </div>
+
+  <div class="row">
+      <mat-label>Stammverein</mat-label>
+      <mat-radio-group required class="radiolist">
+          <mat-radio-button value="j">Ja</mat-radio-button>
+          <mat-radio-button value="n">Nein</mat-radio-button>
+        </mat-radio-group>
+  </div>
+
+</form>
+
+

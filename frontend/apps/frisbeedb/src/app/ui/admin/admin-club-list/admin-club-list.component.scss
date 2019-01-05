@@ -1,0 +1,30 @@
+.full-width-table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: #f5f5f5;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  cursor: pointer;
+  border-bottom-width: 0;
+}
+
+.expand-detail {
+  overflow: hidden;
+  padding: 8px;
+  // display: flex;
+}
+
+.expand-detail button {
+  margin-right: 8px;
+}

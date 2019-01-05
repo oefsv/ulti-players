@@ -1,5 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
+import { Permissions } from '@frisbee-db-lib/permissions';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../common/auth.service';
@@ -15,8 +16,9 @@ import { AuthService } from '../common/auth.service';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
-
   profilePic: string | undefined;
+  isDev: boolean;
+  isAdmin: boolean;
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -29,11 +31,15 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit(): void {
     const hash = this.authService.getEmailHash();
-    this.profilePic = hash !== undefined ? `https://www.gravatar.com/avatar/${hash}?s=32&d=mp` : undefined;
+    this.profilePic =
+      hash !== undefined
+        ? `https://www.gravatar.com/avatar/${hash}?s=32&d=mp`
+        : undefined;
+    this.isDev = this.authService.hasGroup(Permissions.DEV);
+    this.isAdmin = this.authService.hasGroup(Permissions.ADMIN);
   }
 
   doLogout(): void {
     this.authService.logout();
   }
-
 }

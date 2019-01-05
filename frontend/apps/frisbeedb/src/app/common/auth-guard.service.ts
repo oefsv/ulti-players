@@ -1,52 +1,72 @@
-import { Injectable }       from '@angular/core';
+import { Permissions } from '@frisbee-db-lib/permissions';
+import { Injectable } from '@angular/core';
 import {
-  CanActivate, Router,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot,
+  CanActivate,
   CanActivateChild,
+  CanLoad,
   NavigationExtras,
-  CanLoad, Route
-}                           from '@angular/router';
-import { AuthService }      from './auth.service';
+  Route,
+  Router,
+  RouterStateSnapshot
+} from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    let url: string = state.url;
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    const url: string = state.url;
+    const permissions = route.data.requiredPermissions;
 
-    return this.checkLogin(url);
+    return this.checkLogin(url, permissions);
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivateChild(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
     return this.canActivate(route, state);
   }
 
   canLoad(route: Route): boolean {
-    let url = `/${route.path}`;
+    const url = `/${route.path}`;
 
-    return this.checkLogin(url);
+    const permissions = route.data.requiredPermissions;
+
+    return this.checkLogin(url, permissions);
   }
 
-  checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn) { return true; }
+  checkLogin(url: string, requiredPermissions: undefined | Array<Permissions>): boolean {
+    if (this.authService.isLoggedIn()) {
+      if (requiredPermissions !== undefined) {
+
+        return this.authService.hasGroups(requiredPermissions);
+      }
+
+      return true;
+    }
 
     // Store the attempted URL for redirecting
     this.authService.redirectUrl = url;
 
     // Create a dummy session id
-    let sessionId = 123456789;
+    const sessionId = 123456789;
 
     // Set our navigation extras object
     // that contains our global query params and fragment
-    let navigationExtras: NavigationExtras = {
-      queryParams: { 'session_id': sessionId },
+    const navigationExtras: NavigationExtras = {
+      queryParams: { session_id: sessionId },
       fragment: 'anchor'
     };
 
     // Navigate to the login page with extras
     this.router.navigate(['/login'], navigationExtras);
+
     return false;
   }
 }

@@ -2,35 +2,40 @@
   <h1 class="mat-h1">Übersicht</h1>
   <mat-grid-list cols="2" rowHeight="350px">
     <mat-grid-tile *ngFor="let clubAndTeam of _clubsAndTeams | async" [colspan]="1" [rowspan]="1">
-      <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{clubAndTeam.club.name}}
-            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-              <mat-icon>more_horiz</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Verwalten</button>
-            </mat-menu>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <ng-container *ngIf="clubAndTeam.teams && clubAndTeam.teams.length > 0; else noteams">
-              <div class="teams-header">Teams</div>
-          
-              <mat-list *ngFor="let team of clubAndTeam.teams">
-                <mat-list-item [routerLink]="[clubAndTeam.club.id, 'team', team.id]" roter>{{team.name}}</mat-list-item>
-              </mat-list>
-              </ng-container>
-          <ng-template #noteams>
-              Kein Team definiert. Bitte eines hinzufügen!
-          </ng-template>
-        </mat-card-content>
-        <mat-card-actions>
-            <mat-divider></mat-divider>
-            test
-          </mat-card-actions>
-        </mat-card>
+      <a [routerLink]="['/ui/clubs', clubAndTeam.club.id]">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>
+              {{clubAndTeam.club.name}}
+              <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item>Verwalten</button>
+              </mat-menu>
+            </mat-card-title>
+          </mat-card-header>
+          <!--
+            <mat-card-content class="dashboard-card-content">
+              <ng-container *ngIf="clubAndTeam.teams && clubAndTeam.teams.length > 0; else noteams">
+                  <div class="teams-header">Teams</div>
+              
+                  <mat-list *ngFor="let team of clubAndTeam.teams">
+                    <mat-list-item [routerLink]="[clubAndTeam.club.id, 'team', team.id]" roter>{{team.name}}</mat-list-item>
+                  </mat-list>
+                  </ng-container>
+              <ng-template #noteams>
+                  Kein Team definiert. Bitte eines hinzufügen!
+              </ng-template>
+            </mat-card-content>
+
+          -->
+          <mat-card-actions>
+              <mat-divider></mat-divider>
+              test
+            </mat-card-actions>
+          </mat-card>
+      </a>
     </mat-grid-tile>
   </mat-grid-list>
 </div>

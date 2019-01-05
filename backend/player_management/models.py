@@ -14,14 +14,14 @@ class Person(models.Model):
      meaning that the person is a User of this application
     """
     SEX = [
-        ['male'] * 2,
-        ['female'] * 2,
+        ['m'] * 2,
+        ['f'] * 2,
     ]
 
     # personal information
     firstname = models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
-    sex = models.CharField(max_length=6, choices=SEX)
+    sex = models.CharField(max_length=1, choices=SEX)
     birthdate = models.DateField() # TODO: validator to check that date is not in the future
 
     # Memberships
@@ -43,8 +43,8 @@ class Organisation(models.Model):
     and associations are the 3 different organization types in this model"""
     name = models.CharField(max_length=300)
     founded_on = models.DateField()
-    dissolved_on = models.DateField()
-    description = models.TextField()
+    dissolved_on = models.DateField(null=True)
+    description = models.TextField(blank=True)
 
     class Meta:
         abstract = True

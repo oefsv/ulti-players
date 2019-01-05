@@ -9,13 +9,13 @@
       <mat-card-content>
         <div class="row">
           <mat-form-field>
-            <input matInput placeholder="Email-Adresse" name="username" #user [formControl]="userControl" required>
+            <input matInput placeholder="Email-Adresse" name="username" #user [formControl]="userControl" required (keyup.enter)="password.focus()">
             <mat-error *ngIf="userControl.invalid">Bitte eine gültige Email Adresse angeben!</mat-error>
           </mat-form-field>
         </div>
         <div class="row">
           <mat-form-field>
-            <input matInput placeholder="Passwort" name="password" type="password" #password [formControl]="passwordControl" required>
+            <input matInput placeholder="Passwort" name="password" type="password" #password [formControl]="passwordControl" required (keyup.enter)="onLogin()">
             <mat-error *ngIf="passwordControl.invalid">Passwort darf nicht leer sein!</mat-error>
           </mat-form-field>
         </div>
