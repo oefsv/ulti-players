@@ -1,0 +1,12 @@
+@import '~@angular/material/theming';
+
+$pm-primary: mat-palette($mat-blue-grey);
+$pm-accent: mat-palette($mat-brown);
+
+/* You can add global styles to this file, and also import other style files */
+@mixin md-icon-size($size: 24px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+  line-height: $size;
+}

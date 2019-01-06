@@ -1,32 +1,21 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "module": "es2015",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "importHelpers": true,
     "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "baseUrl": ".",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"],
     "paths": {
-      "@frisbee-db/models": [
-        "libs/models/src/index.ts"
-      ],
-      "@frisbee-db-lib/*": [
-        "libs/models/src/lib/*"
-      ]
-    },
-    "module": "es2015"
+      "@frisbee-db-lib/*": ["src/app/models/*"]
+    }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
