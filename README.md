@@ -8,7 +8,7 @@
 You need to install
 
 + python
-+ yarn
++ npm
 + nginx
 
 
@@ -48,15 +48,32 @@ Run the combined web-server (for CORS)
 
 ## UI
 
-UI development is done using Angular + Yarn
+UI development is done using Angular + Npm
+
 ```
 > cd frontend
-> yarn install
-> yarn start
+> npm install
+> npm run start
+```
+
+## Backend
+
+In one shell execute
+
+```
+> gradlew startDevServer
+```
+
+and in the next one
+
+```
+> cd backend
+> frisbee-venv\Scripts\python.exe manage.py runserver
 ```
 
 # Build
 Create the ZIP
+
 ```
 > gradlew createZip
 ```
