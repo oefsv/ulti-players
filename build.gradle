@@ -20,7 +20,7 @@ task createZip(type: Zip) {
     archiveName = "ulti-players.zip"
     destinationDir = file("${buildDir}")
 
-    from "${projectDir}/frontend/dist/apps/frisbeedb"
+    from "${projectDir}/frontend/dist/ultiplayers"
 
     dependsOn(':frontend:buildUi')
 }

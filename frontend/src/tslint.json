@@ -1,0 +1,8 @@
+{
+  "extends": "../tslint.json",
+  "rules": {
+    "directive-selector": [true, "attribute", ["pm", "frisbee"], "camelCase"],
+    "component-selector": [true, "element", ["pm", "frisbee"], "kebab-case"],
+    "no-implicit-dependencies": [true, ["@src", "@frisbee-db-lib", "~"]]
+  }
+}

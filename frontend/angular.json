@@ -1,36 +1,55 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "",
+  "newProjectRoot": "projects",
   "projects": {
-    "frisbeedb": {
-      "root": "apps/frisbeedb/",
-      "sourceRoot": "apps/frisbeedb/src",
+    "ultiplayers": {
+      "root": "",
+      "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "frisbee",
+      "prefix": "pm",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss"
+          "styleext": "scss",
+          "spec": false
+        },
+        "@schematics/angular:class": {
+          "spec": false
+        },
+        "@schematics/angular:directive": {
+          "spec": false
+        },
+        "@schematics/angular:guard": {
+          "spec": false
+        },
+        "@schematics/angular:module": {
+          "spec": false
+        },
+        "@schematics/angular:pipe": {
+          "spec": false
+        },
+        "@schematics/angular:service": {
+          "spec": false
         }
       },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/frisbeedb",
-            "index": "apps/frisbeedb/src/index.html",
-            "main": "apps/frisbeedb/src/main.ts",
-            "polyfills": "apps/frisbeedb/src/polyfills.ts",
-            "tsConfig": "apps/frisbeedb/tsconfig.app.json",
+            "outputPath": "dist/ultiplayers",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              "apps/frisbeedb/src/favicon.ico",
-              "apps/frisbeedb/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["./src/styles", "./apps/frisbeedb/src/styles"]
+              "includePaths": ["./src/styles"]
             },
             "styles": [
-              "apps/frisbeedb/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -38,8 +57,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/frisbeedb/src/environments/environment.ts",
-                  "with": "apps/frisbeedb/src/environments/environment.prod.ts"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -50,44 +69,48 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "frisbeedb:build"
+            "browserTarget": "ultiplayers:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "frisbeedb:build:production"
+              "browserTarget": "ultiplayers:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "frisbeedb:build"
+            "browserTarget": "ultiplayers:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "apps/frisbeedb/src/test.ts",
-            "polyfills": "apps/frisbeedb/src/polyfills.ts",
-            "tsConfig": "apps/frisbeedb/tsconfig.spec.json",
-            "karmaConfig": "apps/frisbeedb/karma.conf.js",
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
             "styles": [
-              {
-                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
-              },
-              "apps/frisbeedb/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": [],
             "assets": [
-              "apps/frisbeedb/src/favicon.ico",
-              "apps/frisbeedb/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ]
           }
         },
@@ -95,83 +118,44 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "apps/frisbeedb/tsconfig.app.json",
-              "apps/frisbeedb/tsconfig.spec.json"
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
     },
-    "frisbeedb-e2e": {
-      "root": "apps/frisbeedb-e2e/",
+    "ultiplayers-e2e": {
+      "root": "e2e/",
       "projectType": "application",
+      "prefix": "",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "apps/frisbeedb-e2e/protractor.conf.js",
-            "devServerTarget": "frisbeedb:serve"
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "ultiplayers:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "frisbeedb:serve:production"
+              "devServerTarget": "ultiplayers:serve:production"
             }
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "apps/frisbeedb-e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
-          }
-        }
-      }
-    },
-    "models": {
-      "root": "libs/models",
-      "sourceRoot": "libs/models/src",
-      "projectType": "library",
-      "prefix": "frisbee-db-ui",
-      "architect": {
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "libs/models/src/test.ts",
-            "tsConfig": "libs/models/tsconfig.spec.json",
-            "karmaConfig": "libs/models/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/models/tsconfig.lib.json",
-              "libs/models/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**"]
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
     }
   },
-  "schematics": {
-    "@schematics/angular:component": {
-      "inlineStyle": false,
-      "prefix": "aio",
-      "styleext": "scss",
-      "spec": false
-    },
-    "@schematics/angular:directive": {
-      "prefix": "aio"
-    }
-  },
-  "cli": {
-    "warnings": {
-      "typescriptMismatch": false,
-      "versionMismatch": false
-    },
-    "defaultCollection": "@nrwl/schematics"
-  },
-  "defaultProject": "frisbeedb"
+  "defaultProject": "ultiplayers"
 }
