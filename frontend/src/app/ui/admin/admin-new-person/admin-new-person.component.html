@@ -1,0 +1,87 @@
+<form [formGroup]="controlForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="card">
+    <mat-card-header *ngIf="personId === undefined; else elseHeader">
+      <mat-icon mat-card-avatar class="big-icon">library_add</mat-icon>
+      <mat-card-title>Neuer Person</mat-card-title>
+      <mat-card-subtitle>Fügt einen neuen Person hinzu</mat-card-subtitle>
+    </mat-card-header>
+    <ng-template #elseHeader>
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="big-icon">library_books</mat-icon>
+        <mat-card-title>Person bearbeiten</mat-card-title>
+        <mat-card-subtitle>Ändert einen existierenden Person</mat-card-subtitle>
+      </mat-card-header>
+    </ng-template>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Nachname"
+              formControlName="lastname"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              required
+              placeholder="Vorname"
+              formControlName="firstname"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row"></div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              required
+              [matDatepicker]="dp"
+              placeholder="Geburtsdatum"
+              formControlName="birthdate"
+              autocomplete="off"
+            />
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-radio-group required class="radiolist" formControlName="sex">
+            <mat-radio-button value="m">Mann</mat-radio-button>
+            <mat-radio-button value="f">Frau</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <ng-container *ngIf="personId === undefined; else elseActions">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!controlForm.valid"
+        >
+          Erstellen
+        </button>
+      </ng-container>
+      <ng-template #elseActions>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!controlForm.valid"
+        >
+          Speichern
+        </button>
+      </ng-template>
+      <button mat-button [routerLink]="['../../persons']">Abbrechen</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

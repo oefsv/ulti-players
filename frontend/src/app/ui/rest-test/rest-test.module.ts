@@ -27,9 +27,6 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     HttpClientModule,
-    // HttpClientXsrfModule.withOptions({
-    //   cookieName: 'csrftoken'
-    // }),
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
