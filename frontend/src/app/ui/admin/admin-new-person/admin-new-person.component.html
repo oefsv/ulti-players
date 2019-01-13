@@ -1,13 +1,13 @@
 <form [formGroup]="controlForm" novalidate (ngSubmit)="onSubmit()">
   <mat-card class="card">
     <mat-card-header *ngIf="personId === undefined; else elseHeader">
-      <mat-icon mat-card-avatar class="big-icon">library_add</mat-icon>
+      <mat-icon mat-card-avatar class="big-icon">person_add</mat-icon>
       <mat-card-title>Neuer Person</mat-card-title>
       <mat-card-subtitle>Fügt einen neuen Person hinzu</mat-card-subtitle>
     </mat-card-header>
     <ng-template #elseHeader>
       <mat-card-header>
-        <mat-icon mat-card-avatar class="big-icon">library_books</mat-icon>
+        <mat-icon mat-card-avatar class="big-icon">person</mat-icon>
         <mat-card-title>Person bearbeiten</mat-card-title>
         <mat-card-subtitle>Ändert einen existierenden Person</mat-card-subtitle>
       </mat-card-header>
@@ -53,6 +53,7 @@
           </mat-form-field>
         </div>
         <div class="col">
+          <span>Geschlecht:</span>
           <mat-radio-group required class="radiolist" formControlName="sex">
             <mat-radio-button value="m">Mann</mat-radio-button>
             <mat-radio-button value="f">Frau</mat-radio-button>

@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewPerson, Person } from '@frisbee-db-lib/models/person.model';
-import { AdminPersonService } from '@frisbee-db-lib/services/admin/person.service.';
+import { AdminPersonService } from '@frisbee-db-lib/services/admin/person.service';
 
 @Component({
   selector: 'pm-admin-new-person',
@@ -14,10 +14,10 @@ import { AdminPersonService } from '@frisbee-db-lib/services/admin/person.servic
 })
 export class AdminNewPersonComponent implements OnInit {
   controlForm = this.fb.group({
-    firstname: [null, Validators.required],
-    lastname: [null, Validators.required],
-    sex: [null],
-    birthdate: [null, Validators.required]
+    firstname: [undefined, Validators.required],
+    lastname: [undefined, Validators.required],
+    sex: [undefined],
+    birthdate: [undefined, Validators.required]
   });
 
   personId: string | undefined;
@@ -48,18 +48,13 @@ export class AdminNewPersonComponent implements OnInit {
       const firstNameControl = this.controlForm.get('firstname');
       const lastNameControl = this.controlForm.get('lastname');
       const birthdateControl = this.controlForm.get('birthdate');
-      // const dissolvedControl = this.controlForm.get('dissolved');
+      const sexControl = this.controlForm.get('sex');
 
       const newPerson: NewPerson = {
         firstname: firstNameControl.value,
         lastname: lastNameControl.value,
-        sex: 'm',
+        sex: sexControl.value,
         birthdate: formatDate(birthdateControl.value, 'yyyy-MM-dd', 'en-US')
-        // description: descriptionControl.value || '',
-        // dissolved_on:
-        //   dissolvedControl.value !== null
-        //     ? formatDate(dissolvedControl.value, 'yyyy-MM-dd', 'en-US')
-        //     : undefined
       };
 
       if (this.personId !== undefined) {

@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Association, NewAssociation } from '@frisbee-db-lib/models/association.model';
-import { AdminAssociationService } from '@frisbee-db-lib/services/admin/association.service.';
+import { AdminAssociationService } from '@frisbee-db-lib/services/admin/association.service';
 
 @Component({
   selector: 'pm-admin-new-association',

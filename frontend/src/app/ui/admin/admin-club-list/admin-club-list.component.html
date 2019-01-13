@@ -9,7 +9,18 @@
         matInput
         (keyup)="applyFilter($event.target.value)"
         placeholder="Filter"
+        #input
       />
+      <button
+        mat-button
+        *ngIf="dataSource.filter"
+        matSuffix
+        mat-icon-button
+        aria-label="Löschen"
+        (click)="input.value = ''; applyFilter('')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
     <div class="table-container">
       <mat-spinner
