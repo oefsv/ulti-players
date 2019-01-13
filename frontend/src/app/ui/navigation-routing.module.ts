@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminClubListComponent } from './admin/admin-club-list/admin-club-list.component';
-import { AdminNewClubComponent } from './admin/admin-new-club/admin-new-club.component';
 import { ClubAddMembershipComponent } from './club-add-membership/club-add-membership.component';
 import { ClubListComponent } from './club-list/club-list.component';
 import { ClubManageComponent } from './club-manage/club-manage.component';
@@ -26,12 +24,10 @@ const routes: Routes = [
         loadChildren: 'src/app/ui/rest-test/rest-test.module#RestTestModule'
       },
       {
-        path: 'admin/clubs',
-        component: AdminClubListComponent,
-        pathMatch: 'full'
-      },
-      { path: 'admin/clubs/new', component: AdminNewClubComponent },
-      { path: 'admin/club/:id', component: AdminNewClubComponent }
+        path: 'admin',
+        loadChildren: 'src/app/ui/admin/admin.module#AdminModule'
+      }
+     
     ]
   }
 ];
@@ -45,7 +41,5 @@ export class NavigationRoutingModule {}
 export const routedComponents = [
   NavigationComponent,
   UserComponent,
-  StartComponent,
-  AdminClubListComponent,
-  AdminNewClubComponent
+  StartComponent
 ];

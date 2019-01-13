@@ -1,10 +1,14 @@
-import { Id } from "./id.model";
+import { Id } from './id.model';
 
-export interface Person extends Id {
-    sex: 'm' | 'f';
-    firstName: string;
-    lastName: string;
-    birthdate: string;
-    email?: string;
-    zip: number;
+// tslint:disable-next-line:no-empty-interface
+export interface NewPerson {
+  sex: 'm' | 'f';
+  firstname: string;
+  lastname: string;
+  birthdate: string;
+  email?: string;
+  zip?: number;
 }
+
+// tslint:disable-next-line:no-empty-interface
+export interface Person extends NewPerson, Id {}
