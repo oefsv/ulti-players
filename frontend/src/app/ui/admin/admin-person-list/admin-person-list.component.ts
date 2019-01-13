@@ -13,7 +13,7 @@ import {
   MatTableDataSource
 } from '@angular/material';
 import { Person } from '@frisbee-db-lib/models/person.model';
-import { AdminPersonService } from '@frisbee-db-lib/services/admin/person.service.';
+import { AdminPersonService } from '@frisbee-db-lib/services/admin/person.service';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
