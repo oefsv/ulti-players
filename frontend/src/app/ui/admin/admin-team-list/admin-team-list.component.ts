@@ -12,15 +12,15 @@ import {
   MatSort,
   MatTableDataSource
 } from '@angular/material';
-import { Club } from '@frisbee-db-lib/models/club.model';
-import { AdminClubService } from '@frisbee-db-lib/services/admin/club.service.';
+import { Team } from '@frisbee-db-lib/models/team.model';
+import { AdminTeamService } from '@frisbee-db-lib/services/admin/team.service.';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'pm-admin-club-list',
-  templateUrl: './admin-club-list.component.html',
-  styleUrls: ['./admin-club-list.component.scss'],
+  selector: 'pm-admin-team-list',
+  templateUrl: './admin-team-list.component.html',
+  styleUrls: ['./admin-team-list.component.scss'],
   animations: [
     trigger('detailExpand', [
       state(
@@ -34,27 +34,26 @@ import { map, switchMap } from 'rxjs/operators';
       )
     ])
   ],
-  providers: [AdminClubService]
+  providers: [AdminTeamService]
 })
-export class AdminClubListComponent implements OnInit {
+export class AdminTeamListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  dataSource: MatTableDataSource<Club>;
+  dataSource: MatTableDataSource<Team>;
 
   isLoadingResults = true;
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name'];
-  expandedElement: Club | null;
+  expandedElement: Team | null;
 
-  _clubService: AdminClubService;
+  _teamService: AdminTeamService;
 
   constructor(
-    private clubService: AdminClubService,
+    private teamService: AdminTeamService,
     private snackbar: MatSnackBar
   ) {
-    this._clubService = clubService;
+    this._teamService = teamService;
   }
 
   ngOnInit(): void {
@@ -67,7 +66,7 @@ export class AdminClubListComponent implements OnInit {
         switchMap(() => {
           this.isLoadingResults = true;
 
-          return this._clubService.getClubs();
+          return this._teamService.getTeams();
         }),
         map(data => {
           this.isLoadingResults = false;
@@ -88,11 +87,11 @@ export class AdminClubListComponent implements OnInit {
     }
   }
 
-  onDelete(club: Club): void {
-    this.clubService.deleteClub(club).subscribe(result => {
-      this.snackbar.open(`Der Verein '${club.name}' wurde gelöscht!`);
+  onDelete(team: Team): void {
+    this.teamService.deleteTeam(team).subscribe(result => {
+      this.snackbar.open(`Der Verband '${team.name}' wurde gelöscht!`);
       this.dataSource.data = this.dataSource.data.filter(
-        obj => obj.id !== club.id
+        obj => obj.id !== team.id
       );
     });
   }

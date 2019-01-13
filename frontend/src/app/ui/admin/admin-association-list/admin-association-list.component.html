@@ -1,7 +1,7 @@
 <mat-card class="card">
   <mat-card-header>
     <mat-icon mat-card-avatar class="big-icon">library_books</mat-icon>
-    <mat-card-title>Vereine</mat-card-title>
+    <mat-card-title>Verbände</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-form-field>
@@ -55,7 +55,7 @@
               <button
                 mat-raised-button
                 color="primary"
-                [routerLink]="'/ui/admin/club/' + element.id"
+                [routerLink]="'/ui/admin/association/' + element.id"
               >
                 Bearbeiten
               </button>
@@ -102,9 +102,9 @@
     <button
       mat-raised-button
       color="primary"
-      [routerLink]="'/ui/admin/clubs/new'"
+      [routerLink]="'/ui/admin/associations/new'"
     >
-      Neuer Verein
+      Neuer Verband
     </button>
   </mat-card-actions>
 </mat-card>

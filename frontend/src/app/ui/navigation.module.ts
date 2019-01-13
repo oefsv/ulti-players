@@ -30,63 +30,47 @@ import {
 } from './navigation-routing.module';
 import { PlayerEditComponent } from './player-edit/player-edit.component';
 
+const modules = [
+  MatGridListModule,
+  MatCardModule,
+  MatMenuModule,
+  MatIconModule,
+  MatButtonModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatListModule,
+  MatRadioModule,
+  MatOptionModule,
+  MatSelectModule,
+
+  FormsModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatProgressSpinnerModule,
+
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatDatepickerModule,
+  ReactiveFormsModule
+];
+
 @NgModule({
   imports: [
     CommonModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
+
     LayoutModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatRadioModule,
-    MatOptionModule,
-    MatSelectModule,
-
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
 
     // AssociationListModule,
     ClubListModule,
     NavigationRoutingModule,
-    ReactiveFormsModule,
-
-    MatDatepickerModule
+    ...modules
   ],
   declarations: [
     ...routedComponents,
     ClubAddMembershipComponent,
     PlayerEditComponent
   ],
-  exports: [
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatRadioModule,
-    MatOptionModule,
-    MatSelectModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-
-    MatDatepickerModule
-  ]
+  exports: [LayoutModule, ...modules]
 })
 export class NavigationModule {}

@@ -1,9 +1,16 @@
+from django.http import HttpResponse
 from django.shortcuts import render
+from django.views import generic
+from django.views.generic.list import ListView
+
+from player_management import serializers
+import player_management.models as pm
+from rest_framework import permissions
+from rest_framework import viewsets
+from rest_framework import serializers as restserializers
+
 
 # Create your views here.
-from django.views import generic
-from django.http import HttpResponse
-
 def index(response):
     return HttpResponse("Hello, world. You're at the frisbee index.")
 
@@ -12,10 +19,6 @@ class IndexView(generic.TemplateView):
     template_name = 'player_management/index.html'
 
 
-import player_management.models as pm
-from rest_framework import viewsets
-from player_management import serializers
-from rest_framework import permissions
 
 
 
@@ -51,8 +54,6 @@ class TeamViewSet(viewsets.ModelViewSet):
     queryset = pm.Team.objects.all()
     serializer_class = serializers.TeamSerializer
     # permission_classes = (permissions.IsAuthenticated,)
-
-
 
 class PersonToAssociationMembershipViewSet(viewsets.ModelViewSet):
     """
