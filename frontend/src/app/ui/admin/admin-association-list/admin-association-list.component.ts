@@ -13,7 +13,7 @@ import {
   MatTableDataSource
 } from '@angular/material';
 import { Association } from '@frisbee-db-lib/models/association.model';
-import { AdminAssociationService } from '@frisbee-db-lib/services/admin/association.service.';
+import { AdminAssociationService } from '@frisbee-db-lib/services/admin/association.service';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 

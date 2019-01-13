@@ -6,7 +6,7 @@ import {
 } from '@frisbee-db-lib/models/association.model';
 import { getAssociationUrl, URL_CLUBS } from '@frisbee-db-lib/rest-constants';
 import { Observable } from 'rxjs';
-import { URL_ASSOCIATIONS } from './../../rest-constants';
+import { URL_ASSOCIATIONS } from '@frisbee-db-lib/rest-constants';
 
 @Injectable()
 export class AdminAssociationService {

@@ -14,10 +14,11 @@ import { AdminTeamService } from './../../../models/services/admin/team.service.
 })
 export class AdminNewTeamComponent implements OnInit {
   controlForm = this.fb.group({
-    name: [null, Validators.required],
-    description: [null],
-    founded: [null, Validators.required],
-    dissolved: [null]
+    name: [undefined, Validators.required],
+    description: [undefined],
+    founded: [undefined, Validators.required],
+    dissolved: [undefined],
+    club: [undefined, Validators.required]
   });
 
   teamId: string | undefined;
@@ -39,6 +40,7 @@ export class AdminNewTeamComponent implements OnInit {
         this.controlForm.get('description').setValue(team.description);
         this.controlForm.get('founded').setValue(team.founded_on);
         this.controlForm.get('dissolved').setValue(team.dissolved_on);
+        this.controlForm.get('club').setValue(team.club_membership);
       });
     }
   }
@@ -49,6 +51,7 @@ export class AdminNewTeamComponent implements OnInit {
       const descriptionControl = this.controlForm.get('description');
       const foundedControl = this.controlForm.get('founded');
       const dissolvedControl = this.controlForm.get('dissolved');
+      const clubControl = this.controlForm.get('club');
 
       const newTeam: NewTeam = {
         name: nameControl.value,
@@ -57,7 +60,8 @@ export class AdminNewTeamComponent implements OnInit {
         dissolved_on:
           dissolvedControl.value !== null
             ? formatDate(dissolvedControl.value, 'yyyy-MM-dd', 'en-US')
-            : undefined
+            : undefined,
+        club_membership: +clubControl.value
       };
 
       if (this.teamId !== undefined) {
