@@ -1,0 +1,31 @@
+version: "3.7"
+
+services: 
+  db:
+    build: database
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+    - '5432:5432'
+
+  django:
+    build: backend
+    ports:
+      - '8000:80'
+      - '3500:3500'
+    volumes:
+     - ./backend:/var/www/html/backend
+    depends_on: 
+      - db
+    entrypoint: ["/bin/bash","-c","python /var/www/html/backend/manage.py makemigrations && python /var/www/html/backend/manage.py migrate && python /var/www/html/backend/manage.py seed player_management && apache2ctl -D FOREGROUND"]
+
+  angular:
+    build: frontend
+    ports:
+      - '80:80'
+    depends_on:
+      - django
+
+
+volumes:
+  postgres_data:
