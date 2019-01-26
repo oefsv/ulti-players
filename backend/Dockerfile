@@ -11,6 +11,7 @@ RUN pip install django ptvsd
 
 COPY requirements.txt /
 COPY . /var/www/html/backend/
+WORKDIR /var/www/html/backend/
 RUN pip install -r /requirements.txt
 ADD ulti-players-backend.conf /etc/apache2/sites-available/000-default.conf
 EXPOSE 80 3500
