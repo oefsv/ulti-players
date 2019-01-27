@@ -1,17 +1,25 @@
-export interface LoginResult {
-    token: string;
-    user: LoginUserResult;
-    email5: string;
+export interface AuthLoginResult {
+  key: string;
 }
 
 export interface LoginUserResult {
-    url: string;
-    email: string;
-    groups: Array<string>;
-    username: string;
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  groups: Array<string>;
+  username: string;
 }
-export interface LoginGroupResult {
-    url: string;
-    name: string;
+
+export interface AuthGroupResult {
+  id: string;
+  name: string;
 }
-export type LoginGroupsResult = Array<LoginGroupResult>;
+export type LoginGroupsResult = Array<AuthGroupResult>;
+
+export interface LoggedInUser {
+  id: string;
+  email: string;
+  groups: Array<string>;
+  username: string;
+}
