@@ -1,7 +1,7 @@
 <mat-card class="card">
   <mat-card-header>
-    <mat-icon mat-card-avatar class="big-icon">library_books</mat-icon>
-    <mat-card-title>Vereine</mat-card-title>
+    <mat-icon mat-card-avatar class="big-icon">person</mat-icon>
+    <mat-card-title>Personen</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-form-field>
@@ -9,7 +9,7 @@
         matInput
         (keyup)="applyFilter($event.target.value)"
         placeholder="Filter"
-        #input
+        #filterinput
       />
       <button
         mat-button
@@ -17,7 +17,7 @@
         matSuffix
         mat-icon-button
         aria-label="Löschen"
-        (click)="input.value = ''; applyFilter('')"
+        (click)="filterinput.value = ''; applyFilter('')"
       >
         <mat-icon>close</mat-icon>
       </button>
@@ -39,15 +39,15 @@
         aria-label="Elements"
       >
         <!-- Id Column -->
-        <ng-container matColumnDef="id">
+        <ng-container matColumnDef="firstname">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+          <td mat-cell *matCellDef="let row">{{ row.firstname }}</td>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="name">
+        <ng-container matColumnDef="lastname">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-          <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          <td mat-cell *matCellDef="let row">{{ row.lastname }}</td>
         </ng-container>
 
         <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
@@ -66,7 +66,7 @@
               <button
                 mat-raised-button
                 color="primary"
-                [routerLink]="'/ui/admin/club/' + element.id"
+                [routerLink]="'/ui/admin/person/' + element.id"
               >
                 Bearbeiten
               </button>
@@ -113,9 +113,9 @@
     <button
       mat-raised-button
       color="primary"
-      [routerLink]="'/ui/admin/clubs/new'"
+      [routerLink]="'/ui/admin/persons/new'"
     >
-      Neuer Verein
+      Neue Person
     </button>
   </mat-card-actions>
 </mat-card>

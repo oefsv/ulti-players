@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.6"
 
 services: 
   db:
@@ -13,11 +13,11 @@ services:
     ports:
       - '8000:80'
       - '3500:3500'
-    volumes:
-     - ./backend:/var/www/html/backend
+    #volumes:
+    # - ./backend:/var/www/html/backend
     depends_on: 
       - db
-    entrypoint: ["/bin/bash","-c","python /var/www/html/backend/manage.py makemigrations && python /var/www/html/backend/manage.py migrate && python /var/www/html/backend/manage.py seed player_management && apache2ctl -D FOREGROUND"]
+    entrypoint: ["/bin/bash","-c","python /var/www/html/backend/manage.py makemigrations --no-input && python /var/www/html/backend/manage.py migrate --no-input && python /var/www/html/backend/manage.py seed player_management && apache2ctl -D FOREGROUND"]
 
   angular:
     build: frontend

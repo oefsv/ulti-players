@@ -1,7 +1,7 @@
 <mat-card class="card">
   <mat-card-header>
-    <mat-icon mat-card-avatar class="big-icon">library_books</mat-icon>
-    <mat-card-title>Vereine</mat-card-title>
+    <mat-icon mat-card-avatar class="big-icon">group</mat-icon>
+    <mat-card-title>Teams</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-form-field>
@@ -9,7 +9,7 @@
         matInput
         (keyup)="applyFilter($event.target.value)"
         placeholder="Filter"
-        #input
+        #filterinput
       />
       <button
         mat-button
@@ -17,7 +17,7 @@
         matSuffix
         mat-icon-button
         aria-label="Löschen"
-        (click)="input.value = ''; applyFilter('')"
+        (click)="filterinput.value = ''; applyFilter('')"
       >
         <mat-icon>close</mat-icon>
       </button>
@@ -66,7 +66,7 @@
               <button
                 mat-raised-button
                 color="primary"
-                [routerLink]="'/ui/admin/club/' + element.id"
+                [routerLink]="'/ui/admin/team/' + element.id"
               >
                 Bearbeiten
               </button>
@@ -113,9 +113,9 @@
     <button
       mat-raised-button
       color="primary"
-      [routerLink]="'/ui/admin/clubs/new'"
+      [routerLink]="'/ui/admin/teams/new'"
     >
-      Neuer Verein
+      Neues Team
     </button>
   </mat-card-actions>
 </mat-card>
