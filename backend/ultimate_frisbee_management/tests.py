@@ -18,7 +18,7 @@ class testApiStartSession(TestCase):
     def test_Session_Start(self):
         factory = APIRequestFactory()
         c = client.Client()
-        response=c.post('/api/auth/session/login',
+        response=c.post('/rest-auth/session/login',
                                {'username': 'test',
                                 'password': 'test'}
                                )

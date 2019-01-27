@@ -14,6 +14,8 @@ COPY . /var/www/html/backend/
 WORKDIR /var/www/html/backend/
 RUN pip install -r /requirements.txt
 ADD ulti-players-backend.conf /etc/apache2/sites-available/000-default.conf
+RUN python /var/www/html/backend/manage.py makemigrations --no-input &&\
+  python /var/www/html/backend/manage.py migrate --no-input
 
 EXPOSE 80 3500
 CMD ["apache2ctl", "-D", "FOREGROUND"]
