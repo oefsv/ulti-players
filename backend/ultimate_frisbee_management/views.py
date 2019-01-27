@@ -36,42 +36,4 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-
-
-class CustomObtainAuthToken(ObtainAuthToken):
-    def post(self, request, *args, **kwargs):
-        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
-        token = Token.objects.get(key=response.data['token'])
-        serializer = User(instance=token.user,context={'request': request})
-        return Response({'token': token.key, 'user': serializer.data})
-
-
-@csrf_exempt
-def startSession(request):
-    username = request.POST.get('username', '')
-    password = request.POST.get('password', '')
     
-    user = auth.authenticate(username=username, password=password)
-    if user is not None and user.is_active:
-        # Correct password, and the user is marked "active"
-        auth.login(request, user)
-        # Redirect to a success page.
-        request.session.set_expiry(86400)  # sets the exp. value of the session
-        response = HttpResponse("logged in.")
-        serializer = UserSerializer(user, context={'request': request})
-        set_cookie(response, 'session_id', request.session.session_key )
-
-        md5hash = hashlib.md5(str(serializer.data['email']).encode('utf-8')).hexdigest()
-        return JsonResponse({'user': serializer.data, 'email5': md5hash})
-    else:
-        # Show an error page
-        return HttpResponseForbidden('Unauthorized!')
-
-
-def set_cookie(response, key, value, days_expire = 7):
-  if days_expire is None:
-    max_age = 365 * 24 * 60 * 60  #one year
-  else:
-    max_age = days_expire * 24 * 60 * 60
-  expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
-  response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)

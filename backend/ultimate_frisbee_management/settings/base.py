@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
     'django_seed',
     ]
 
@@ -125,6 +126,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
     )
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'ultimate_frisbee_management.serializers.CustomUserDetailsSerializer',
 }
 
 FAKER_LOCALE = None     # settings.LANGUAGE_CODE is loaded

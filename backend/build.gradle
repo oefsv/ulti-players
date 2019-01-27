@@ -21,23 +21,24 @@ python {
    // copy virtualenv instead of symlink (when created)
    //envCopy = false
 
-    pip 'Click:7.0'
-    pip 'defusedxml:0.5.0'
-    pip 'Django:2.1.2'
-    pip 'django-filter:2.0.0'
-    pip 'django-rest-framework:0.1.0'
-    pip 'django-seed:0.1.9'
-    pip 'djangorestframework:3.8.2'
-    pip 'elasticsearch:6.3.1'
-    pip 'Faker:0.9.2'
-    pip 'Markdown:2.6.11'
-    pip 'python-dateutil:2.7.3'
-    pip 'pytz:2018.5'
-    pip 'six:1.11.0'
-    pip 'text-unidecode:1.2'
-    pip 'texttable:1.5.0'
-    pip 'urllib3:1.24.1'
-    //pip 'mysqlclient:1.3.13'
+	pip 'Click:7.0'
+	pip 'defusedxml:0.5.0'
+	pip 'Django:2.1.5'
+	pip 'django-filter:2.0.0'
+	pip 'django-rest-framework:0.1.0'
+	pip 'django-rest-auth:0.9.3'
+	pip 'django-seed:0.1.9'
+	pip 'djangorestframework:3.8.2'
+	pip 'elasticsearch:6.3.1'
+	pip 'Faker:0.9.2'
+	pip 'Markdown:2.6.11'
+	pip 'python-dateutil:2.7.3'
+	pip 'pytz:2018.9'
+	pip 'six:1.11.0'
+	pip 'text-unidecode:1.2'
+	pip 'texttable:1.5.0'
+	pip 'urllib3:1.24.1'
+	//pip 'psycopg2-binary'
 }
 
 task init {
@@ -46,11 +47,11 @@ task init {
 
 task makeMigrations(type: PythonTask) {
     dependsOn init
-    command = "manage.py makemigrations"
+    command = "manage.py makemigrations --no-input"
 }
 task migrate(type: PythonTask) {
     dependsOn makeMigrations
-    command = "manage.py migrate"
+    command = "manage.py migrate --no-input"
 }
 
 task initDev {

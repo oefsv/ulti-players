@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --show-circular-dependencies --stats-json",
+    "build": "ng build --show-circular-dependencies",
     "build:prod": "ng build --show-circular-dependencies --prod --aot --build-optimizer",
     "build:stats": "ng build --show-circular-dependencies --prod --aot --build-optimizer --stats-json",
     "test": "ng test",
@@ -14,27 +14,27 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~7.2.0",
-    "@angular/cdk": "~7.2.1",
-    "@angular/common": "~7.2.0",
-    "@angular/compiler": "~7.2.0",
-    "@angular/core": "~7.2.0",
-    "@angular/forms": "~7.2.0",
-    "@angular/material": "~7.2.1",
-    "@angular/platform-browser": "~7.2.0",
-    "@angular/platform-browser-dynamic": "~7.2.0",
-    "@angular/router": "~7.2.0",
-    "core-js": "^2.6.2",
+    "@angular/animations": "^7.2.2",
+    "@angular/cdk": "^7.2.2",
+    "@angular/common": "^7.2.2",
+    "@angular/compiler": "^7.2.2",
+    "@angular/core": "^7.2.2",
+    "@angular/forms": "^7.2.2",
+    "@angular/material": "^7.2.2",
+    "@angular/platform-browser": "^7.2.2",
+    "@angular/platform-browser-dynamic": "^7.2.2",
+    "@angular/router": "^7.2.2",
+    "core-js": "^2.6.3",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
-    "zone.js": "^0.8.27"
+    "zone.js": "^0.8.29"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.12.1",
-    "@angular/cli": "~7.2.1",
-    "@angular/compiler-cli": "~7.2.0",
-    "@angular/language-service": "~7.2.0",
-    "@types/jasmine": "~3.3.5",
+    "@angular-devkit/build-angular": "^0.12.3",
+    "@angular/cli": "^7.2.3",
+    "@angular/compiler-cli": "^7.2.2",
+    "@angular/language-service": "^7.2.2",
+    "@types/jasmine": "^3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~10.12.18",
     "angular-tslint-rules": "~1.12.0",
@@ -50,6 +50,6 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "^5.12.1",
-    "typescript": "~3.2.2"
+    "typescript": "^3.2.4"
   }
 }
