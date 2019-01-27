@@ -3,6 +3,7 @@ defusedxml==0.5.0
 Django>=2.1.4
 django-filter==2.0.0
 django-rest-framework==0.1.0
+django-rest-auth
 django-seed==0.1.9
 djangorestframework==3.8.2
 elasticsearch==6.3.1
