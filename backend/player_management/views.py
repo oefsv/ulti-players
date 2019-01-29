@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import generic
@@ -21,11 +22,35 @@ class IndexView(generic.TemplateView):
 
 
 
+class managedClubViewset(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Clubs to be viewed or edited that the.
+    current user is managing. it filters out all the clubs the person is managing
+    """
+    serializer_class = serializers.ClubSerializer
+    def get_queryset(self):
+        user = self.request.user
+        person = pm.Club.objects.filter(~Q(persontoclubmembership__role = 'member'), persontoclubmembership__person__user=user)
+
+        return person
+
+class PersonalClubViewset(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Clubs to be viewed or edited that the.
+    current user is managing.
+    """
+    serializer_class = serializers.ClubSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        person = pm.Club.objects.filter(persontoclubmembership__person__user=user)
+        return person
 
 
 class PersonViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows Person to be viewed or edited.
     """
     queryset = pm.Person.objects.all()
     serializer_class = serializers.PersonSerializer
