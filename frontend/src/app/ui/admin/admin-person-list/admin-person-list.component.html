@@ -1,0 +1,121 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-icon mat-card-avatar class="big-icon">person</mat-icon>
+    <mat-card-title>Personen</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field>
+      <input
+        matInput
+        (keyup)="applyFilter($event.target.value)"
+        placeholder="Filter"
+        #filterinput
+      />
+      <button
+        mat-button
+        *ngIf="dataSource.filter"
+        matSuffix
+        mat-icon-button
+        aria-label="Löschen"
+        (click)="filterinput.value = ''; applyFilter('')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="table-container">
+      <mat-spinner
+        class="spinner"
+        diameter="40"
+        color="accent"
+        strokeWidth="3"
+        *ngIf="isLoadingResults"
+      ></mat-spinner>
+      <table
+        mat-table
+        class="full-width-table"
+        [dataSource]="dataSource"
+        matSort
+        multiTemplateDataRows
+        aria-label="Elements"
+      >
+        <!-- Id Column -->
+        <ng-container matColumnDef="firstname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+          <td mat-cell *matCellDef="let row">{{ row.firstname }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="lastname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row">{{ row.lastname }}</td>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td
+            mat-cell
+            *matCellDef="let element"
+            [attr.colspan]="displayedColumns.length"
+          >
+            <div
+              class="expand-detail"
+              [@detailExpand]="
+                element == expandedElement ? 'expanded' : 'collapsed'
+              "
+            >
+              <button
+                mat-raised-button
+                color="primary"
+                [routerLink]="'/ui/admin/person/' + element.id"
+              >
+                Bearbeiten
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="onDelete(element)"
+              >
+                Löschen
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let element; columns: displayedColumns"
+          class="element-row"
+          [class.expanded-row]="expandedElement === element"
+          (click)="
+            expandedElement = expandedElement === element ? null : element
+          "
+        ></tr>
+
+        <tr
+          mat-row
+          *matRowDef="let element; columns: ['expandedDetail']"
+          class="detail-row"
+        ></tr>
+      </table>
+
+      <mat-paginator
+        *ngIf="dataSource.data.length >= 25"
+        #paginator
+        [pageIndex]="0"
+        [pageSize]="50"
+        [pageSizeOptions]="[25, 50, 100, 250]"
+      >
+      </mat-paginator>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      [routerLink]="'/ui/admin/persons/new'"
+    >
+      Neue Person
+    </button>
+  </mat-card-actions>
+</mat-card>

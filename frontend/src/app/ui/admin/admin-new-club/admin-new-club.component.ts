@@ -7,7 +7,7 @@ import { Club, NewClub } from '@frisbee-db-lib/models/club.model';
 import { AdminClubService } from '@frisbee-db-lib/services/admin/club.service.';
 
 @Component({
-  selector: 'frisbee-admin-new-club',
+  selector: 'pm-admin-new-club',
   templateUrl: './admin-new-club.component.html',
   styleUrls: ['./admin-new-club.component.scss'],
   providers: [AdminClubService]

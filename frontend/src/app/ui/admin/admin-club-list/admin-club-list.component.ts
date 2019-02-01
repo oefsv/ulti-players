@@ -18,7 +18,7 @@ import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'frisbee-admin-club-list',
+  selector: 'pm-admin-club-list',
   templateUrl: './admin-club-list.component.html',
   styleUrls: ['./admin-club-list.component.scss'],
   animations: [

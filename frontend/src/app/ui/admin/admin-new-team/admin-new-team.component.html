@@ -1,0 +1,110 @@
+<form [formGroup]="controlForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="card">
+    <mat-card-header *ngIf="teamId === undefined; else elseHeader">
+      <mat-icon mat-card-avatar class="big-icon">group_add</mat-icon>
+      <mat-card-title>Neues Team</mat-card-title>
+      <mat-card-subtitle>Fügt ein neues Team hinzu</mat-card-subtitle>
+    </mat-card-header>
+    <ng-template #elseHeader>
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="big-icon">group</mat-icon>
+        <mat-card-title>Team bearbeiten</mat-card-title>
+        <mat-card-subtitle>Ändert ein existierendes Team</mat-card-subtitle>
+      </mat-card-header>
+    </ng-template>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              required
+              placeholder="Name des Teams"
+              formControlName="name"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Beschreibung"
+              formControlName="description"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              required
+              [matDatepicker]="dp"
+              placeholder="Gründungsdatum"
+              formControlName="founded"
+              autocomplete="off"
+            />
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              [matDatepicker]="dp2"
+              placeholder="Auflösungsdatum"
+              formControlName="dissolved"
+              autocomplete="off"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="dp2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #dp2></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Verein"
+              formControlName="club"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <ng-container *ngIf="teamId === undefined; else elseActions">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!controlForm.valid"
+        >
+          Erstellen
+        </button>
+      </ng-container>
+      <ng-template #elseActions>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!controlForm.valid"
+        >
+          Speichern
+        </button>
+      </ng-template>
+      <button mat-button [routerLink]="['../../teams']">Abbrechen</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

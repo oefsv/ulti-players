@@ -29,6 +29,7 @@ router.register('groups', views.GroupViewSet)
 urlpatterns = [
 
     path('', include(router.urls)),  # identity and access management users, groups etc..
+    path('rest-auth/', include('rest_auth.urls')),
     path('iam/',  include(router.urls)),  # identity and access management users, groups etc..
     path('pm/', include('player_management.urls',namespace="player_management")), # player management
     path('admin/', admin.site.urls),
