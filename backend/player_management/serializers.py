@@ -1,28 +1,37 @@
+from django.contrib.auth.models import User
+
 import player_management.models as pm
 from rest_framework import serializers
 
-class PersonSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
 
-    # TODO: nested relationships. SEE https://www.django-rest-framework.org/api-guide/relations/
-    #association_memberships = serializers.HyperlinkedIdentityField(
-    #    view_name='player_management:persontoassociationmembership-detail',
-    #    many=True)
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+        # 'association_memberships','club_memberships','team_memberships'
 
-    #club_memberships = serializers.HyperlinkedIdentityField(
-    #    view_name='player_management:persontoclubmembership-detail',
-    #    many=True)
 
-    #team_memberships = serializers.HyperlinkedIdentityField(
-    #    view_name='player_management:persontoteammembership-detail',
-    #    many=True)
+class PersonSerializer(serializers.ModelSerializer):
 
-    url = serializers.HyperlinkedIdentityField(
-        view_name="player_management:person-detail")
+    user = UserSerializer(required=True)
 
     class Meta:
         model = pm.Person
-        fields = ('id', 'url','firstname','lastname','sex','birthdate')
+        fields = ('id', 'firstname','lastname','sex','birthdate','user')
         # 'association_memberships','club_memberships','team_memberships'
+
+    def create(self, validated_data):
+        """
+        Overriding the default create method of the Model serializer.
+        :param validated_data: data containing all the details of student
+        :return: returns a successfully created student record
+        """
+        user_data = validated_data.pop('user')
+        user = UserSerializer.create(UserSerializer(), validated_data=user_data)
+
+        validated_data['user'] = user
+        student, created = pm.Person.objects.update_or_create(validated_data)
+        return student
 
 
 class AssociationSerializer(serializers.HyperlinkedModelSerializer):

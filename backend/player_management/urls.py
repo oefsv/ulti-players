@@ -8,6 +8,9 @@ from player_management import views
 app_name = 'player_management'
 
 router = routers.DefaultRouter() # todo change the view so its not called API Root https://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
+router.register('PersonalClubs', views.PersonalClubViewset, 'Clubs')
+
+
 router.register('persons', views.PersonViewSet)
 router.register('associations', views.AssociationViewSet)
 router.register('clubs', views.ClubViewSet)

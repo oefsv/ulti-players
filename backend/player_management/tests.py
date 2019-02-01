@@ -68,3 +68,6 @@ class testDataModel(TestCase):
         role = PersonToClubMembership.objects.get(person=person, club=club).role
 
         self.assertTrue(role == 'Member')
+
+    def test_getCurrentUserClubs(self):
+        pass
