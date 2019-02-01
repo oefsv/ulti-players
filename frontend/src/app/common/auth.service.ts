@@ -2,14 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+  AuthLoginResult,
+  LoggedInUser,
   LoginGroupsResult,
-  LoginResult,
   LoginUserResult
 } from '@frisbee-db-lib/models/login.model';
 import { Permissions } from '@frisbee-db-lib/permissions';
-import { URL_GROUPS, URL_LOGIN } from '@frisbee-db-lib/rest-constants';
+import {
+  AUTH_LOGIN,
+  AUTH_USER,
+  URL_GROUPS
+} from '@frisbee-db-lib/rest-constants';
 import { combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { AUTH_LOGOUT } from '../models/rest-constants';
 
 const CURRENT_GROUPS = 'fg';
 const CURRENT_USER = 'fu';
@@ -17,7 +23,7 @@ const CURRENT_MAIL = 'fm';
 
 @Injectable()
 export class AuthService {
-  currentUser: LoginUserResult;
+  currentUser: LoggedInUser;
   currentGroups: Array<string>;
   emailhash: string;
 
@@ -28,21 +34,27 @@ export class AuthService {
   constructor(private httpClient: HttpClient, private router: Router) {}
 
   login(username: string, password: string): Observable<boolean> {
-    const body = new URLSearchParams();
-    body.set('username', username);
-    body.set('password', password);
+    const body = {
+      username,
+      password
+    };
 
-    const userObservable = this.httpClient.post<LoginResult>(
-      URL_LOGIN,
-      body.toString(),
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }
+    const userObservable = this.httpClient.post<AuthLoginResult>(
+      AUTH_LOGIN,
+      body
     );
 
     const groupsObservable = this.httpClient.get<LoginGroupsResult>(URL_GROUPS);
 
-    return combineLatest(userObservable, groupsObservable).pipe(
+    const combinedUserObservable = userObservable.pipe(
+      switchMap(userResult => {
+        console.log('login 1: ', userResult);
+
+        return this.httpClient.get<LoginUserResult>(AUTH_USER);
+      })
+    );
+
+    return combineLatest(combinedUserObservable, groupsObservable).pipe(
       map(([userResult, groupsResult]) => {
         if (groupsResult.length === 0) {
           if (isDevMode()) {
@@ -53,14 +65,14 @@ export class AuthService {
         }
 
         const groupUrlsToName = groupsResult.reduce((result, obj) => {
-          result[obj.url] = obj.name;
+          result[obj.id] = obj.name;
 
           return result;
         }, {});
 
         this.currentGroups = [];
-        userResult.user.groups.forEach((groupUrl: string) => {
-          const groupName: string | undefined = groupUrlsToName[groupUrl];
+        userResult.groups.forEach((groupId: string) => {
+          const groupName: string | undefined = groupUrlsToName[groupId];
           if (groupName !== undefined) {
             this.currentGroups.push(groupName);
           }
@@ -74,8 +86,8 @@ export class AuthService {
           return false;
         }
 
-        this.currentUser = userResult.user;
-        this.emailhash = userResult.email5;
+        this.currentUser = userResult;
+        this.emailhash = ''; // userResult.email5;
         this._isLoggedIn = true;
 
         this.saveLogin();
@@ -92,12 +104,14 @@ export class AuthService {
   }
 
   logout(): void {
-    this._isLoggedIn = false;
-    this.currentUser = undefined;
-    this.currentGroups = undefined;
-    this.clearLogin();
+    this.httpClient.post<string>(AUTH_LOGOUT, '').subscribe(data => {
+      this._isLoggedIn = false;
+      this.currentUser = undefined;
+      this.currentGroups = undefined;
+      this.clearLogin();
 
-    this.router.navigate(['/']);
+      this.router.navigate(['/']);
+    });
   }
 
   hasGroup(group: Permissions): boolean {

@@ -1,6 +1,9 @@
 // const FORMAT_JSON_FULL = '/?format=json';
 
-export const URL_LOGIN = '/rest/api/auth/session/login';
+export const AUTH_LOGIN = '/rest/rest-auth/login/';
+export const AUTH_LOGOUT = '/rest/rest-auth/logout/';
+export const AUTH_USER = '/rest/rest-auth/user/';
+
 export const URL_GROUPS = '/rest/iam/groups/';
 export const URL_CLUBS = '/rest/pm/api/clubs/';
 export const URL_CLUB_ID = '/rest/pm/club/';

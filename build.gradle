@@ -7,12 +7,12 @@ wrapper {
 }
 
 task startDevServer(type:Exec) {
-  workingDir 'nginx'
+  workingDir 'frontend/nginx'
   commandLine 'nginx'
 }
 
 task stopDevServer(type:Exec) {
-  workingDir 'nginx'
+  workingDir 'frontend/nginx'
   commandLine 'nginx', '-s', 'stop'
 }
 
