@@ -26,6 +26,11 @@ const routes: Routes = [
     path: 'ui',
     loadChildren: 'src/app/ui/navigation.module#NavigationModule'
   },
+  {
+    path: 'user-setup',
+    loadChildren:
+      'src/app/ui/missing-credentials/missing-credentials.module#MissingCredentialsModule'
+  },
   { path: '', component: LoginComponent, pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

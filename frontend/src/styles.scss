@@ -22,3 +22,8 @@ $pm-theme: mat-light-theme($pm-primary, $pm-accent, $pm-warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($pm-theme);
+
+h1 {
+    font-weight: 600;
+    font-size: 22px;
+}

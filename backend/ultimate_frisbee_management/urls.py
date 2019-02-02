@@ -33,5 +33,6 @@ urlpatterns = [
     path('iam/',  include(router.urls)),  # identity and access management users, groups etc..
     path('pm/', include('player_management.urls',namespace="player_management")), # player management
     path('admin/', admin.site.urls),
+    url(r'^', include('django.contrib.auth.urls')),
 ]
 

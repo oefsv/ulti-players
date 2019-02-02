@@ -57,8 +57,19 @@
       </mat-card-content>
       <mat-card-actions>
         <mat-divider></mat-divider>
-        <a mat-button color="primary" class="password-reset"
-          >Passwort vergessen / Neu registrieren</a
+        <a
+          mat-button
+          color="primary"
+          class="password-reset"
+          [routerLink]="['/user-setup']"
+          >Neu registrieren</a
+        >
+        <a
+          mat-button
+          color="primary"
+          class="password-reset"
+          [routerLink]="['/user-setup']"
+          >Passwort vergessen</a
         >
       </mat-card-actions>
     </mat-card>

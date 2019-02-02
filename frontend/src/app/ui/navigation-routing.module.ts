@@ -27,7 +27,6 @@ const routes: Routes = [
         path: 'admin',
         loadChildren: 'src/app/ui/admin/admin.module#AdminModule'
       }
-     
     ]
   }
 ];
