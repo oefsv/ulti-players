@@ -87,7 +87,7 @@ export class AuthService {
         }
 
         this.currentUser = userResult;
-        this.emailhash = ''; // userResult.email5;
+        this.emailhash = userResult.emailmd5;
         this._isLoggedIn = true;
 
         this.saveLogin();

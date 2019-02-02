@@ -5,6 +5,7 @@ export interface AuthLoginResult {
 export interface LoginUserResult {
   id: string;
   email: string;
+  emailmd5: string;
   first_name: string;
   last_name: string;
   groups: Array<string>;
