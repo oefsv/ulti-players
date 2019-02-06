@@ -1,3 +1,71 @@
-<p>
-  user works!
-</p>
+<mat-card class="card">
+  <mat-card-header>
+    <mat-icon mat-card-avatar class="big-icon">account_box</mat-icon>
+    <mat-card-title>Profil</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <h2>Passwort</h2>
+
+    <div>Hier kann das aktuelle Passwort geändert werden</div>
+    <div>
+      <form [formGroup]="formPasswordChange" class="fieldPasswordChange">
+        <div>
+          <mat-form-field>
+            <input
+              type="password"
+              matInput
+              placeholder="Aktuelles Passwort"
+              #current
+              formControlName="current"
+              required
+              (keyup.enter)="password1.focus()"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input
+              type="password"
+              matInput
+              placeholder="Neues Passwort"
+              #password1
+              formControlName="password1"
+              required
+              (keyup.enter)="password2.focus()"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="fieldPasswordChange">
+            <input
+              type="password"
+              matInput
+              placeholder="Neues Passwort bestätigen"
+              #password2
+              formControlName="password2"
+              required
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+
+        <mat-error
+          *ngIf="formPasswordChange.invalid && !formPasswordChange.pristine"
+          >Bitte alle Felder ausfüllen.</mat-error
+        >
+        <div></div>
+      </form>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="changePassword()"
+        [disabled]="formPasswordChange.invalid"
+      >
+        Passwort ändern
+      </button>
+    </div>
+  </mat-card-content>
+  <mat-card-actions> </mat-card-actions>
+</mat-card>

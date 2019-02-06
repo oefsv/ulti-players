@@ -29,7 +29,7 @@ class Person(models.Model):
     team_memberships = models.ManyToManyField('Team', through='PersonToTeamMembership')
     association_memberships = models.ManyToManyField('Association', through='PersonToAssociationMembership')
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         db_table = 'pm_Person'

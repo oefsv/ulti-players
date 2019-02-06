@@ -6,6 +6,7 @@ export const AUTH_USER = '/rest/rest-auth/user/';
 
 export const PWD_RESET_1 = '/rest/rest-auth/password/reset/';
 export const PWD_RESET_2 = '/rest/rest-auth/password/reset/confirm/';
+export const PWD_CHANGE = '/rest/rest-auth/password/change/';
 
 export const URL_GROUPS = '/rest/iam/groups/';
 export const URL_CLUBS = '/rest/pm/api/clubs/';

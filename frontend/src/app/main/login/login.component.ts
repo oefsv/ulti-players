@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material';
 import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from './../../common/auth.service';
@@ -10,31 +10,30 @@ import { AuthService } from './../../common/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  @ViewChild('user') userRef: ElementRef;
-  @ViewChild('password') passwordRef: ElementRef;
-
   loading: boolean;
   errorMessage: MatSnackBarRef<any> | undefined = undefined;
 
-  userControl = new FormControl('', [
-    Validators.required /*, Validators.email*/
-  ]);
-  passwordControl = new FormControl('', [
-    Validators.required /*, Validators.email*/
-  ]);
+  formGroup: FormGroup;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.loading = false;
+    this.formGroup = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
   }
 
   onLogin(): void {
-    if (!this.userControl.valid || !this.passwordControl.valid) { return; }
+    if (!this.formGroup.valid) {
+      return;
+    }
 
     this.loading = true;
     if (this.errorMessage !== undefined) {
@@ -42,8 +41,8 @@ export class LoginComponent implements OnInit {
     }
     this.errorMessage = undefined;
 
-    const user = (this.userRef.nativeElement as HTMLInputElement).value;
-    const password = (this.passwordRef.nativeElement as HTMLInputElement).value;
+    const user = this.formGroup.get('username').value;
+    const password = this.formGroup.get('password').value;
 
     this.authService.login(user, password).subscribe(
       () => {
