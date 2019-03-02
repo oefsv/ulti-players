@@ -1,5 +1,5 @@
 <form [formGroup]="controlForm" novalidate (ngSubmit)="onSubmit()">
-  <mat-card class="card">
+  <mat-card class="card mat-elevation-z0">
     <mat-card-header *ngIf="associationId === undefined; else elseHeader">
       <mat-icon mat-card-avatar class="big-icon">library_add</mat-icon>
       <mat-card-title>Neuer Verband</mat-card-title>

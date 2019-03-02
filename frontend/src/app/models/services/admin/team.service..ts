@@ -7,7 +7,7 @@ import { URL_TEAMS } from '../../rest-constants';
 
 @Injectable()
 export class AdminTeamService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
   getTeams(): Observable<Array<Team>> {
     return this.httpClient.get<Array<Team>>(URL_TEAMS);

@@ -1,3 +1,4 @@
+import { NavigationBarService } from './../../navigation-bar.service';
 import {
   animate,
   state,
@@ -50,13 +51,15 @@ export class AdminAssociationListComponent implements OnInit {
   _associationService: AdminAssociationService;
 
   constructor(
-    private associationService: AdminAssociationService,
-    private snackbar: MatSnackBar
+    private readonly associationService: AdminAssociationService,
+    private readonly snackbar: MatSnackBar,
+    private readonly navigationBarService: NavigationBarService
   ) {
     this._associationService = associationService;
   }
 
   ngOnInit(): void {
+    this.navigationBarService.setTitle('Verbände (Admin)');
     this.dataSource = new MatTableDataSource();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

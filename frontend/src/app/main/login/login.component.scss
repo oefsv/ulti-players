@@ -16,10 +16,10 @@
   flex-grow: 1;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 
-  background-color: map-get($pm-primary, 300) !important;
+  background-color: map-get($pm-accent, 50) !important;
 }
 .container {
   max-width: 500px;
@@ -36,10 +36,7 @@
 
 $size: 60px;
 .icon-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-top: -$size !important;
+  margin: 16px 0;
   text-align: center;
 }
 
@@ -61,15 +58,24 @@ $size: 60px;
   margin-top: 2em;
 }
 
-.row > * {
+.row > *, .login-row > * {
   flex-grow: 1;
 }
 
-.row .loading {
+.row .loading, .login-row .loading {
   flex-grow: 0;
   margin-left: 1em;
 }
 
+.login-row {
+  padding: 0 1em;
+  display: flex;
+}
+
+.bottom-actions {
+  text-align: center
+}
+
 .password-reset {
-  display: block;
+  display: inline-block;
 }

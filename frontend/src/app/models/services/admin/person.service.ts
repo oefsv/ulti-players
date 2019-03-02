@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AdminPersonService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
   getPersons(): Observable<Array<Person>> {
     return this.httpClient.get<Array<Person>>(URL_PERSONS);

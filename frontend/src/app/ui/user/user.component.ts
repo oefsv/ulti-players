@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@frisbee-db-lib/models/user.model';
 import { UserService } from '@frisbee-db-lib/user/user.service';
 import { Observable } from 'rxjs';
+import { NavigationBarService } from './../navigation-bar.service';
 import { UserProfileService } from './user-profile.service';
 
 @Component({
@@ -17,9 +18,10 @@ export class UserComponent implements OnInit {
   formPasswordChange: FormGroup;
 
   constructor(
-    private userService: UserService,
-    private fb: FormBuilder,
-    private userProfileService: UserProfileService
+    private readonly userService: UserService,
+    private readonly fb: FormBuilder,
+    private readonly userProfileService: UserProfileService,
+    private readonly navigationBarService: NavigationBarService
   ) {
     this.formPasswordChange = this.fb.group({
       current: ['', Validators.required],
@@ -29,6 +31,7 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.navigationBarService.setTitle('Einstellungen');
     this.$currentUser = this.userService.getCurrentUser();
   }
 

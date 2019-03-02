@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewTeam, Team } from '@frisbee-db-lib/models/team.model';
 import { AdminTeamService } from './../../../models/services/admin/team.service.';
+import { NavigationBarService } from './../../navigation-bar.service';
 
 @Component({
   selector: 'pm-admin-new-team',
@@ -24,14 +25,16 @@ export class AdminNewTeamComponent implements OnInit {
   teamId: string | undefined;
 
   constructor(
-    private fb: FormBuilder,
-    private teamService: AdminTeamService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private snackbar: MatSnackBar
+    private readonly fb: FormBuilder,
+    private readonly teamService: AdminTeamService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly snackbar: MatSnackBar,
+    private readonly navigationBarService: NavigationBarService
   ) {}
 
   ngOnInit(): void {
+    this.navigationBarService.setTitle('Neues Team');
     this.teamId = this.route.snapshot.params.id;
 
     if (this.teamId !== undefined) {

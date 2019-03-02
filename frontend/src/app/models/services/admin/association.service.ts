@@ -1,16 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  Association,
-  NewAssociation
-} from '@frisbee-db-lib/models/association.model';
-import { getAssociationUrl, URL_CLUBS } from '@frisbee-db-lib/rest-constants';
+import { Association, NewAssociation } from '@frisbee-db-lib/models/association.model';
+import { getAssociationUrl, URL_ASSOCIATIONS } from '@frisbee-db-lib/rest-constants';
 import { Observable } from 'rxjs';
-import { URL_ASSOCIATIONS } from '@frisbee-db-lib/rest-constants';
 
 @Injectable()
 export class AdminAssociationService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
   getAssociations(): Observable<Array<Association>> {
     return this.httpClient.get<Array<Association>>(URL_ASSOCIATIONS);

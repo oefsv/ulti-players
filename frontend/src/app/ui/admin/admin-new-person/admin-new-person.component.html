@@ -1,5 +1,5 @@
 <form [formGroup]="controlForm" novalidate (ngSubmit)="onSubmit()">
-  <mat-card class="card">
+  <mat-card class="card mat-elevation-z0">
     <mat-card-header *ngIf="personId === undefined; else elseHeader">
       <mat-icon mat-card-avatar class="big-icon">person_add</mat-icon>
       <mat-card-title>Neuer Person</mat-card-title>

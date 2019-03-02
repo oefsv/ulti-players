@@ -23,4 +23,6 @@ export interface LoggedInUser {
   email: string;
   groups: Array<string>;
   username: string;
+  first_name: string;
+  last_name: string;
 }

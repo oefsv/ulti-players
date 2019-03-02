@@ -16,6 +16,7 @@ import { Person } from '@frisbee-db-lib/models/person.model';
 import { AdminPersonService } from '@frisbee-db-lib/services/admin/person.service';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { NavigationBarService } from './../../navigation-bar.service';
 
 @Component({
   selector: 'pm-admin-person-list',
@@ -48,16 +49,14 @@ export class AdminPersonListComponent implements OnInit {
   displayedColumns = ['lastname', 'firstname'];
   expandedElement: Person | null;
 
-  _personService: AdminPersonService;
-
   constructor(
-    private personService: AdminPersonService,
-    private snackbar: MatSnackBar
-  ) {
-    this._personService = personService;
-  }
+    private readonly personService: AdminPersonService,
+    private readonly snackbar: MatSnackBar,
+    private readonly navigationBarService: NavigationBarService
+  ) {}
 
   ngOnInit(): void {
+    this.navigationBarService.setTitle('Personen (Admin)');
     this.dataSource = new MatTableDataSource();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -67,7 +66,7 @@ export class AdminPersonListComponent implements OnInit {
         switchMap(() => {
           this.isLoadingResults = true;
 
-          return this._personService.getPersons();
+          return this.personService.getPersons();
         }),
         map(data => {
           this.isLoadingResults = false;

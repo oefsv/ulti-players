@@ -1,8 +1,10 @@
-@import 'defines';
-@import '~@angular/material/theming';
+@import "defines";
+@import "~@angular/material/theming";
 
+$toolbar-height: 48px;
+$contrast-color: map-get($pm-accent, 600);
 
-.example-container {
+.app-container {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -12,33 +14,77 @@
   right: 0;
 }
 
-.example-is-mobile .example-toolbar {
-  position: fixed;
-  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
-  z-index: 2;
+
+.app-sidenav {
+  background-color: map-get($pm-accent, 100);
+  color: $contrast-color;
+}
+.app-sidenav > ::ng-deep div {
+  overflow: hidden;
+  overflow-y: auto;
 }
 
-h1.example-app-name {
+.sidenav-content {
+  background: white;
+}
+
+.start-button {
+  width: 100%;
+  height: $toolbar-height;
+  background: map-get($pm-accent, 200);
+  border-radius: 0;
+  color: map-get($pm-accent, 600);
+  font-size: 12px;
+  text-align: left;
+
+  span {
+    vertical-align: text-top;
+    line-height: 24px;
+    display: none;
+  }
+
+  img {
+    margin-right: 2px;
+  }
+}
+
+.mat-list-item {
+  color: $contrast-color;
+}
+
+.is-mobile .app-toolbar {
+}
+
+.app-toolbar {
+  height: $toolbar-height;
+  border-bottom: 1px solid map-get($pm-accent, 100);
+  background-color: white;
+  color: mat-color($pm-accent);
+}
+
+h1.app-app-name {
   margin-left: 8px;
 }
 
-//@include mat-core();
-// $candy-app-primary: mat-palette($mat-indigo);
-//  $candy-app-primary: mat-palette($mat-indigo);
-// $accent: map-get($theme, primary);
-
-.example-sidenav-container {
-  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
-       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+.app-sidenav-container {
   flex: 1;
-
-  // background-color: mat-color($accent);
 }
 
-.example-is-mobile .example-sidenav-container {
+.is-mobile .app-sidenav-container {
   /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
        `<body>` to be our scrolling element for mobile layouts. */
   flex: 1 0 auto;
+}
+
+mat-nav-list .mat-list-item {
+  padding: 0 12px 0 4px;
+  min-width: 150px;
+}
+
+mat-nav-list h3 {
+  font-size: 14px;
+  padding: 24px 16px 0 12px;
+  margin: 0;
 }
 
 .spacer {
@@ -51,8 +97,11 @@ h1.example-app-name {
 
 .gravatar-img {
   border-radius: 16px;
+  margin-right: 4px;
 }
 
 .content {
   padding: 8px;
+
+  color: $pm-primary-text;
 }

@@ -47,11 +47,7 @@ export class AuthService {
     const groupsObservable = this.httpClient.get<LoginGroupsResult>(URL_GROUPS);
 
     const combinedUserObservable = userObservable.pipe(
-      switchMap(userResult => {
-        console.log('login 1: ', userResult);
-
-        return this.httpClient.get<LoginUserResult>(AUTH_USER);
-      })
+      switchMap(userResult => this.httpClient.get<LoginUserResult>(AUTH_USER))
     );
 
     return combineLatest(combinedUserObservable, groupsObservable).pipe(
@@ -138,6 +134,12 @@ export class AuthService {
     this.checkLogin();
 
     return this._isLoggedIn ? this.emailhash : undefined;
+  }
+
+  getName(): string | undefined {
+    this.checkLogin();
+
+    return this._isLoggedIn ? this.currentUser.username : undefined;
   }
 
   private clearLogin(): void {

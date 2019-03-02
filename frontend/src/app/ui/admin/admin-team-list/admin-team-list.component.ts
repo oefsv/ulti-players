@@ -16,6 +16,7 @@ import { Team } from '@frisbee-db-lib/models/team.model';
 import { AdminTeamService } from '@frisbee-db-lib/services/admin/team.service.';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { NavigationBarService } from './../../navigation-bar.service';
 
 @Component({
   selector: 'pm-admin-team-list',
@@ -47,16 +48,14 @@ export class AdminTeamListComponent implements OnInit {
   displayedColumns = ['id', 'name'];
   expandedElement: Team | null;
 
-  _teamService: AdminTeamService;
-
   constructor(
-    private teamService: AdminTeamService,
-    private snackbar: MatSnackBar
-  ) {
-    this._teamService = teamService;
-  }
+    private readonly teamService: AdminTeamService,
+    private readonly snackbar: MatSnackBar,
+    private readonly navigationBarService: NavigationBarService
+  ) {}
 
   ngOnInit(): void {
+    this.navigationBarService.setTitle('Teams (Admin)');
     this.dataSource = new MatTableDataSource();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -66,7 +65,7 @@ export class AdminTeamListComponent implements OnInit {
         switchMap(() => {
           this.isLoadingResults = true;
 
-          return this._teamService.getTeams();
+          return this.teamService.getTeams();
         }),
         map(data => {
           this.isLoadingResults = false;

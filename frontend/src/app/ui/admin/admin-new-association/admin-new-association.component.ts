@@ -3,8 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Association, NewAssociation } from '@frisbee-db-lib/models/association.model';
+import {
+  Association,
+  NewAssociation
+} from '@frisbee-db-lib/models/association.model';
 import { AdminAssociationService } from '@frisbee-db-lib/services/admin/association.service';
+import { NavigationBarService } from './../../navigation-bar.service';
 
 @Component({
   selector: 'pm-admin-new-association',
@@ -23,23 +27,28 @@ export class AdminNewAssociationComponent implements OnInit {
   associationId: string | undefined;
 
   constructor(
-    private fb: FormBuilder,
-    private associationService: AdminAssociationService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private snackbar: MatSnackBar
+    private readonly fb: FormBuilder,
+    private readonly associationService: AdminAssociationService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly snackbar: MatSnackBar,
+    private navigationBarService: NavigationBarService
   ) {}
 
   ngOnInit(): void {
+    this.navigationBarService.setTitle('Neuer Verband');
+
     this.associationId = this.route.snapshot.params.id;
 
     if (this.associationId !== undefined) {
-      this.associationService.getAssociation(this.associationId).subscribe(association => {
-        this.controlForm.get('name').setValue(association.name);
-        this.controlForm.get('description').setValue(association.description);
-        this.controlForm.get('founded').setValue(association.founded_on);
-        this.controlForm.get('dissolved').setValue(association.dissolved_on);
-      });
+      this.associationService
+        .getAssociation(this.associationId)
+        .subscribe(association => {
+          this.controlForm.get('name').setValue(association.name);
+          this.controlForm.get('description').setValue(association.description);
+          this.controlForm.get('founded').setValue(association.founded_on);
+          this.controlForm.get('dissolved').setValue(association.dissolved_on);
+        });
     }
   }
 
@@ -65,11 +74,15 @@ export class AdminNewAssociationComponent implements OnInit {
           id: +this.associationId,
           ...newAssociation
         };
-        const editAssociation$ = this.associationService.editAssociation(association);
+        const editAssociation$ = this.associationService.editAssociation(
+          association
+        );
 
         editAssociation$.subscribe(data => this.onAssociationSaved(data));
       } else {
-        const createAssociation$ = this.associationService.createAssociation(newAssociation);
+        const createAssociation$ = this.associationService.createAssociation(
+          newAssociation
+        );
 
         createAssociation$.subscribe(data => this.onAssociationSaved(data));
       }

@@ -16,6 +16,7 @@ import { Club } from '@frisbee-db-lib/models/club.model';
 import { AdminClubService } from '@frisbee-db-lib/services/admin/club.service.';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { NavigationBarService } from './../../navigation-bar.service';
 
 @Component({
   selector: 'pm-admin-club-list',
@@ -48,16 +49,14 @@ export class AdminClubListComponent implements OnInit {
   displayedColumns = ['id', 'name'];
   expandedElement: Club | null;
 
-  _clubService: AdminClubService;
-
   constructor(
-    private clubService: AdminClubService,
-    private snackbar: MatSnackBar
-  ) {
-    this._clubService = clubService;
-  }
+    private readonly clubService: AdminClubService,
+    private readonly snackbar: MatSnackBar,
+    private readonly navigationBarService: NavigationBarService
+  ) {}
 
   ngOnInit(): void {
+    this.navigationBarService.setTitle('Vereine (Admin)');
     this.dataSource = new MatTableDataSource();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -67,7 +66,7 @@ export class AdminClubListComponent implements OnInit {
         switchMap(() => {
           this.isLoadingResults = true;
 
-          return this._clubService.getClubs();
+          return this.clubService.getClubs();
         }),
         map(data => {
           this.isLoadingResults = false;
