@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Club, NewClub } from '@frisbee-db-lib/models/club.model';
 import { AdminClubService } from '@frisbee-db-lib/services/admin/club.service.';
+import { NavigationBarService } from './../../navigation-bar.service';
 
 @Component({
   selector: 'pm-admin-new-club',
@@ -23,14 +24,16 @@ export class AdminNewClubComponent implements OnInit {
   clubId: string | undefined;
 
   constructor(
-    private fb: FormBuilder,
-    private clubService: AdminClubService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private snackbar: MatSnackBar
+    private readonly fb: FormBuilder,
+    private readonly clubService: AdminClubService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly snackbar: MatSnackBar,
+    private readonly navigationBarService: NavigationBarService
   ) {}
 
   ngOnInit(): void {
+    this.navigationBarService.setTitle('Neuer Verein');
     this.clubId = this.route.snapshot.params.id;
 
     if (this.clubId !== undefined) {

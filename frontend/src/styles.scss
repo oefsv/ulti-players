@@ -27,3 +27,7 @@ h1 {
     font-weight: 600;
     font-size: 22px;
 }
+
+body, body .mat-card {
+    color: $pm-primary-text;
+}

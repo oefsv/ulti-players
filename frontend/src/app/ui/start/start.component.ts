@@ -1,7 +1,9 @@
-import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { ClubService } from '@frisbee-db-lib/services/club.service.';
-import { Club } from '@frisbee-db-lib/models/club.model';
+import { Team } from '@frisbee-db-lib/models/team.model';
+import { Observable } from 'rxjs';
+import { NavigationBarService } from '../navigation-bar.service';
+import { Club } from './../../models/models/club.model';
+import { ClubService } from './../../models/services/club.service';
 
 @Component({
   selector: 'frisbee-start',
@@ -9,13 +11,17 @@ import { Club } from '@frisbee-db-lib/models/club.model';
   styleUrls: ['./start.component.scss']
 })
 export class StartComponent implements OnInit {
-
   $clubs: Observable<Array<Club>>;
+  $teams: Observable<Array<Team>>;
 
-  constructor(private _clubService: ClubService) {}
+  constructor(
+    private readonly clubService: ClubService,
+    private readonly navigationBarService: NavigationBarService
+  ) {}
 
   ngOnInit(): void {
-    this.$clubs = this._clubService.getClubsOfCurrentUser();
+    this.navigationBarService.setTitle('Startseite');
+    this.$clubs = this.clubService.getClubsOfCurrentUser();
+    this.$teams = this.clubService.getTeamsOfCurrentUser();
   }
-
 }

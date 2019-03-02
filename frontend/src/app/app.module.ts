@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import {
+  MatButton,
   MatButtonModule,
   MatCardModule,
   MatInputModule,
@@ -35,7 +36,8 @@ import { HttpErrorInterceptor } from './common/http-error-interceptor';
     MatRadioModule,
     MatCardModule
   ],
-  exports: [RouterModule],
+  exports: [RouterModule,
+            MatButtonModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewPerson, Person } from '@frisbee-db-lib/models/person.model';
 import { AdminPersonService } from '@frisbee-db-lib/services/admin/person.service';
+import { NavigationBarService } from './../../navigation-bar.service';
 
 @Component({
   selector: 'pm-admin-new-person',
@@ -23,14 +24,16 @@ export class AdminNewPersonComponent implements OnInit {
   personId: string | undefined;
 
   constructor(
-    private fb: FormBuilder,
-    private personService: AdminPersonService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private snackbar: MatSnackBar
+    private readonly fb: FormBuilder,
+    private readonly personService: AdminPersonService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly snackbar: MatSnackBar,
+    private readonly navigationBarService: NavigationBarService
   ) {}
 
   ngOnInit(): void {
+    this.navigationBarService.setTitle('Neue Person');
     this.personId = this.route.snapshot.params.id;
 
     if (this.personId !== undefined) {

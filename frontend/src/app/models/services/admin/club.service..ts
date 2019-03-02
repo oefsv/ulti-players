@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AdminClubService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
   getClubs(): Observable<Array<Club>> {
     return this.httpClient.get<Array<Club>>(URL_CLUBS);

@@ -1,10 +1,9 @@
-<mat-card class="card">
+<mat-card class="card mat-elevation-z0">
   <mat-card-header>
     <mat-icon mat-card-avatar class="big-icon">account_box</mat-icon>
-    <mat-card-title>Profil</mat-card-title>
+    <mat-card-title>Passwort ändern</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <h2>Passwort</h2>
 
     <div>Hier kann das aktuelle Passwort geändert werden</div>
     <div>
@@ -19,7 +18,7 @@
               formControlName="current"
               required
               (keyup.enter)="password1.focus()"
-              autocomplete="off"
+              autocomplete="ulti-ignore"
             />
           </mat-form-field>
         </div>
@@ -33,7 +32,7 @@
               formControlName="password1"
               required
               (keyup.enter)="password2.focus()"
-              autocomplete="off"
+              autocomplete="ulti-ignore"
             />
           </mat-form-field>
         </div>
@@ -46,7 +45,7 @@
               #password2
               formControlName="password2"
               required
-              autocomplete="off"
+              autocomplete="ulti-ignore"
             />
           </mat-form-field>
         </div>

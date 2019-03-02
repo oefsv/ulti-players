@@ -1,11 +1,12 @@
-<div class="mat-display-1">
-  Aktuelle Vereine
-</div>
+<h1 class="mat-h1">Deine Vereine</h1>
 
-<div *ngFor="let club of $clubs | async" >
-  {{club.name}}
+<div *ngFor="let club of ($clubs | async)">
+  <a mat-button color="accent" class="club-item" [routerLink]="['/ui/clubs', club.id]">{{club.name}}</a>
 </div>
+<div *ngIf="($clubs | async)?.length === 0" i18n>Keine Vereine definiert</div>
 
-<div class="mat-display-1">
-  Aktuelle Teams
-</div>
+<h1 class="mat-h1">Deine Teams</h1>
+
+<div *ngFor="let team of ($teams | async)">{{ team.name }}</div>
+
+<div *ngIf="($teams | async)?.length === 0" i18n>Keine Teams definiert</div>
