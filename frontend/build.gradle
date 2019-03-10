@@ -5,7 +5,7 @@ plugins {
 apply plugin: "com.moowork.node"
 
 task setupUi(type: NpmTask) {
-    npmCommand = ['run', 'install']
+    npmCommand = ['install']
     args = []
 }
 
@@ -19,6 +19,3 @@ task buildUi(type: NpmTask) {
     npmCommand = ['run', 'build:prod']
     args = []
 }
-
-// https://github.com/classmethod/gradle-aws-plugin
-
