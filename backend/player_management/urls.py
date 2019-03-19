@@ -47,8 +47,7 @@ person_detail = views.PersonViewSet.as_view({
 })
 
 urlpatterns = [
-    path('', views.index,  name='index'),
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
     path('association/<int:pk>/', association_detail, name='association-detail'),
     path('club/<int:pk>/', club_detail, name='club-detail'),
     path('team/<int:pk>/', team_detail, name='team-detail'),

@@ -8,12 +8,12 @@ wrapper {
 
 task startDevServer(type:Exec) {
   workingDir 'frontend/nginx'
-  commandLine 'nginx'
+  commandLine 'sudo', 'nginx'
 }
 
 task stopDevServer(type:Exec) {
   workingDir 'frontend/nginx'
-  commandLine 'nginx', '-s', 'stop'
+  commandLine 'sudo', 'nginx', '-s', 'stop'
 }
 
 task createZip(type: Zip) {
