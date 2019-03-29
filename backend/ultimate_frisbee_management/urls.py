@@ -28,12 +28,10 @@ router.register('users', views.UserViewSet)
 router.register('groups', views.GroupViewSet)
 
 
-
-
 urlpatterns = [
 
     path('',views.api_root),
-    path('api/', views.api_root),  # identity and access management users, groups etc..
+    path('api/', views.api_root),  # root api view. routes to the submodules
     path('api/auth/', views.rest_auth_root,name="auth_root"), # hack because rest-auth does not provide root view
     path('api/auth/', include(('rest_auth.urls','rest_auth'), namespace="rest_auth")),
     path('api/iam/',  include(router.urls)),  # identity and access management users, groups etc..
