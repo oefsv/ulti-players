@@ -16,13 +16,13 @@ For local development you need to install
 To start the dev server for the UI, use:
 
 ```
-> gradlew :frontend:startUi
+> ./gradlew :frontend:startUi
 ```
 
 In order to initialize the backend server, use
 
 ```
-> gradlew :backend:initDev
+> ./gradlew :backend:initDev
 ```
 
 The first time, you might need to create the admin user
@@ -50,7 +50,7 @@ sudo nginx -c  $PWD/frontend/nginx/conf/nginx.conf
 ### 2. Initialize and start Backend (Django) Development server
 In the second terminal:
 ```
-gradlew :backend:initDev
+./gradlew :backend:initDev
 cd backend
 frisbee-venv/bin/python manage.py createsuperuser
 frisbee-venv/bin/python manage.py runserver
@@ -60,7 +60,8 @@ frisbee-venv/bin/python manage.py runserver
 
 
 ```
-> gradlew startDevServer
+> ./gradlew :frontend:buildUi
+> ./gradlew :frontend:startUi
 ```
 
 

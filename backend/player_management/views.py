@@ -4,14 +4,18 @@ from django.shortcuts import render
 from django.views import generic
 from django.views.generic.list import ListView
 
-from player_management import serializers
-import player_management.models as pm
-from rest_framework import permissions
+from . import serializers
+from . import models as pm
+from rest_framework import permissions, reverse
 from rest_framework import viewsets
 from rest_framework import serializers as restserializers
 
 
 # Create your views here.
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
+
+
 def index(response):
     return HttpResponse("Hello, world. You're at the frisbee index.")
 
@@ -56,6 +60,18 @@ class PersonViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PersonSerializer
     # permission_classes = (permissions.IsAuthenticated,)
 
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        dict = {
+            'hit': response.data,
+        }
+       # association_memberships=
+        dict["teams"] = reverse.reverse_lazy("player_management:persontoassociationmembership-list",request=request)
+        return Response(dict)
+
+
+
+
 class AssociationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -80,10 +96,12 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.TeamSerializer
     # permission_classes = (permissions.IsAuthenticated,)
 
+
 class PersonToAssociationMembershipViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
+
     queryset = pm.PersonToAssociationMembership.objects.all()
     serializer_class = serializers.PersonToAssociationMembershipSerializer
 
