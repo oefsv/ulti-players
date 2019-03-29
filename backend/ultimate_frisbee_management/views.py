@@ -1,6 +1,5 @@
 from _ast import Import
 import datetime
-from urllib.request import Request
 
 from django.conf import settings
 from django.contrib import auth
@@ -30,14 +29,12 @@ def rest_auth_root(request, format=None):
     return Response({
         'login': reverse_lazy('rest_auth:rest_login', request=request),
         'logout': reverse_lazy('rest_auth:rest_logout', request=request),
-        'user': reverse_lazy('rest_auth:rest_user', request=request),
+        'user': reverse_lazy('rest_auth:rest_user_details', request=request),
         'change password': reverse_lazy('rest_auth:rest_password_change', request=request),
         'reset': reverse_lazy('rest_auth:rest_password_reset', request=request),
         'confirm reset': reverse_lazy('rest_auth:rest_password_reset_confirm', request=request),
 
     })
-
-
 
 
 class UserViewSet(viewsets.ModelViewSet):
