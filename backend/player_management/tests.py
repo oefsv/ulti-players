@@ -5,7 +5,7 @@ from django.test import TestCase
 from django_seed import Seed
 from faker import Faker, Factory, Generator
 from faker.providers import person, date_time
-from player_management.models import Person, Club, PersonToClubMembership
+from .models import Person, Club, PersonToClubMembership
 from django.test import TestCase
 from django_seed import Seed
 import csv
