@@ -1,12 +1,12 @@
 // const FORMAT_JSON_FULL = '/?format=json';
 
-export const AUTH_LOGIN = '/api/rest/login/';
-export const AUTH_LOGOUT = '/api/rest/logout/';
-export const AUTH_USER = '/api/rest/user/';
+export const AUTH_LOGIN = '/api/auth/login/';
+export const AUTH_LOGOUT = '/api/auth/logout/';
+export const AUTH_USER = '/api/auth/user/';
 
-export const PWD_RESET_1 = '/api/rest/password/reset/';
-export const PWD_RESET_2 = '/api/rest/password/reset/confirm/';
-export const PWD_CHANGE = '/api/rest/password/change/';
+export const PWD_RESET_1 = '/api/auth/password/reset/';
+export const PWD_RESET_2 = '/api/auth/password/reset/confirm/';
+export const PWD_CHANGE = '/api/auth/password/change/';
 
 export const URL_GROUPS = '/api/iam/groups/';
 export const URL_CLUBS = '/api/player_management/clubs/';
