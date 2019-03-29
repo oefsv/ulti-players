@@ -12,14 +12,14 @@
               <input
                 matInput
                 placeholder="Email-Adresse"
-                name="username"
-                #user
-                formControlName="username"
+                name="email"
+                #email
+                formControlName="email"
                 required
                 (keyup.enter)="password.focus()"
                 autocomplete="off"
               />
-              <mat-error *ngIf="formGroup.get('username').invalid"
+              <mat-error *ngIf="formGroup.get('email').invalid"
                 >Bitte eine gültige Email Adresse angeben!</mat-error
               >
             </mat-form-field>
