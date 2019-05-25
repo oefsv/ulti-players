@@ -1,12 +1,17 @@
-python-dateutil
-
-django
-
-# Restframework
+Django
+django_polymorphic
+django-viewflow
+django-rest-swagger
 django-filter
 djangorestframework
 django-rest-auth
-markdown
+django-seed
 
-django-seed # faking data
-psycopg2-binary # pruostgres driver
+psycopg2-binary
+python-dateutil
+Markdown
+
+pytest
+pytest-django
+pytest-cov
+mixer # mocking data
