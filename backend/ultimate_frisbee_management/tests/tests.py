@@ -1,3 +1,4 @@
+import logging
 from typing import Dict, Sequence
 
 from django.contrib.auth.models import User, Group
@@ -11,6 +12,9 @@ from rest_framework import status
 
 from django.conf import settings
 from django.urls import URLResolver, URLPattern, exceptions
+
+
+logger = logging.getLogger(__name__)
 
 root_urlconf = __import__(settings.ROOT_URLCONF) # import root_urlconf module
 VIEW_NAMES = [] # maintain a global list
@@ -61,11 +65,6 @@ class testApiStartSession(TestCase):
                                   "password": "admin"
                               }, format='json'
                                )
-        response = self.client.post('/api/auth/login/',
-                              {
-                                  "email": "club-admin@club-admin.com",
-                                  "password": "club_admin"
-                              },format='json')
         self.assertTrue(status.is_success(response.status_code))
 
     def test_all_urlpatterns(self):
@@ -84,6 +83,7 @@ class testApiStartSession(TestCase):
         for view in all_views_list:
             try:
                 response = self.client.get(reverse_lazy(view))
-                self.assertTrue(status.is_success(response.status_code))
+                logger.debug(response.status_code)
+                self.assertTrue(status.is_success(response.status_code) or response.status_code == status.HTTP_405_METHOD_NOT_ALLOWED)
             except exceptions.NoReverseMatch:
                 pass
