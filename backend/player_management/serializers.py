@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 
+import json
 from . import models as pm
 from rest_framework import serializers, reverse
 from rest_framework.fields import empty
@@ -13,8 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email')
-        # 'association_memberships','club_memberships','team_memberships'
+        fields = ('username',)
 
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -32,12 +32,11 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
         :param validated_data: data containing all the details of student
         :return: returns a successfully created student record
         """
-        user_data = validated_data.pop('user')
-        user = UserSerializer.create(UserSerializer(), validated_data=user_data)
-
+        user_data = self.data.pop('user')
+        user = User.objects.get(username=user_data['username'])
         validated_data['user'] = user
-        student, created = pm.Person.objects.update_or_create(validated_data)
-        return student
+        person, created = pm.Person.objects.update_or_create(validated_data)
+        return person
 
 
 class ClubSerializer(serializers.HyperlinkedModelSerializer):

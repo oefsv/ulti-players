@@ -10,10 +10,11 @@ from rest_framework import permissions, reverse
 from rest_framework import viewsets
 from rest_framework import serializers as restserializers
 
-
 # Create your views here.
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+
+from viewflow.decorators import flow_start_view
 
 
 def index(response):
@@ -71,7 +72,6 @@ class PersonViewSet(viewsets.ModelViewSet):
 
 
 
-
 class AssociationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -112,6 +112,10 @@ class PersonToClubMembershipViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.PersonToClubMembership.objects.all()
     serializer_class = serializers.PersonToClubMembershipSerializer
+
+    @flow_start_view
+    def create(self, request, *args, **kwargs):
+        super(PersonToClubMembershipViewSet, self).create()
 
 
 class PersonToTeamMembershipViewSet(viewsets.ModelViewSet):
