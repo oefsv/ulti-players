@@ -14,11 +14,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username',)
+        fields = ('id','username','email',)
 
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
-    user = UserSerializer(required=True)
+    user = UserSerializer(required=False,)
+    #user = serializers.HyperlinkedIdentityField(view_name='user-detail',read_only=False)
     url = serializers.HyperlinkedIdentityField(view_name='player_management:person-detail')
 
     class Meta:
@@ -32,12 +33,19 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
         :param validated_data: data containing all the details of student
         :return: returns a successfully created student record
         """
-        user_data = self.data.pop('user')
-        user = User.objects.get(username=user_data['username'])
-        validated_data['user'] = user
-        person, created = pm.Person.objects.update_or_create(validated_data)
-        return person
 
+        #todo: the User object gets validated when trying to create this and throws an error if the user exists
+        # it should not if a user is found with the credentials, just use that one (and eventually update it)
+        # so a create of person should trigger just an patch of User
+        try:
+            user_data = self.initial_data.pop('user')
+            user = User.objects.get(**user_data)
+            validated_data['user'] = user
+        except AttributeError:
+            print("no error")
+        finally:
+            person = super(PersonSerializer,self).create(validated_data)
+            return person
 
 class ClubSerializer(serializers.HyperlinkedModelSerializer):
 
