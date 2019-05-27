@@ -1,4 +1,3 @@
-import rest_framework
 from django.contrib.auth.models import User
 from rest_auth.views import UserDetailsView
 from rest_auth.serializers import UserDetailsSerializer

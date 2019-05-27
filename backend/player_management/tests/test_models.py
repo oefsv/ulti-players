@@ -1,4 +1,16 @@
+import pytest
+# Create your tests here.
 
+from django.core.wsgi import get_wsgi_application
+from django.test import TestCase
+from django_seed import Seed
+from faker import Faker, Factory, Generator
+from faker.providers import person, date_time
+from ..models import Person, Club, PersonToClubMembership
+from django.test import TestCase
+from django_seed import Seed
+from mixer.backend.django import mixer
+import pytest
 
 @pytest.mark.django_db
 class TestModel:
@@ -37,3 +49,12 @@ class testDataModel(TestCase):
 
     def test_getCurrentUserClubs(self):
         pass
+
+    def test_create_Person_without_User(self):
+        assert false
+
+    def test_create_Person_with_creating_User(self):
+        assert false
+
+    def test_create_Person_with_existing_User(self):
+        assert false
