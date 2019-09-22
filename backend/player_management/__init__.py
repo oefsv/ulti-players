@@ -1,0 +1,1 @@
+default_app_config = 'player_management.apps.PlayerManagementConfig'

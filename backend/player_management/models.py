@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.contrib.auth import models as authModels
 from django.core.validators import MinValueValidator
+from viewflow.models import Process
 
 
 class Person(models.Model):
@@ -87,12 +88,13 @@ class Team(Organisation):
 
 
 class Membership(models.Model):
-    """ A membership connects an organization with another organozation
-    or peraon. It is reported by, and  confirmed by a person
+    """ A membership connects an organization as target with another organozation
+    or person as member. It is reported by, and  confirmed by a person
     it my have a from and until date. missing values asumen an infinite Membership period"""
 
     valid_from = models.DateField()
     valid_until = models.DateField()
+
     reporter: User = models.ForeignKey(
         authModels.User,
         on_delete=models.CASCADE,
@@ -173,3 +175,7 @@ class AssociationToAssociationMembership(Membership):
 
     class Meta(Membership.Meta):
         db_table = 'pm_AssociationToAssociationMembership'
+
+
+class PersonToClubMembershipProcess(Process):
+    membership = models.ForeignKey(PersonToClubMembership, blank=True, null=True, on_delete=models.CASCADE)

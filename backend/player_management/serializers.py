@@ -1,23 +1,30 @@
 from django.contrib.auth.models import User
 
-import player_management.models as pm
-from rest_framework import serializers
+import json
+from . import models as pm
+from rest_framework import serializers, reverse
+from rest_framework.fields import empty
+
+
+def namespaced_view(cl):
+    return
+
 
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email')
-        # 'association_memberships','club_memberships','team_memberships'
+        fields = ('id','username','email',)
 
+class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
-class PersonSerializer(serializers.ModelSerializer):
-
-    user = UserSerializer(required=True)
+    user = UserSerializer(required=False,)
+    #user = serializers.HyperlinkedIdentityField(view_name='user-detail',read_only=False)
+    url = serializers.HyperlinkedIdentityField(view_name='player_management:person-detail')
 
     class Meta:
         model = pm.Person
-        fields = ('id', 'firstname','lastname','sex','birthdate','user')
+        fields = ('url','id', 'firstname','lastname','sex','birthdate','user')
         # 'association_memberships','club_memberships','team_memberships'
 
     def create(self, validated_data):
@@ -26,39 +33,19 @@ class PersonSerializer(serializers.ModelSerializer):
         :param validated_data: data containing all the details of student
         :return: returns a successfully created student record
         """
-        user_data = validated_data.pop('user')
-        user = UserSerializer.create(UserSerializer(), validated_data=user_data)
 
-        validated_data['user'] = user
-        student, created = pm.Person.objects.update_or_create(validated_data)
-        return student
-
-
-class AssociationSerializer(serializers.HyperlinkedModelSerializer):
-
-    #url = serializers.HyperlinkedIdentityField(
-    #    view_name="player_management:association-detail")
-
-    #board_members = serializers.HyperlinkedIdentityField(
-    #    view_name='player_management:persontoassociationmembership-detail',
-    #    many=True)
-
-    #member_clubs = serializers.HyperlinkedIdentityField(
-    #    view_name='player_management:clubtoassociationmembership-detail',
-    #    many=True)
-
-#   TODO: this is an asymmetrical relationship. we actually want to have to fields here: governor and
-#   TODO: member. For some reaoson it does not accept those fieldnames. maybe because the are not hard
-#   TODO: coded. we might need to overwrite the lookup of the original HyperlinkRelatedField by changing
-#   TODO: the query set or use this workaround: https://stackoverflow.com/questions/22958058/how-to-change-field-name-in-django-rest-framework
-    #governing_associations = serializers.HyperlinkedIdentityField(
-    #    view_name='player_management:associationtoassociationmembership-detail',
-    #    many=True)
-
-    class Meta:
-        model = pm.Association
-        fields = ('id', 'name', 'description', 'founded_on', 'dissolved_on') #'url','member_persons'
-        #fields = ('url','board_members','member_clubs','governing_associations')
+        #todo: the User object gets validated when trying to create this and throws an error if the user exists
+        # it should not if a user is found with the credentials, just use that one (and eventually update it)
+        # so a create of person should trigger just an patch of User
+        try:
+            user_data = self.initial_data.pop('user')
+            user = User.objects.get(**user_data)
+            validated_data['user'] = user
+        except AttributeError:
+            print("no error")
+        finally:
+            person = super(PersonSerializer,self).create(validated_data)
+            return person
 
 class ClubSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -66,41 +53,45 @@ class ClubSerializer(serializers.HyperlinkedModelSerializer):
     #     view_name='player_management:persontoclubmembership-detail',
     #     many=True)
 
+    url = serializers.HyperlinkedIdentityField(view_name='player_management:club-detail')
+
     class Meta:
         model = pm.Club
-        fields = ('id', 'name', 'description', 'founded_on', 'dissolved_on') #'url','member_persons'
+        fields = ('url','id', 'name', 'description', 'founded_on', 'dissolved_on')
+
+class AssociationSerializer(serializers.HyperlinkedModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="player_management:association-detail")
+
+    board_members = PersonSerializer(many=True)
+    member_clubs = ClubSerializer(many=True)
+
+    class Meta:
+        model = pm.Association
+        fields = ('url','id', 'name', 'description', 'founded_on', 'dissolved_on','board_members','member_clubs')
 
 
 class TeamSerializer(serializers.HyperlinkedModelSerializer):
 
-    club_membership = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    
-    #url = serializers.HyperlinkedIdentityField(
-    #    view_name="player_management:team-detail")
+    url = serializers.HyperlinkedIdentityField( view_name='player_management:team-detail')
 
-    #member_persons = serializers.HyperlinkedIdentityField(
-    #    view_name='player_management:persontoteammembership-detail',
-    #    many=True)
+    club_membership = ClubSerializer(required=True)
+    member_persons = PersonSerializer(many=True)
 
     class Meta:
         model = pm.Team
-        fields = ('id', 'name', 'description', 'founded_on', 'dissolved_on', 'club_membership') #'url','member_persons'
-        #fields = ('id', 'name', 'description', 'url','member_persons')
+        fields = ('url','id', 'name', 'description', 'founded_on', 'dissolved_on', 'club_membership','member_persons')
+
 
 class PersonToAssociationMembershipSerializer(serializers.HyperlinkedModelSerializer):
 
     url = serializers.HyperlinkedIdentityField(
         view_name="player_management:persontoassociationmembership-detail")
 
-    person = serializers.HyperlinkedIdentityField(
-        view_name="player_management:person-detail")
-
-    association = serializers.HyperlinkedIdentityField(
-        view_name="player_management:association-detail")
-
     class Meta:
         model = pm.PersonToAssociationMembership
-        fields = ('url','person','association','valid_from','valid_until','role','reporter','approved_by',)
+        fields = ('url','valid_from','valid_until','role','reporter','approved_by',)
 
 
 class PersonToClubMembershipSerializer(serializers.HyperlinkedModelSerializer):
@@ -164,4 +155,6 @@ class AssociationToAssociationMembershipSerializer(serializers.HyperlinkedModelS
     class Meta:
         model = pm.AssociationToAssociationMembership
         fields = ('url','member','governor','valid_from','valid_until','reporter','approved_by',)
+
+
 

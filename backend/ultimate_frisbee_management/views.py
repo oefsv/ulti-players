@@ -1,25 +1,40 @@
 from _ast import Import
 import datetime
-from urllib.request import Request
 
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpRequest, HttpResponse
 from rest_framework import viewsets, views
+from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse, reverse_lazy
+
+
 from .serializers import User, GroupSerializer, UserSerializer
 from rest_framework import permissions
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from django.contrib.auth.views import LoginView
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
+
 from rest_framework.response import Response
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
-from django.views.decorators.csrf import csrf_exempt
-import hashlib
-from django.http.response import JsonResponse
+
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'player_management': "http://" + request.get_host() + "/api/player_management/", # dont use namespaces with rest framework
+        'auth': reverse_lazy('auth_root', request=request),
+        'iam': "http://" + request.get_host() + "/api/iam/",
+    })
+
+@api_view(['GET'])
+def rest_auth_root(request, format=None):
+    return Response({
+        'login': reverse_lazy('rest_auth:rest_login', request=request),
+        'logout': reverse_lazy('rest_auth:rest_logout', request=request),
+        'user': reverse_lazy('rest_auth:rest_user_details', request=request),
+        'change password': reverse_lazy('rest_auth:rest_password_change', request=request),
+        'reset': reverse_lazy('rest_auth:rest_password_reset', request=request),
+        'confirm reset': reverse_lazy('rest_auth:rest_password_reset_confirm', request=request),
+
+    })
 
 
 class UserViewSet(viewsets.ModelViewSet):

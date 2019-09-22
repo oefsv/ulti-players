@@ -16,13 +16,13 @@ For local development you need to install
 To start the dev server for the UI, use:
 
 ```
-> gradlew :frontend:startUi
+> ./gradlew :frontend:startUi
 ```
 
 In order to initialize the backend server, use
 
 ```
-> gradlew :backend:initDev
+> ./gradlew :backend:initDev
 ```
 
 The first time, you might need to create the admin user
@@ -32,17 +32,52 @@ The first time, you might need to create the admin user
 > frisbee-venv\Scripts\python.exe manage.py createsuperuser
 ```
 
-Start the backend server using
+
+## On Linux
+
+open three terminals in the project directory
+
+### 1. Install configure nginx
+in the first terminal:
+```
+sudo apt update
+sudo apt install nginx -y
+sudo systemctl disable nginx
+sudo systemctl stop nginx
+sudo nginx -c  $PWD/frontend/nginx/conf/nginx.conf
+```
+
+### 2. Initialize and start Backend (Django) Development server
+In the second terminal:
+```
+./gradlew :backend:initDev
+cd backend
+frisbee-venv/bin/python manage.py createsuperuser
+frisbee-venv/bin/python manage.py runserver
+```
+
+### 3.
+
 
 ```
-> frisbee-venv\Scripts\python.exe manage.py runserver
+> ./gradlew :frontend:buildUi
+> ./gradlew :frontend:startUi
 ```
 
-Run the combined web-server (for CORS)
 
+## Use the Developer database
+
+##  Load Developer Data
 ```
-> gradlew startDevServer
+cd backend
+python manage.py loaddata dev_db_dump.json
 ```
+
+### Dumping the database
+use this if you want to share changes you made to the development database.
+```
+dumpdata --help --exclude auth.permission --exclude contenttypes > dev_db_dump.json
+``
 
 ### UI
 

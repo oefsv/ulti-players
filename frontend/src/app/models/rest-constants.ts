@@ -1,30 +1,30 @@
 // const FORMAT_JSON_FULL = '/?format=json';
 
-export const AUTH_LOGIN = '/rest/rest-auth/login/';
-export const AUTH_LOGOUT = '/rest/rest-auth/logout/';
-export const AUTH_USER = '/rest/rest-auth/user/';
+export const AUTH_LOGIN = '/api/auth/login/';
+export const AUTH_LOGOUT = '/api/auth/logout/';
+export const AUTH_USER = '/api/auth/user/';
 
-export const PWD_RESET_1 = '/rest/rest-auth/password/reset/';
-export const PWD_RESET_2 = '/rest/rest-auth/password/reset/confirm/';
-export const PWD_CHANGE = '/rest/rest-auth/password/change/';
+export const PWD_RESET_1 = '/api/auth/password/reset/';
+export const PWD_RESET_2 = '/api/auth/password/reset/confirm/';
+export const PWD_CHANGE = '/api/auth/password/change/';
 
-export const URL_GROUPS = '/rest/iam/groups/';
-export const URL_CLUBS = '/rest/pm/api/clubs/';
-export const URL_CLUB_ID = '/rest/pm/club/';
+export const URL_GROUPS = '/api/iam/groups/';
+export const URL_CLUBS = '/api/player_management/clubs/';
+export const URL_CLUB_ID = '/api/player_management/club/';
 export const getClubUrl = (clubId: string | number): string =>
-  `/rest/pm/club/${clubId}/`;
+  `/api/player_management/club/${clubId}/`;
 
-export const URL_ASSOCIATIONS = '/rest/pm/api/associations/';
-export const URL_ASSOCIATION_ID = '/rest/pm/association/';
+export const URL_ASSOCIATIONS = '/api/player_management/associations/';
+export const URL_ASSOCIATION_ID = '/api/pm/association/';
 export const getAssociationUrl = (associationId: string | number): string =>
-  `/rest/pm/association/${associationId}/`;
+  `/api/player_management/association/${associationId}/`;
 
-export const URL_TEAMS = '/rest/pm/api/teams/';
-export const URL_TEAM_ID = '/rest/pm/team/';
+export const URL_TEAMS = '/api/player_management/teams/';
+export const URL_TEAM_ID = '/api/player_management/team/';
 export const getTeamUrl = (teamId: string | number): string =>
-  `/rest/pm/team/${teamId}/`;
+  `/api/player_management/team/${teamId}/`;
 
-export const URL_PERSONS = '/rest/pm/api/persons/';
-export const URL_PERSON_ID = '/rest/pm/person/';
+export const URL_PERSONS = '/api/player_management/persons/';
+export const URL_PERSON_ID = '/api/player_management/person/';
 export const getPersonUrl = (personId: string | number): string =>
-  `/rest/pm/person/${personId}/`;
+  `/api/player_management/person/${personId}/`;

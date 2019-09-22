@@ -20,19 +20,21 @@ from django.urls import path, include
 from django.conf.urls import url, include
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
+
 from . import views
 
 router = routers.DefaultRouter()
 router.register('users', views.UserViewSet)
 router.register('groups', views.GroupViewSet)
 
+
 urlpatterns = [
 
-    path('', include(router.urls)),  # identity and access management users, groups etc..
-    path('rest-auth/', include('rest_auth.urls')),
-    path('iam/',  include(router.urls)),  # identity and access management users, groups etc..
-    path('pm/', include('player_management.urls',namespace="player_management")), # player management
-    path('admin/', admin.site.urls),
-    url(r'^', include('django.contrib.auth.urls')),
+    path('',views.api_root),
+    path('api/', views.api_root),  # root api view. routes to the submodules
+    path('api/auth/', views.rest_auth_root,name="auth_root"), # hack because rest-auth does not provide root view
+    path('api/auth/', include(('rest_auth.urls','rest_auth'), namespace="rest_auth")),
+    path('api/iam/',  include(router.urls)),  # identity and access management users, groups etc..
+    path('api/player_management/', include('player_management.urls')), # player management
+    path('admin/', admin.site.urls, name='admin'),
 ]
-

@@ -33,9 +33,9 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
-  login(username: string, password: string): Observable<boolean> {
+  login(email: string, password: string): Observable<boolean> {
     const body = {
-      username,
+      email,
       password
     };
 
