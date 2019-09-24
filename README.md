@@ -110,7 +110,8 @@ python manage.py loaddata dev_db_dump.json
 ### Dumping the database
 use this if you want to share changes you made to the development database.
 ```
-dumpdata --help --exclude auth.permission --exclude contenttypes > dev_db_dump.json
+cd backend
+python manage.py dumpdata --help --exclude auth.permission --exclude contenttypes > dev_db_dump.json
 ```
 
 ### Testdata
