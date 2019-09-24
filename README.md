@@ -4,14 +4,18 @@
 | [![Build Status](https://travis-ci.org/oefsv/ulti-players.svg?branch=master)](https://travis-ci.org/oefsv/ulti-players) | - |
 
 
+
+
 # Develop
+
+
+## With gradle
 
 For local development you need to install
 
 + python
 + npm
 + nginx
-
 
 To start the dev server for the UI, use:
 
@@ -32,8 +36,14 @@ The first time, you might need to create the admin user
 > frisbee-venv\Scripts\python.exe manage.py createsuperuser
 ```
 
+```
+> ./gradlew :frontend:buildUi
+> ./gradlew :frontend:startUi
+```
 
-## On Linux
+
+
+## manually with Linux
 
 open three terminals in the project directory
 
@@ -56,18 +66,42 @@ frisbee-venv/bin/python manage.py createsuperuser
 frisbee-venv/bin/python manage.py runserver
 ```
 
-### 3.
-
+### 3.build ui
+UI development is done using Angular + Npm
 
 ```
-> ./gradlew :frontend:buildUi
-> ./gradlew :frontend:startUi
+> cd frontend
+> npm install
+> ng serve
 ```
 
+## with Docker (recommended)
+Setup a production like local environment with docker. 
+### Requirements
+- docker
+- docker-compose
 
-## Use the Developer database
+### Architecture
 
-##  Load Developer Data
+The ui will be hosted via nginx, the backend via apache httpd and the database via postgress
+the enduser entrypoint is the nginx server serving the angular application.
+this server can reach out to the api server via hostname "django" (example: http://django/api/pm)
+the django server can reach the database server via hostname "db" (example: jdbc:postgresql://db)
+
+### Setup
+1. Make sure you are in the projects root directory `ulti-players` 
+2. `docker-compose build`
+3. `docker-compose up`
+
+### Usage
+the ui server is reachable via http://localhost
+the rest server is reachable via http://localhost:8000 (note: the ui server reaches him also via http:/django)
+the db server is reachable via jdbc:postgresql://localhost:5432
+
+
+## Using the Developer database
+
+###  Load Developer Data
 ```
 cd backend
 python manage.py loaddata dev_db_dump.json
@@ -79,37 +113,9 @@ use this if you want to share changes you made to the development database.
 dumpdata --help --exclude auth.permission --exclude contenttypes > dev_db_dump.json
 ```
 
-### UI
-
-UI development is done using Angular + Npm
+### Testdata
+Init Testdata 10 per db table.(using [django-seed](https://pypi.org/project/django-seed/))
 
 ```
-> cd frontend
-> npm install
-> ng serve
+python manage.py seed auth player_management --number=15
 ```
-
-# Production
-
-Setup a production like local environment with docker. 
-## Requirements
-- docker
-- docker-compose
-
-## Architecture
-
-The ui will be hosted via nginx, the backend via apache httpd and the database via postgress
-the enduser entrypoint is the nginx server serving the angular application.
-this server can reach out to the api server via hostname "django" (example: http://django/api/pm)
-the django server can reach the database server via hostname "db" (example: jdbc:postgresql://db)
-
-## Setup
-1. Make sure you are in the projects root directory `ulti-players` 
-2. `docker-compose build`
-3. `docker-compose up`
-
-## Usage
-the ui server is reachable via http://localhost
-the rest server is reachable via http://localhost:8000 (note: the ui server reaches him also via http:/django)
-the db server is reachable via jdbc:postgresql://localhost:5432
-
