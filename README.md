@@ -60,10 +60,13 @@ sudo nginx -c  $PWD/frontend/nginx/conf/nginx.conf
 ### 2. Initialize and start Backend (Django) Development server
 In the second terminal:
 ```
-./gradlew :backend:initDev
+python3 pip install pipenv
 cd backend
-frisbee-venv/bin/python manage.py createsuperuser
-frisbee-venv/bin/python manage.py runserver
+pipenv shell
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
 ```
 
 ### 3.build ui
