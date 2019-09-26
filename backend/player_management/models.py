@@ -29,8 +29,8 @@ class Person(models.Model):
     club_memberships = models.ManyToManyField('Club', through='PersonToClubMembership')
     team_memberships = models.ManyToManyField('Team', through='PersonToTeamMembership')
     association_memberships = models.ManyToManyField('Association', through='PersonToAssociationMembership')
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    ## todo this should me models.oneTooneField but the faking factory is not capable atm to build unique relationships between person and user
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'pm_Person'
