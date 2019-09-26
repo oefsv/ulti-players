@@ -23,7 +23,7 @@ class Person(models.Model):
     firstname = models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     sex = models.CharField(max_length=1, choices=SEX)
-    birthdate = models.DateField() # TODO: validator to check that date is not in the future
+    birthdate = models.DateField()  # TODO: validator to check that date is not in the future
 
     # Memberships
     club_memberships = models.ManyToManyField('Club', through='PersonToClubMembership')
@@ -50,7 +50,7 @@ class Organisation(models.Model):
 
 
 class Association(Organisation):
-    """ An Association (german: Verband) is a legal form of an organisation. It may represents
+    """ An Association (german: Verband) is a legal form of an organisation. It may represent
     people or other Organisations. In the Ultimate Frisbee context an Association represents
     multiple Clubs. By Definition it is represented by a board committee. The board is reflected
     in the PersonToAssociationMembership which defines membership roles"""
@@ -59,9 +59,9 @@ class Association(Organisation):
     member_clubs = models.ManyToManyField('Club', through='ClubToAssociationMembership')
     governing_associations = models.ManyToManyField(
         'self',
-        symmetrical= False,
+        symmetrical=False,
         through='AssociationToAssociationMembership',
-        through_fields=('governor','member'),
+        through_fields=('governor', 'member'),
         related_name='association_members',
     )
 
@@ -71,7 +71,7 @@ class Association(Organisation):
 
 class Club(Organisation):
     member_persons = models.ManyToManyField('Person', through='PersonToClubMembership')
-    associations_memberships = models.ManyToManyField('Club',through='ClubToAssociationMembership')
+    associations_memberships = models.ManyToManyField('Club', through='ClubToAssociationMembership')
 
     class Meta(Organisation.Meta):
         db_table = 'pm_Club'
@@ -79,7 +79,7 @@ class Club(Organisation):
 
 class Team(Organisation):
     """ A Team is an organization owned by a Club. it consists of a list
-    of players which is antemporary assignment of a player to a team"""
+    of players which is a temporary assignment of a player to a team"""
     club_membership = models.ForeignKey(Club, on_delete=models.CASCADE)
     member_persons = models.ManyToManyField('Person', through='PersonToTeamMembership')
 
@@ -88,9 +88,9 @@ class Team(Organisation):
 
 
 class Membership(models.Model):
-    """ A membership connects an organization as target with another organozation
+    """ A membership connects an organization as target with another organization
     or person as member. It is reported by, and  confirmed by a person
-    it my have a from and until date. missing values asumen an infinite Membership period"""
+    it my have a from and until date. missing values assume an infinite Membership period"""
 
     valid_from = models.DateField()
     valid_until = models.DateField()
@@ -118,8 +118,8 @@ class PersonToAssociationMembership(Membership):
         ['President'] * 2,
         ['Vicepresident'] * 2,
         ['Treasurer'] * 2,
-        ['secretary'] * 2,
-    ) # there are no member roles since members are clubs
+        ['Secretary'] * 2,
+    )   # there are no member roles since members are clubs
 
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     association = models.ForeignKey(Association, on_delete=models.CASCADE)
@@ -134,12 +134,12 @@ class PersonToClubMembership(Membership):
         ['President'] * 2,
         ['Vicepresident'] * 2,
         ['Treasurer'] * 2,
-        ['secretary'] * 2,
+        ['Secretary'] * 2,
         ['Member'] * 2,
     )
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    role = models.CharField(max_length=300, choices=ASSOCIATION_ROLES,default='Member')
+    role = models.CharField(max_length=300, choices=ASSOCIATION_ROLES, default='Member')
 
     class Meta(Membership.Meta):
         db_table = 'pm_PersonToClubMembership'
@@ -155,7 +155,7 @@ class PersonToTeamMembership(Membership):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     role = models.CharField(max_length=300, choices=TEAM_ROLES, default='')
-    number = models.IntegerField(validators=[MinValueValidator(0)]) # should maxValue==42 ?
+    number = models.IntegerField(validators=[MinValueValidator(0)])     # TODO: should maxValue==42 ?
 
     class Meta(Membership.Meta):
         db_table = 'pm_PersonToTeamMembership'
@@ -170,8 +170,8 @@ class ClubToAssociationMembership(Membership):
 
 
 class AssociationToAssociationMembership(Membership):
-    member = models.ForeignKey(Association, on_delete=models.CASCADE,related_name='association_memberships')
-    governor = models.ForeignKey(Association, on_delete=models.CASCADE,related_name='association_governing')
+    member = models.ForeignKey(Association, on_delete=models.CASCADE, related_name='association_memberships')
+    governor = models.ForeignKey(Association, on_delete=models.CASCADE, related_name='association_governing')
 
     class Meta(Membership.Meta):
         db_table = 'pm_AssociationToAssociationMembership'
