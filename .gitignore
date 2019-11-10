@@ -45,6 +45,7 @@ testem.log
 
 # python
 **/__pycache__
+**/.pytest_cache
 backend/frisbee-venv/**
 
 # Django
@@ -56,3 +57,5 @@ backend/static
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 /.pydevproject
+
+
