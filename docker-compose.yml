@@ -15,7 +15,7 @@ services:
       - '3500:3500'
     depends_on: 
       - db
-    entrypoint: ["/bin/bash","-c","cd backend && python manage.py makemigrations --no-input && python manage.py migrate --no-input && python manage.py runserver 0.0.0.0:8000"]
+    entrypoint: ["/bin/bash","-c","cd backend && python manage.py makemigrations --no-input && python manage.py migrate --no-input && sleep infinity"]
 
   # angular:
   #   build: frontend

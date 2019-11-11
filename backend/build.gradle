@@ -67,7 +67,6 @@ task assembleServer(type: Copy) {
     dependsOn(checkPython)
     
     from("${projectDir}") {
-        include "player_management/**"
         include "ultimate_frisbee_management/**"
         include "**.py"
         include "**.txt"

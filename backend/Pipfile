@@ -6,6 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+gspread = "*"
+oauth2client = "*"
+
 python-dateutil = "*"
 django-viewflow = "*"
 django-rest-swagger = "*"

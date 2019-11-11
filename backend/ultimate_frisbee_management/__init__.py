@@ -1,0 +1,1 @@
+default_app_config = 'ultimate_frisbee_management.apps.UltimateFrisbeeManagementConfig'

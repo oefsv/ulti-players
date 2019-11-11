@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['venv.hbqg3zr3a3.us-west-2.elasticbeanstalk.com',
 
 INSTALLED_APPS = [
     'viewflow',
-    'player_management',
+    'ultimate_frisbee_management',
     #'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
