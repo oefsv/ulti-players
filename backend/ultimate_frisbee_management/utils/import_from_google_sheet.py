@@ -1,4 +1,4 @@
-import data_importer as importer
+import ultimate_frisbee_management.utils.data_importer as importer
 
 SPREADSHEET_ID = '1u6UrE3cRJRA00GjQf8wo2C-6iW3yyiyztmh9RC9BNTw'
 RANGE_NAME = 'person'
