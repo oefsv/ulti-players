@@ -108,14 +108,14 @@ class PersonViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PersonSerializer
     # permission_classes = (permissions.IsAuthenticated,)
 
-    def retrieve(self, request, pk=None, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
-        dict = {
-            'hit': response.data,
-        }
-       # association_memberships=
-        dict["teams"] = reverse.reverse_lazy("player_management:persontoassociationmembership-list",request=request)
-        return Response(dict)
+    # def retrieve(self, request, pk=None, *args, **kwargs):
+    #     response = super().retrieve(request, *args, **kwargs)
+    #     dict = {
+    #         'hit': response.data,
+    #     }
+    #    # association_memberships=
+    #     dict["teams"] = reverse.reverse_lazy("persontoassociationmembership-list",request=request)
+    #     return Response(dict)
 
 
 
