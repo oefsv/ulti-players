@@ -1,4 +1,5 @@
 {
     "python.linting.pylintEnabled": false,
-    "python.jediEnabled": false
+    "python.jediEnabled": false,
+    "python.pythonPath": "/usr/local/bin/python"
 }
