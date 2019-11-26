@@ -17,7 +17,7 @@ See [blog post](http://ramkulkarni.com/blog/docker-project-for-python3-djaongo-a
 ## seeding test data into database
 
 linux
-`docker-compose run django-apache2 python ../var/www/html/backend/manage.py seed player_management`
+`docker-compose run django-apache2 python ../var/www/html/backend/manage.py seed`
 windows
-`winpty docker-compose run django-apache2 python ../var/www/html/backend/manage.py seed player_management`
+`winpty docker-compose run django-apache2 python ../var/www/html/backend/manage.py seed`
 

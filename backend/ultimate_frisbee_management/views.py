@@ -1,25 +1,35 @@
 from _ast import Import
 import datetime
 
+from django.db.models import Q
+from django.shortcuts import render
+from django.views import generic
+from django.views.generic.list import ListView
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpRequest, HttpResponse
+
+from rest_framework import permissions, reverse
 from rest_framework import viewsets, views
+from rest_framework import serializers as restserializers
 from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse, reverse_lazy
-
-
-from .serializers import User, GroupSerializer, UserSerializer
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 from rest_framework import permissions
 
-from rest_framework.response import Response
+from viewflow.decorators import flow_start_view
+
+from . import serializers
+from .serializers import User, GroupSerializer, UserSerializer
+from . import models as pm
 
 
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        'player_management': "http://" + request.get_host() + "/api/player_management/", # dont use namespaces with rest framework
+        'ultimate_frisbee_management': "http://" + request.get_host() + "/api/ultimate_frisbee_management/", # dont use namespaces with rest framework
         'auth': reverse_lazy('auth_root', request=request),
         'iam': "http://" + request.get_host() + "/api/iam/",
     })
@@ -51,3 +61,129 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+
+def index(response):
+    return HttpResponse("Hello, world. You're at the frisbee index.")
+
+
+class IndexView(generic.TemplateView):
+    template_name = 'player_management/index.html'
+
+
+
+
+class managedClubViewset(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Clubs to be viewed or edited that the.
+    current user is managing. it filters out all the clubs the person is managing
+    """
+    serializer_class = serializers.ClubSerializer
+    def get_queryset(self):
+        user = self.request.user
+        person = pm.Club.objects.filter(~Q(persontoclubmembership__role = 'member'), persontoclubmembership__person__user=user)
+
+        return person
+
+class PersonalClubViewset(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Clubs to be viewed or edited that the.
+    current user is managing.
+    """
+    serializer_class = serializers.ClubSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        person = pm.Club.objects.filter(persontoclubmembership__person__user=user)
+        return person
+
+
+class PersonViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Person to be viewed or edited.
+    """
+    queryset = pm.Person.objects.all()
+    serializer_class = serializers.PersonSerializer
+    # permission_classes = (permissions.IsAuthenticated,)
+
+    # def retrieve(self, request, pk=None, *args, **kwargs):
+    #     response = super().retrieve(request, *args, **kwargs)
+    #     dict = {
+    #         'hit': response.data,
+    #     }
+    #    # association_memberships=
+    #     dict["teams"] = reverse.reverse_lazy("persontoassociationmembership-list",request=request)
+    #     return Response(dict)
+
+
+
+class AssociationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.Association.objects.all()
+    serializer_class = serializers.AssociationSerializer
+
+class ClubViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.Club.objects.all()
+    serializer_class = serializers.ClubSerializer
+    # permission_classes = (permissions.IsAuthenticated,)
+
+
+class TeamViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.Team.objects.all()
+    serializer_class = serializers.TeamSerializer
+    # permission_classes = (permissions.IsAuthenticated,)
+
+
+class PersonToAssociationMembershipViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+
+    queryset = pm.PersonToAssociationMembership.objects.all()
+    serializer_class = serializers.PersonToAssociationMembershipSerializer
+
+
+class PersonToClubMembershipViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.PersonToClubMembership.objects.all()
+    serializer_class = serializers.PersonToClubMembershipSerializer
+
+    @flow_start_view
+    def create(self, request, *args, **kwargs):
+        super(PersonToClubMembershipViewSet, self).create()
+
+
+class PersonToTeamMembershipViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.PersonToTeamMembership.objects.all()
+    serializer_class = serializers.PersonToTeamMembershipSerializer
+
+
+class ClubToAssociationMembershipViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.ClubToAssociationMembership.objects.all()
+    serializer_class = serializers.ClubToAssociationMembershipSerializer
+
+
+class AssociationToAssociationMembershipViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = pm.AssociationToAssociationMembership.objects.all()
+    serializer_class = serializers.AssociationToAssociationMembershipSerializer

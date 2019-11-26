@@ -11,18 +11,18 @@ services:
   django:
     build: backend
     ports:
-      - '8000:80'
+      - '8000:8000'
       - '3500:3500'
     depends_on: 
       - db
-    entrypoint: ["/bin/bash","-c","python /var/www/html/backend/manage.py makemigrations --no-input && python /var/www/html/backend/manage.py migrate --no-input && apache2ctl -D FOREGROUND"]
+    entrypoint: ["/bin/bash","-c","cd backend && python manage.py makemigrations --no-input && python manage.py migrate --no-input && sleep infinity"]
 
-  angular:
-    build: frontend
-    ports:
-      - '80:80'
-    depends_on:
-      - django
+  # angular:
+  #   build: frontend
+  #   ports:
+  #     - '80:80'
+  #   depends_on:
+  #     - django
 
 
 volumes:

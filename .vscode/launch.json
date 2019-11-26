@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Django",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/manage.py",
+            "args": [
+                "runserver",
+                "--noreload",
+                "0.0.0.0:8000"
+            ],
+            "django": true
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "pythonPath": "${config:python.pythonPath}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/backend",
+                "DJANGO_SETTINGS_MODULE": "ultimate_frisbee_management.settings"
+            },
+        },
+        // {
+        //     "name": "Python: Django run script",
+        //     "type": "python",
+        //     "request": "launch",
+        //     "program": "${workspaceFolder}/backend/manage.py",
+        //     "args": [
+        //         "shell",
+        //         "<",
+        //         "${file}"
+        //     ],
+        //     "console": "integratedTerminal",
+        // },
+    ]
+}

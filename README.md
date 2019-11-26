@@ -121,5 +121,5 @@ python manage.py dumpdata --help --exclude auth.permission --exclude contenttype
 Init Testdata 10 per db table.(using [django-seed](https://pypi.org/project/django-seed/))
 
 ```
-python manage.py seed auth player_management --number=15
+python manage.py seed auth ultimate_frisbee_management --number=15
 ```
