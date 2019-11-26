@@ -32,6 +32,37 @@ class Person(models.Model):
     ## todo this should me models.oneTooneField but the faking factory is not capable atm to build unique relationships between person and user
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    # elegibility
+    @property
+    def eligibile_u17(self) -> bool:
+        return date.today().year - self.birthdate .year <= 17
+        
+    @property
+    def eligibile_u20(self) -> bool:
+        return date.today().year - self.birthdate.year <= 20
+
+    @property
+    def eligibile_u24(self) -> bool:
+        return date.today().year - self.birthdate.year <= 24
+
+    @property
+    def eligibile_masters(self):
+        return self.birthdate
+
+    @property
+    def eligibile_grandmasters(self):
+        return self.birthdate
+    @property
+    def eligibile_open(self):
+        return self.birthdate
+
+    @property
+    def eligibile_women(self):
+        return self.birthdate
+    @property
+    def eligibile_mixed(self):
+        return self.birthdate
+
     class Meta:
         db_table = 'pm_Person'
 
@@ -93,7 +124,7 @@ class Membership(models.Model):
     it my have a from and until date. missing values assume an infinite Membership period"""
 
     valid_from = models.DateField()
-    valid_until = models.DateField()
+    valid_until = models.DateField(null=True)
 
     reporter: User = models.ForeignKey(
         authModels.User,
@@ -154,8 +185,8 @@ class PersonToTeamMembership(Membership):
     )
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    role = models.CharField(max_length=300, choices=TEAM_ROLES, default='')
-    number = models.IntegerField(validators=[MinValueValidator(0)])     # TODO: should maxValue==42 ?
+    role = models.CharField(max_length=300, choices=TEAM_ROLES, default='Player',null=True)
+    number = models.IntegerField(validators=[MinValueValidator(0)],null=True)     # TODO: should maxValue==42 ?
 
     class Meta(Membership.Meta):
         db_table = 'pm_PersonToTeamMembership'
