@@ -35,7 +35,7 @@ def seed_person():
     fake.add_provider(person)
     fake.add_provider(date_time)
     p = person.Provider(generator=Generator())
-
+    
     fakePerson = Person()
     fakePerson.firstname = fake.first_name()
     fakePerson.lastname = fake.last_name()

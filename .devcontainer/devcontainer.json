@@ -24,7 +24,10 @@
 		// not in base container images. You can also update this to an specific shell to ensure VS Code 
 		// uses the right one for terminals and tasks. For example, /bin/bash (or /bin/ash for Alpine).
 		"terminal.integrated.shell.linux": null,
-		"python.pythonPath": "/workspace/backend"
+		"python.pythonPath": "/workspace/backend",
+		"python.testing.pytestArgs": [
+			"--rootdir=/workspace/backend"
+		]
 	},
 
 	// Uncomment the next line if you want start specific services in your Docker Compose config.
