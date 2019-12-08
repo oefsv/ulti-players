@@ -43,6 +43,9 @@ testem.log
 # Database
 backend/*.db
 backend/ultimate_frisbee_management/migrations/**
+backend/ultimate_frisbee_management/static/**
+
+
 
 # python
 **/__pycache__

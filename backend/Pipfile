@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 
+
 [packages]
 gspread = "*"
 oauth2client = "*"
@@ -16,9 +17,12 @@ django-filter = "*"
 djangorestframework = "*"
 django-rest-auth = "*"
 django-seed = "*"
-psycopg2-binary = "*"
+django-debug-toolbar = "*"
+django-guardian = "*"
 Django = "*"
 django_polymorphic = "*"
+
+psycopg2-binary = "*"
 Markdown = "*"
 pytest-django = "*"
 pytest-cov = "*"
