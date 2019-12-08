@@ -19,6 +19,7 @@ from django.urls import path
 from django.urls import path, include
 from django.contrib import admin
 from django.conf.urls import url, include
+from django.conf import settings
 
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
@@ -43,9 +44,14 @@ router = routers.DefaultRouter()
 router.register('users', views.UserViewSet)
 router.register('groups', views.GroupViewSet)
 
+
+admin.site.site_header = "ULTIMATE_FRISBEE_MANAGEMENT Admin Portal"
+admin.site.site_title = "ULTIMATE_FRISBEE_MANAGEMENT Admin Portal"
+admin.site.index_title = "ULTIMATE_FRISBEE_MANAGEMENT Admin Portal"
+
 urlpatterns = [
 
-    path('',views.api_root),
+    path('',admin.site.urls),
     path('api/', views.api_root),  # root api view. routes to the submodules
     path('api/auth/', views.rest_auth_root,name="auth_root"), # hack because rest-auth does not provide root view
     path('api/auth/', include(('rest_auth.urls','rest_auth'), namespace="rest_auth")),
@@ -53,3 +59,10 @@ urlpatterns = [
     path('api/ultimate_frisbee_management/',  include(ultimate_frisbee_management_router.urls)),
     path('admin/', admin.site.urls, name='admin'),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+        #url(r'^silk/', include('silk.urls', namespace='silk')),
+    ] + urlpatterns

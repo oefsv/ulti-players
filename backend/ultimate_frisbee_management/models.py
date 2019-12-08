@@ -63,6 +63,10 @@ class Person(models.Model):
     def eligibile_mixed(self):
         return self.birthdate
 
+
+    def __str__(self):
+        return f"{self.firstname}_{self.lastname}"
+
     class Meta:
         db_table = 'pm_Person'
 
@@ -73,12 +77,23 @@ class Organisation(models.Model):
     and associations are the 3 different organization types in this model"""
     name = models.CharField(max_length=300)
     founded_on = models.DateField()
-    dissolved_on = models.DateField(null=True)
+    dissolved_on = models.DateField(blank=True,null=True)
     description = models.TextField(blank=True)
+
+    @property
+    def is_active(self):
+        if self.dissolved_on is None:
+            return True
+        elif self.dissolved_on > date.today():
+            return True
+        else:
+            return False
+    
+    def __str__(self):
+        return self.name
 
     class Meta:
         abstract = True
-
 
 class Association(Organisation):
     """ An Association (german: Verband) is a legal form of an organisation. It may represent
@@ -102,7 +117,7 @@ class Association(Organisation):
 
 class Club(Organisation):
     member_persons = models.ManyToManyField('Person', through='PersonToClubMembership')
-    associations_memberships = models.ManyToManyField('Club', through='ClubToAssociationMembership')
+    associations_memberships = models.ManyToManyField('Association', through='ClubToAssociationMembership')
 
     class Meta(Organisation.Meta):
         db_table = 'pm_Club'
@@ -124,18 +139,29 @@ class Membership(models.Model):
     it my have a from and until date. missing values assume an infinite Membership period"""
 
     valid_from = models.DateField()
-    valid_until = models.DateField(null=True)
+    valid_until = models.DateField(null=True,blank=True)
 
     reporter: User = models.ForeignKey(
         authModels.User,
         on_delete=models.CASCADE,
         related_name="reported_%(class)ss",
-        related_query_name="%(class)s_reporter")
+        related_query_name="%(class)s_reporter",
+        null=True)
     approved_by: User = models.ForeignKey(
         authModels.User,
         on_delete=models.CASCADE,
         related_name="approved_%(class)ss",
-        related_query_name="%(class)s_approver")
+        related_query_name="%(class)s_approver",
+        null=True)
+
+    @property
+    def is_active(self):
+        if self.valid_until is None:
+            return True
+        elif self.dissolved_on > date.today():
+            return True
+        else:
+            return False
 
     class Meta:
         abstract = True
@@ -155,6 +181,7 @@ class PersonToAssociationMembership(Membership):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     association = models.ForeignKey(Association, on_delete=models.CASCADE)
     role = models.CharField(max_length=300, choices=ASSOCIATION_ROLES)
+    
 
     class Meta(Membership.Meta):
         db_table = 'pm_PersonToAssociationMembership'

@@ -22,42 +22,47 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*sg+%tkn(-7cn=k$^2!zk-z5i65f4y4cu+2v!@mw)xq$rb=u4='
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = ['venv.hbqg3zr3a3.us-west-2.elasticbeanstalk.com',
                  'localhost',
                  '127.0.0.1',
-                 'django',]
-
+                 'django',
+                 '62.178.108.138']
 
 # Application definition
 
 INSTALLED_APPS = [
-    'viewflow',
     'ultimate_frisbee_management',
-    #'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'silk',
+    #'debug_toolbar',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
     'django_seed',
+    'viewflow',
+    'guardian',
     ]
+    
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # default
+    'guardian.backends.ObjectPermissionBackend',
+)
 
 MIDDLEWARE = [
-'django.contrib.sessions.middleware.SessionMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    #'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'ultimate_frisbee_management.urls'
@@ -108,8 +113,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/api/static/'
-STATIC_ROOT = 'static'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

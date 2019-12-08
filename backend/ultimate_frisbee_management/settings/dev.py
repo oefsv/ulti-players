@@ -14,7 +14,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -25,3 +24,14 @@ DATABASES = {
     }
 }
 
+#SILKY_PYTHON_PROFILER = True
+#SILKY_PYTHON_PROFILER_BINARY = True
+
+#for debug toolbar
+INTERNAL_IPS = (
+    '127.0.0.1',
+    'localhost',
+    '0.0.0.0',
+    '172.18.0.1',
+    '62.178.108.138'
+)
