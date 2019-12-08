@@ -44,8 +44,7 @@ testem.log
 backend/*.db
 backend/ultimate_frisbee_management/migrations/**
 backend/ultimate_frisbee_management/static/**
-
-
+backend/dev_db_dump.json
 
 # python
 **/__pycache__
@@ -61,6 +60,3 @@ backend/static
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 /.pydevproject
-
-
-
