@@ -1,0 +1,16 @@
+{% block subject %}My subject for {{person.firstname}} {{person.lastname}}{% endblock %}
+{% block html %}
+{% block greeting %}
+<p>Liebe{{"r" if person.sex == "m" else ""}} {{person.firstname}},<p>
+{% endblock greeting %}
+{% block content %}{% endblock content %}
+{% block signature %}
+<br>
+<p>Liebe Grüße,</p>
+<p>Dein ÖFSV Vorstand </P>
+{% endblock signature %}
+
+{% block footer %}
+<a href="http://oefsv.at">=http://oefsv.at</a>
+{% endblock footer %}
+{% endblock html %}

@@ -1,0 +1,28 @@
+{% include "base.html" %}
+{% block subject %}Konflikt bei der Vereinsmeldung von {{person.firstname}} {{person.lastname}}{% endblock %}
+{% block html %}
+{% block greeting %}<p>Liebe{{'r'}} {{person.firstname}},<p>{% endblock greeting %}
+{% block content %}
+<p>Du bist für dieses Jahr bei den folgenden Vereinen gemeldet:</p>
+<ul> 
+{% for m in club_memberships %}
+<li> - {{m.club.name}}</li>
+{% endfor %} 
+</ul> 
+<p>
+Dies hat zur Folge, dass von beiden Vereinen der Verbandsbeitrag 
+eingezogen wird. Stimmen im Verband erhält jedoch keiner.
+Die Vereine wurden ebenfalls kontaktiert um diese Problem zu lösen
+Du kannst den Konflikt mit einem Klick auf den entsprechenden Link lösen.
+</p>
+<p>
+ACHTUNG:
+Durch klicken wird deine Vereinsmitgliedschaft in der Datenbank mit 31.12. des letzten Jahres als beendet eingetragen. Falls du einen Fehler begangen hast, melde dich bei deinem Vereinsadmin (oder Vorstand) um Ihn korrigieren zu lassen.
+</p>
+<ul>
+{% for m in club_memberships %}
+<li><a href="http://localhost:8000/123">Mitgliedschaft bei {{m.club.name}}mit {{last_year}} beenden.</a></li>
+{% endfor %}
+</ul>
+{% endblock content %}
+{% endblock html %}
