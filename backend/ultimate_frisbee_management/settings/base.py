@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # default
     'guardian.backends.ObjectPermissionBackend',
+    'sesame.backends.ModelBackend',
 )
 
 MIDDLEWARE = [
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'sesame.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'silk.middleware.SilkyMiddleware',
@@ -81,7 +83,13 @@ TEMPLATES = [
             ],
         },
     },
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [],
+        'APP_DIRS': True,
+    },
 ]
+
 
 WSGI_APPLICATION = 'ultimate_frisbee_management.wsgi.application'
 
@@ -135,3 +143,6 @@ REST_AUTH_SERIALIZERS = {
 ACCOUNT_LOGOUT_ON_GET = True
 FAKER_LOCALE = None     # settings.LANGUAGE_CODE is loaded
 FAKER_PROVIDERS = None  # faker.DEFAULT_PROVIDERS is loaded (all)
+
+SESAME_MAX_AGE = 14*24 * 60 * 60 # Magic link tokens last 14 days
+SESAME_ONE_TIME = True 
