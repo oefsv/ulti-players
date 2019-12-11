@@ -44,15 +44,13 @@ testem.log
 backend/*.db
 backend/ultimate_frisbee_management/migrations/**
 backend/ultimate_frisbee_management/static/**
+!backend/ultimate_frisbee_management/static/ultimate_frisbee_management/**
 backend/dev_db_dump.json
 
 # python
 **/__pycache__
 **/.pytest_cache
 backend/frisbee-venv/**
-
-# Django
-backend/static
 
 
 # Elastic Beanstalk Files
