@@ -1,10 +1,11 @@
 from django.contrib import admin
 from . import models
+from .utils import mail
 import datetime
 from datetime import date,timedelta
 from django.db.models import Count, Q
 from guardian.admin import GuardedModelAdmin
-from guardian.shortcuts import get_objects_for_user
+from guardian.shortcuts import get_objects_for_user,get_objects_for_group
 # Register your models here..
 
 
@@ -90,35 +91,47 @@ class Elegible_Nationals(admin.SimpleListFilter):
         today = date.today()
         this_year = date(year=today.year, month=1, day=1)
         if value == 'Yes':
-            return queryset.filter(Q(persontoclubmembership__valid_until__lte=this_year)|Q(persontoclubmembership__valid_until__isnull=True)).annotate(clubs_count=Count('club_memberships')).filter(clubs_count__lt=2)
+            return queryset.filter(Q(persontoclubmembership__valid_until__gte=this_year)|Q(persontoclubmembership__valid_until__isnull=True)).annotate(clubs_count=Count('club_memberships')).filter(clubs_count__lt=2)
         elif value == 'No':
-            return queryset.filter(Q(persontoclubmembership__valid_until__lte=this_year)|Q(persontoclubmembership__valid_until__isnull=True)).annotate(clubs_count=Count('club_memberships')).filter(clubs_count__gte=2)
+            return queryset.filter(Q(persontoclubmembership__valid_until__gte=this_year)|Q(persontoclubmembership__valid_until__isnull=True)).annotate(clubs_count=Count('club_memberships')).filter(clubs_count__gte=2)
         return queryset
 
 class PersonAdmin(GuardedModelAdmin):
     list_display = ('id','firstname', 'lastname', 'birthdate','sex', 'user',
-        'eligibile_u17','eligibile_u20','eligibile_u24','elegible_Nationals')
+        'eligibile_u17','eligibile_u20','eligibile_u24','Elegible_Nationals')
     #list_editable = ('firstname', 'lastname', 'sex',)
     list_filter = (Eligibile_u17,Eligibile_u20,Eligibile_u24,Elegible_Nationals)  
     list_display_links = ('id',)
     search_fields = ('firstname','lastname')
     inlines = (Person_to_Team_Inline,Person_to_Club_Inline,Person_to_Association_Inline)
+    actions = ['send_conflict_email']
+
 
     def eligibile_u17(self, obj):
         return obj.eligibile_u17
 
-    def elegible_Nationals(self, instance):
-        today = date.today()
-        this_year = date(year=today.year, month=1, day=1)
-        return instance.club_memberships.filter(
-            Q(persontoclubmembership__valid_until__lte=this_year)|
-            Q(persontoclubmembership__valid_until__isnull=True)).count()<2
+    def Elegible_Nationals(self, instance):
+        return instance.eligibile_nationals
+
+    def send_conflict_email(self, request, queryset):
+        mail.send_conflict_notification(request,queryset)
+
 
 class OrganistaionAdmin(GuardedModelAdmin):
     list_display = ('id','name','founded_on', 'dissolved_on',)
     list_display_links = ('id',)
+    
+    def get_queryset(self, request):
+        objects = get_objects_for_user(user=request.user, perms=[f'view_{self.model.__name__.lower()}', ], klass=self.model,accept_global_perms=False)
+        return objects
    # list_editable = ('name','founded_on','dissolved_on',)
 
+        def get_form(self, *args, **kwargs):
+            """ allow diabled_fields for form"""
+        form = super(ClubAdmin, self).get_form(*args, **kwargs)
+        for field_name in self.disabled_fields:
+            form.base_fields[field_name].disabled = True
+        return form
 
 
 
@@ -127,19 +140,25 @@ class AssociationAdmin(OrganistaionAdmin):
 
 
 class ClubAdmin(OrganistaionAdmin):
-    def get_queryset(self, request):
-        if request.user.is_superuser:
-            return super(OrganistaionAdmin, self).get_queryset(request)
-        return get_objects_for_user(user=request.user, perms=['view_club', ], klass=models.ClubToAssociationMembership,accept_global_perms=False)
-
     inlines = (Club_to_Association_Inline,Person_to_Club_Inline)
+    fake_readonly_fields = ("name",)
+    
+    def get_form(self, *args, **kwargs):
+        form = super(ClubAdmin, self).get_form(*args, **kwargs)
+        for field_name in self.fake_readonly_fields:
+            form.base_fields[field_name].disabled = True
+        return form
 
 class TeamAdmin(OrganistaionAdmin):
     list_display = OrganistaionAdmin.list_display +('club',)
     inlines = (Person_to_Team_Inline,)
 
     def club(self, instance):
-        return instance.club_membership.name
+        if instance.club_membership:
+            return instance.club_membership.name
+        return None
+
+    
 
 
 admin.site.register(models.Person, PersonAdmin)
