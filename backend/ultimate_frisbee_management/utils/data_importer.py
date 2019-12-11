@@ -12,8 +12,6 @@ from ultimate_frisbee_management.models import Person, Club, Team, PersonToTeamM
 from django.contrib.auth.models import User
 
 
-
-
 logger = logging.getLogger(__name__)
 
 SCOPES = ['https://spreadsheets.google.com/feeds',
@@ -88,7 +86,11 @@ def get_player_data(gsheet: gspread.Worksheet):
             "club_membership": club
         }
         try: 
-            team = Team.objects.create(**team_data)[0]
+            teams = Team.objects.filter(name=team_data["name"])
+            if teams:
+                team = teams[0]
+            else:          
+                team = Team.objects.update_or_create(**team_data)[0]
         except django.db.utils.IntegrityError:
             logger.info("club existiert.")
             continue
@@ -139,12 +141,3 @@ def get_player_data(gsheet: gspread.Worksheet):
         except django.db.utils.IntegrityError:
             logger.info("mitgliedschaft besteht bereits.")
             continue
-
-        
-
-
-SPREADSHEET_ID = '1u6UrE3cRJRA00GjQf8wo2C-6iW3yyiyztmh9RC9BNTw'
-RANGE_NAME = 'person'
- 
-gsheet = get_google_sheet(SPREADSHEET_ID, RANGE_NAME)
-get_player_data(gsheet)
