@@ -7,6 +7,7 @@ from django.db import models
 from django.contrib.auth import models as authModels
 from django.core.validators import MinValueValidator
 from viewflow.models import Process
+from django.db.models import Q
 
 
 class Person(models.Model):
@@ -62,6 +63,18 @@ class Person(models.Model):
     @property
     def eligibile_mixed(self):
         return self.birthdate
+
+    def get_current_clubmemberships(self) -> models.QuerySet:
+        today = date.today()
+        this_year = date(year=today.year, month=1, day=1)
+        club_memberships =  PersonToClubMembership.objects.filter(person=self).filter(
+            Q(valid_until__gte=this_year)|
+            Q(valid_until__isnull=True))  
+        return club_memberships
+
+    @property
+    def eligibile_nationals(self) -> bool:
+        return self.get_current_clubmemberships().count() < 2
 
 
     def __str__(self):
@@ -126,7 +139,7 @@ class Club(Organisation):
 class Team(Organisation):
     """ A Team is an organization owned by a Club. it consists of a list
     of players which is a temporary assignment of a player to a team"""
-    club_membership = models.ForeignKey(Club, on_delete=models.CASCADE)
+    club_membership = models.ForeignKey(Club, on_delete=models.CASCADE, null=True,blank=True)
     member_persons = models.ManyToManyField('Person', through='PersonToTeamMembership')
 
     class Meta(Organisation.Meta):
