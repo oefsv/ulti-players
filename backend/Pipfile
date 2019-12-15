@@ -19,6 +19,7 @@ django-rest-auth = "*"
 django-seed = "*"
 django-debug-toolbar = "*"
 django-guardian = "*"
+django-sesame="*"
 Django = "*"
 django_polymorphic = "*"
 
@@ -27,6 +28,7 @@ Markdown = "*"
 pytest-django = "*"
 pytest-cov = "*"
 mixer = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
