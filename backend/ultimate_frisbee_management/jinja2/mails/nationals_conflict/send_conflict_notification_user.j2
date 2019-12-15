@@ -1,6 +1,5 @@
-{% include "base.html" %}
+{% extends "mails/base.j2" %}
 {% block subject %}Konflikt bei der Vereinsmeldung von {{person.firstname}} {{person.lastname}}{% endblock %}
-{% block html %}
 {% block greeting %}<p>Liebe{{'r'}} {{person.firstname}},<p>{% endblock greeting %}
 {% block content %}
 <p>Du bist für dieses Jahr bei den folgenden Vereinen gemeldet:</p>
@@ -21,8 +20,7 @@ Durch klicken wird deine Vereinsmitgliedschaft in der Datenbank mit 31.12. des l
 </p>
 <ul>
 {% for m in club_memberships %}
-<li><a href="http://localhost:8000/123">Mitgliedschaft bei {{m.club.name}}mit {{last_year}} beenden.</a></li>
+<li><a href="http://localhost:8000/deeplink/PersonToClubMembership/{{m.id}}/{{get_query_string(person.user)}}&valid-until={{last_year}}">Mitgliedschaft bei {{m.club.name}}mit {{last_year}} beenden.</a></li>
 {% endfor %}
 </ul>
 {% endblock content %}
-{% endblock html %}
