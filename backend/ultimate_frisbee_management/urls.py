@@ -58,6 +58,7 @@ urlpatterns = [
     path('api/iam/',  include(router.urls)),  # identity and access management users, groups etc..
     path('api/ultimate_frisbee_management/',  include(ultimate_frisbee_management_router.urls)),
     path('admin/', admin.site.urls, name='admin'),
+    path('deeplink/<str:model_name>/<int:id>/',views.DeepLinkView.as_view()),
 ]
 
 if settings.DEBUG:
