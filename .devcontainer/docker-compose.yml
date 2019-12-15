@@ -10,7 +10,7 @@ services:
   devcontainer:
     build: backend
     ports:
-      - "8081:8000" # dev server
+      - "8081:8000" # expose django dev server
     depends_on:
       - db
     volumes:
@@ -18,8 +18,12 @@ services:
     entrypoint: ["bash", "-c", "sleep infinity"]
   django:
     ports:
-      - 8082:8080 #gunicorn server
+      - 8082:8080 # expose gunicorn server
   nginx:
     build: nginx
     ports:
-      - 8083:80 #nginx frontend
+      - 8083:80 # expose nginx webserver under nonstandard port
+  db:
+    ports:
+      - "5432:5432" #expose database port for development
+

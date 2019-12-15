@@ -5,9 +5,6 @@ services:
     build: database
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
   django:
     build: backend
     restart: always
