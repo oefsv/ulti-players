@@ -1,21 +1,37 @@
 version: "3.6"
 
-services: 
+services:
   db:
     build: database
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-    - '5432:5432'
+      - "5432:5432"
 
   django:
     build: backend
+    restart: always
     ports:
-      - '8000:8000'
-      - '3500:3500'
-    depends_on: 
+      - "8000:8080" # map gunicorn to port 8000
+    depends_on:
       - db
-    entrypoint: ["/bin/bash","-c","cd backend && python manage.py makemigrations --no-input && python manage.py migrate --no-input && sleep infinity"]
+    entrypoint:
+      [
+        "/bin/bash",
+        "-c",
+        "gunicorn -c gunicorn_config.py ultimate_frisbee_management.wsgi",
+      ]
+      #"cd backend && python manage.py makemigrations --no-input && python manage.py migrate --no-input && sleep infinity",
+    volumes:
+      - static_data:/static_data
+      - ./backend:/workspace
+  nginx:
+    build: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - static_data:/www/data/static
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
 
   # angular:
   #   build: frontend
@@ -24,6 +40,6 @@ services:
   #   depends_on:
   #     - django
 
-
 volumes:
   postgres_data:
+  static_data:
