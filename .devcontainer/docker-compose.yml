@@ -6,43 +6,18 @@
 version: "3.6"
 services:
   # Update this to the name of the service you want to work with in your docker-compose.yml file
-  django:
-    # You may want to add a non-root user to your Dockerfile. On Linux, this will prevent
-    # new files getting created as root. See https://aka.ms/vscode-remote/containers/non-root-user
-    # for the needed Dockerfile updates and then uncomment the next line.
-    # user: vscode
 
-    # Uncomment if you want to add a different Dockerfile in the .devcontainer folder
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
-
-    # Uncomment if you want to expose any additional ports. The snippet below exposes port 3000.
-    # ports:
-    #   - 3000:3000
-
-    volumes:
-      # Update this to wherever you want VS Code to mount the folder of your project
-      - .:/workspace
-      # Uncomment the next line to use Docker from inside the container. See https://aka.ms/vscode-remote/samples/docker-in-docker-compose for details.
-      # - /var/run/docker.sock:/var/run/docker.sock
-
-    # Uncomment the next four lines if you will use a ptrace-based debugger like C++, Go, and Rust.
-    # cap_add:
-    #   - SYS_PTRACE
-    # security_opt:
-    #   - seccomp:unconfined
-
-    # Overrides default command so things don't shut down after the process ends.
-    entrypoint:
-      [
-        "/bin/bash",
-        "-c",
-        "cd backend && gunicorn -c gunicorn_config.py ultimate_frisbee_management.wsgi",
-      ]
-
+  devcontainer:
+    build: backend
     ports:
-      - 8081:8000 #dev server
+      - "8081:8000" # dev server
+    depends_on:
+      - db
+    volumes:
+      - .:/workspace
+    entrypoint: ["bash", "-c", "sleep infinity"]
+  django:
+    ports:
       - 8082:8080 #gunicorn server
   nginx:
     build: nginx

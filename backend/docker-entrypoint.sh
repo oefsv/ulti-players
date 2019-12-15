@@ -1,4 +1,5 @@
 #!/bin/sh
+cd /workspace/backend
 python manage.py makemigrations --no-input      
 python manage.py migrate --no-input
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@admin.com', 'admin')" | python manage.py shell
