@@ -25,7 +25,7 @@ def get_google_sheet(spreadsheet_id, range_name) -> gspread.Worksheet:
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    creds = ServiceAccountCredentials.from_json_keyfile_name('/etc/google_drive_credentials.json', SCOPES)  
+    creds = ServiceAccountCredentials.from_json_keyfile_name('/etc/credentials/google_drive_credentials.json', SCOPES)  
     client = gspread.authorize(creds)
     return client.open_by_key(spreadsheet_id).sheet1
  

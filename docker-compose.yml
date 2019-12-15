@@ -15,16 +15,10 @@ services:
       - "8000:8080" # map gunicorn to port 8000
     depends_on:
       - db
-    entrypoint:
-      [
-        "/bin/bash",
-        "-c",
-        "gunicorn -c gunicorn_config.py ultimate_frisbee_management.wsgi",
-      ]
-      #"cd backend && python manage.py makemigrations --no-input && python manage.py migrate --no-input && sleep infinity",
     volumes:
       - static_data:/static_data
       - ./backend:/workspace
+      - ./backend/credentials:/etc/credentials
   nginx:
     build: nginx
     ports:

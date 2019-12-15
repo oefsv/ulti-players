@@ -10,8 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*sg+%tkn(-7cn=k$^2!zk-z5i65f4y4cu+2v!@mw)xq$rb=u4='
+# Try reading the secret key from file. if not existent rewrite it.
+try:
+    with open('/etc/credentials/django_secret_key.txt') as f:
+        SECRET_KEY = f.read().strip()
+
+except FileNotFoundError as e:
+    import random
+    
+    SECRET_KEY = "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])
+    
+    with open('/etc/credentials/django_secret_key.txt',"w+") as f:
+        f.write(SECRET_KEY)
+    
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
