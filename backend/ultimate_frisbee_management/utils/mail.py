@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.core import mail
 from django.db.models import QuerySet
 from sesame.utils import get_query_string
-from templated_email import get_templated_mail
 
 from django.http import HttpResponse
 from django.template import loader
