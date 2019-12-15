@@ -78,7 +78,7 @@ class Person(models.Model):
 
 
     def __str__(self):
-        return f"{self.firstname}_{self.lastname}"
+        return f"{self.firstname} {self.lastname} ({self.birthdate.year})"
 
     class Meta:
         db_table = 'pm_Person'

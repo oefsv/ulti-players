@@ -11,34 +11,32 @@ from guardian.shortcuts import get_objects_for_user,get_objects_for_group
 
 class MembershipInline(admin.TabularInline):
     model = models.PersonToTeamMembership
-    extra = 1
+    extra = 0
     exclude = ['reporter','approved_by']
-    list_filter = ('country', )
 
 class Person_to_Team_Inline(MembershipInline):
     model = models.PersonToTeamMembership
-    raw_id_fields = ("person","team")
-    list_filter = raw_id_fields
+    autocomplete_fields = ("person","team")
+    list_filter = autocomplete_fields
 
 class Person_to_Club_Inline(MembershipInline):
     model = models.PersonToClubMembership
-    raw_id_fields = ("person","club")
-    list_filter = raw_id_fields
+    autocomplete_fields = ("person","club")
+    list_filter = autocomplete_fields
 
 class Person_to_Association_Inline(MembershipInline):
     model = models.PersonToAssociationMembership
-    raw_id_fields = ("association","person")
-    list_filter = raw_id_fields
+    autocomplete_fields = ("association","person")
 
 class Club_to_Association_Inline(MembershipInline):
     model = models.ClubToAssociationMembership
-    raw_id_fields = ("association","club")
+    autocomplete_fields = ("association","club")
 
 class Association_to_Association_Inline(MembershipInline):
     model = models.AssociationToAssociationMembership
     fk_name = 'governor'
-    raw_id_fields = ("member","governor")
-    list_filter = raw_id_fields
+    autocomplete_fields = ("member","governor")
+    list_filter = autocomplete_fields
 
 
 class BaseFilter(admin.SimpleListFilter):
@@ -102,10 +100,10 @@ class PersonAdmin(GuardedModelAdmin):
     #list_editable = ('firstname', 'lastname', 'sex',)
     list_filter = (Eligibile_u17,Eligibile_u20,Eligibile_u24,Elegible_Nationals)  
     list_display_links = ('id',)
-    search_fields = ('firstname','lastname')
+    search_fields = ('firstname','lastname','birthdate')
     inlines = (Person_to_Team_Inline,Person_to_Club_Inline,Person_to_Association_Inline)
     actions = ['send_conflict_email']
-
+    ordering = ('firstname','lastname','birthdate')
 
     def eligibile_u17(self, obj):
         return obj.eligibile_u17
@@ -122,6 +120,8 @@ class PersonAdmin(GuardedModelAdmin):
 class OrganistaionAdmin(GuardedModelAdmin):
     list_display = ('id','name','founded_on', 'dissolved_on',)
     list_display_links = ('id',)
+    search_fields = ('name',)
+    ordering = ('name',)
     
     def get_queryset(self, request):
         objects = get_objects_for_user(user=request.user, perms=[f'view_{self.model.__name__.lower()}', ], klass=self.model,accept_global_perms=False)
@@ -140,11 +140,10 @@ class OrganistaionAdmin(GuardedModelAdmin):
 class AssociationAdmin(OrganistaionAdmin):
     inlines = (Association_to_Association_Inline,Club_to_Association_Inline,Person_to_Association_Inline)
 
-
 class ClubAdmin(OrganistaionAdmin):
     inlines = (Club_to_Association_Inline,Person_to_Club_Inline)
+    ordering = ('name',)
     fake_readonly_fields = ("name",)
-    
     def get_form(self, *args, **kwargs):
         form = super(ClubAdmin, self).get_form(*args, **kwargs)
         for field_name in self.fake_readonly_fields:
