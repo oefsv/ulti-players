@@ -39,6 +39,8 @@ testem.log
 # security
 **/*credentials*.json
 **/*credentials*.txt
+**/*secret*.json
+**/*secret*.txt
 # dependencies
 /node_modules
 
