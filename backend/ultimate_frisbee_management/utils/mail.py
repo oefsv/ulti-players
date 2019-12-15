@@ -7,6 +7,10 @@ from django.db.models import QuerySet
 from sesame.utils import get_query_string
 from templated_email import get_templated_mail
 
+from django.http import HttpResponse
+from django.template import loader
+
+
 from ..models import Person,PersonToClubMembership
 from _datetime import date
 
@@ -24,18 +28,21 @@ def send_conflict_notification(request, persons: QuerySet ):
     for p in persons:
         if not p.eligibile_nationals:
             club_memberships: List[PersonToClubMembership] = p.get_current_clubmemberships()
-            message=get_templated_mail(
-                template_name="nationals_conflict/send_conflict_notification_user",
-                to= [p.user.email],
-                from_email="admin@admin.admin",
-                context={
-                    'person': p,
-                    'club_memberships': club_memberships,
-                    'last_year': last_year,
-                }
+            templates = loader.get_template("mails/nationals_conflict/send_conflict_notification_user.j2"),
+            context={
+                'person': p,
+                'club_memberships': club_memberships,
+                'last_year': last_year,
+            }
+            messages.append( 
+                mail.EmailMessage(
+                    subject=f'Konflikt bei der Vereinsmeldung von {p.firstname} {p.lastname}',
+                    body= templates[0].render(context),
+                    to= [p.user.email],
+                    from_email="admin@admin.admin",
+                    connection=connection
+                )
             )
-            message.connection=connection
-            messages.append(message)
             for m in club_memberships:
                 for admin in User.objects.filter(groups__name=f'club_admin_{m.club.name}'):
                     admin_p = Person.objects.get(user=admin)
