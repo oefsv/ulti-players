@@ -26,7 +26,8 @@ ALLOWED_HOSTS = ['venv.hbqg3zr3a3.us-west-2.elasticbeanstalk.com',
                  'localhost',
                  '127.0.0.1',
                  'django',
-                 '62.178.108.138']
+                 '62.178.108.138',
+                 'frisbee-db.flokain.com']
 
 # Application definition
 
@@ -87,6 +88,9 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [],
         'APP_DIRS': True,
+        'OPTIONS':{
+            'environment':'ultimate_frisbee_management.jinja2.environment'
+        }
     },
 ]
 
@@ -122,7 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = '/static_data'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -144,5 +148,7 @@ ACCOUNT_LOGOUT_ON_GET = True
 FAKER_LOCALE = None     # settings.LANGUAGE_CODE is loaded
 FAKER_PROVIDERS = None  # faker.DEFAULT_PROVIDERS is loaded (all)
 
+GUARDIAN_RENDER_403=True
+
 SESAME_MAX_AGE = 14*24 * 60 * 60 # Magic link tokens last 14 days
-SESAME_ONE_TIME = True 
+SESAME_ONE_TIME = True
