@@ -36,6 +36,9 @@ testem.log
 /typings
 **/tmp
 
+# security
+**/*credentials*.json
+**/*credentials*.txt
 # dependencies
 /node_modules
 
