@@ -9,24 +9,23 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
+import os
+
+DEBUG = False
 
 # Try reading the secret key from file. if not existent rewrite it.
+secret_key_file='/etc/credentials/django_secret_key.txt'
 try:
-    with open('/etc/credentials/django_secret_key.txt') as f:
+    with open(secret_key_file) as f:
         SECRET_KEY = f.read().strip()
 
 except FileNotFoundError as e:
     import random
     
     SECRET_KEY = "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])
-    
-    with open('/etc/credentials/django_secret_key.txt',"w+") as f:
+    os.makedirs(os.path.dirname(secret_key_file), exist_ok=True)
+    with open(secret_key_file,"w+") as f:
         f.write(SECRET_KEY)
-    
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
 
 DATABASES = {
     'default': {
@@ -39,10 +38,7 @@ DATABASES = {
 }
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = ""
-EMAIL_PORT = 2587
-EMAIL_HOST_USER = ""
+EMAIL_HOST_USER = 'm04b2882'
 EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "Admin<admin@domain.com>" 
+DEFAULT_FROM_EMAIL = "Admin<datenbank@frisbeeverband.at>" 

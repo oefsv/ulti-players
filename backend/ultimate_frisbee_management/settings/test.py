@@ -1,5 +1,7 @@
+import os
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 DATABASES = {
     'default': {
@@ -11,7 +13,9 @@ DATABASES = {
     }
 }
 
-EMAIL_HOST_USER = 'm04b288b'
+
+# Email settings
+EMAIL_HOST_USER = 'm04b2886'
 EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "Dev Admin<dev.datenbank@frisbeeverband.at>" 
+DEFAULT_FROM_EMAIL = "Test Admin<test.datenbank@frisbeeverband.at>" 

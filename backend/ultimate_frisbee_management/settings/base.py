@@ -152,3 +152,10 @@ GUARDIAN_RENDER_403=True
 
 SESAME_MAX_AGE = 14*24 * 60 * 60 # Magic link tokens last 14 days
 SESAME_ONE_TIME = True
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "w0103e8b.kasserver.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "admin<datenbank@frisbeeverband.at>" 
