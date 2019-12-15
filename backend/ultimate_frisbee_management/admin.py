@@ -98,7 +98,7 @@ class Elegible_Nationals(admin.SimpleListFilter):
 
 class PersonAdmin(GuardedModelAdmin):
     list_display = ('id','firstname', 'lastname', 'birthdate','sex', 'user',
-        'eligibile_u17','eligibile_u20','eligibile_u24','Elegible_Nationals')
+        'eligibile_u17','eligibile_u20','eligibile_u24','elegible_nationals')
     #list_editable = ('firstname', 'lastname', 'sex',)
     list_filter = (Eligibile_u17,Eligibile_u20,Eligibile_u24,Elegible_Nationals)  
     list_display_links = ('id',)
@@ -109,9 +109,11 @@ class PersonAdmin(GuardedModelAdmin):
 
     def eligibile_u17(self, obj):
         return obj.eligibile_u17
+    eligibile_u17.boolean=True
 
-    def Elegible_Nationals(self, instance):
+    def elegible_nationals(self, instance):
         return instance.eligibile_nationals
+    elegible_nationals.boolean= True
 
     def send_conflict_email(self, request, queryset):
         mail.send_conflict_notification(request,queryset)
