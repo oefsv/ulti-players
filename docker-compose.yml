@@ -5,6 +5,7 @@ services:
     build: database
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: always
   django:
     build: backend
     restart: always
@@ -12,17 +13,22 @@ services:
       - db
     volumes:
       - static_data:/static_data
+      - media_data:/media
       - ./backend:/workspace
       - ./backend/credentials:/etc/credentials
+    environment:
+      - ENVIRONMENT=testing
   nginx:
     build: nginx
     ports:
       - "8080:80"
     volumes:
       - static_data:/www/data/static
+      - media_data:/www/data/media
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-
+    restart: always
 
 volumes:
   postgres_data:
   static_data:
+  media_data:

@@ -15,8 +15,15 @@ services:
       - db
     volumes:
       - .:/workspace
+      - static_data:/static_data
+      - media_data:/media
+      - ./backend/credentials:/etc/credentials
     entrypoint: ["bash", "-c", "sleep infinity"]
+    environment:
+      - ENVIRONMENT=development
   django:
+    environment:
+      - ENVIRONMENT=development
     ports:
       - 8082:8080 # expose gunicorn server
   nginx:
