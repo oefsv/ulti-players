@@ -27,7 +27,8 @@ ALLOWED_HOSTS = ['venv.hbqg3zr3a3.us-west-2.elasticbeanstalk.com',
                  '127.0.0.1',
                  'django',
                  '62.178.108.138',
-                 'frisbee-db.flokain.com']
+                 'frisbee-db.flokain.com',
+                 'frisbee-db-test.oefsv.at']
 
 # Application definition
 
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'django_seed',
     'viewflow',
     'guardian',
+    'imagekit',
     ]
     
 AUTHENTICATION_BACKENDS = (
@@ -127,6 +129,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static_data'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/media'
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -143,6 +148,8 @@ REST_FRAMEWORK = {
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'ultimate_frisbee_management.serializers.CustomUserDetailsSerializer',
 }
+LOGIN_REDIRECT_URL ="/login/"
+LOGIN_URL = "/login/"
 
 ACCOUNT_LOGOUT_ON_GET = True
 FAKER_LOCALE = None     # settings.LANGUAGE_CODE is loaded
