@@ -19,13 +19,13 @@ services:
     environment:
       - ENVIRONMENT=testing
   nginx:
-    build: nginx
+    image: nginx:alpine
     ports:
       - "8080:80"
     volumes:
       - static_data:/www/data/static
       - media_data:/www/data/media
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     restart: always
 
 volumes:
