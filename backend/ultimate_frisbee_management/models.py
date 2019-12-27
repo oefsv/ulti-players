@@ -6,8 +6,17 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.contrib.auth import models as authModels
 from django.core.validators import MinValueValidator
-from viewflow.models import Process
 from django.db.models import Q
+from django.utils.safestring import mark_safe
+
+from viewflow.models import Process
+from imagekit.models import ProcessedImageField, ImageSpecField
+from .utils.image_processing import DetectFaceAndResizeToFit
+from imagekit.processors import ResizeToFit
+
+
+# Custom Mixins
+
 
 
 class Person(models.Model):
@@ -26,12 +35,40 @@ class Person(models.Model):
     sex = models.CharField(max_length=1, choices=SEX)
     birthdate = models.DateField()  # TODO: validator to check that date is not in the future
 
+    # specify image directory
     # Memberships
     club_memberships = models.ManyToManyField('Club', through='PersonToClubMembership')
     team_memberships = models.ManyToManyField('Team', through='PersonToTeamMembership')
     association_memberships = models.ManyToManyField('Association', through='PersonToAssociationMembership')
     ## todo this should me models.oneTooneField but the faking factory is not capable atm to build unique relationships between person and user
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    image = ProcessedImageField(upload_to="images/persons/",
+                                           processors=[ResizeToFit(width=500,height=500)],
+                                           format='JPEG',
+                                           options={'quality': 80},blank=True, null=True)
+
+    face = ImageSpecField(source='image',
+                                processors=[DetectFaceAndResizeToFit(width=70,height=70)],
+                                format='JPEG',
+                                options={'quality': 80})
+
+
+
+
+    def image_45p_tag(self):
+        if self.face and hasattr(self.face,'url'):
+            return mark_safe('<img src="%s" style="height:70px;" />' % self.face.url)
+        else:
+            return '-'
+    image_45p_tag.short_description = 'image'
+
+    def image_500p_tag(self):
+        if self.image and hasattr(self.image,'url'):
+            return mark_safe('<img src="%s" style="max-width: 500px;" />' % self.image.url)
+        else:
+            return '-'
+    image_500p_tag.short_description = 'image'
 
     # elegibility
     @property
@@ -92,6 +129,28 @@ class Organisation(models.Model):
     founded_on = models.DateField()
     dissolved_on = models.DateField(blank=True,null=True)
     description = models.TextField(blank=True)
+    logo = models.ImageField(upload_to="images/logos/",blank=True, null=True)
+    
+    image = ProcessedImageField(upload_to="images/organisations/",
+                                           processors=[DetectFaceAndResizeToFit(width=500,height=500)],
+                                           format='JPEG',
+                                           options={'quality': 80},blank=True, null=True)
+    
+
+    def image_45p_tag(self):
+        if self.image and hasattr(self.image,'url'):
+            return mark_safe('<img src="%s" style="height:45px;" />' % self.image.url)
+        else:
+            return '-'
+    image_45p_tag.short_description = 'image'
+
+    def image_500p_tag(self):
+        if self.image and hasattr(self.image,'url'):
+            return mark_safe('<img src="%s" style="max-width: 500px;" />' % self.image.url)
+        else:
+            return '-'
+    image_500p_tag.short_description = 'image'
+
 
     @property
     def is_active(self):
@@ -226,7 +285,7 @@ class PersonToTeamMembership(Membership):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     role = models.CharField(max_length=300, choices=TEAM_ROLES, default='Player',null=True)
-    number = models.IntegerField(validators=[MinValueValidator(0)],null=True)     # TODO: should maxValue==42 ?
+    number = models.IntegerField(validators=[MinValueValidator(0)],null=True,blank=True)     # TODO: should maxValue==42 ?
 
     class Meta(Membership.Meta):
         db_table = 'pm_PersonToTeamMembership'
