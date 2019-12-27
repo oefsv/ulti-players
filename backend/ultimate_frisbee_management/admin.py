@@ -1,11 +1,17 @@
+import datetime
+import math
+import sys
+
 from django.contrib import admin
 from . import models
 from .utils import mail
-import datetime
 from datetime import date,timedelta
 from django.db.models import Count, Q
+from django.conf import settings
+
+from django.contrib.admin.options import ModelAdmin
 from guardian.admin import GuardedModelAdmin
-from guardian.shortcuts import get_objects_for_user,get_objects_for_group
+from guardian.shortcuts import get_objects_for_user,get_objects_for_group,get_perms
 # Register your models here..
 
 
@@ -17,7 +23,8 @@ class MembershipInline(admin.TabularInline):
 class Person_to_Team_Inline(MembershipInline):
     model = models.PersonToTeamMembership
     autocomplete_fields = ("person","team")
-    list_filter = autocomplete_fields
+    list_filter = autocomplete_fields  
+    #readonly_fields = ("person","team","role")
 
 class Person_to_Club_Inline(MembershipInline):
     model = models.PersonToClubMembership
@@ -94,17 +101,38 @@ class Elegible_Nationals(admin.SimpleListFilter):
             return queryset.filter(Q(persontoclubmembership__valid_until__gte=this_year)|Q(persontoclubmembership__valid_until__isnull=True)).annotate(clubs_count=Count('club_memberships')).filter(clubs_count__gte=2)
         return queryset
 
-class PersonAdmin(GuardedModelAdmin):
-    list_display = ('id','firstname', 'lastname', 'birthdate','sex', 'user',
+class CustomGuardedModelAdmin(GuardedModelAdmin):
+    def has_change_permission(self, request, obj=None):
+        if obj is not None:
+            return request.user.has_perm(f"change_{type(obj).__name__.lower()}",obj)
+        return super().has_change_permission(request, obj=obj)
+
+    def has_view_permission(self, request, obj=None):
+        if obj is not None:
+            return request.user.has_perm(f"view_{type(obj).__name__.lower()}",obj)
+        return super().has_view_permission(request, obj=obj)
+    
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None:
+            return request.user.has_perm(f"delete_{type(obj).__name__.lower()}",obj)
+        return super().has_delete_permission(request, obj=obj)
+    
+
+class PersonAdmin(CustomGuardedModelAdmin):
+    list_display = ('id','firstname', 'lastname','image_45p_tag','birthdate','sex', 'user',
         'eligibile_u17','eligibile_u20','eligibile_u24','elegible_nationals')
-    #list_editable = ('firstname', 'lastname', 'sex',)
+    readonly_fields = ['image_500p_tag']
+    # editable list fields cause huge performance issues when in debug mode
+    if not settings.DEBUG:
+        list_editable = ('firstname','lastname','sex','birthdate')
+
     list_filter = (Eligibile_u17,Eligibile_u20,Eligibile_u24,Elegible_Nationals)  
     list_display_links = ('id',)
     search_fields = ('firstname','lastname','birthdate')
     inlines = (Person_to_Team_Inline,Person_to_Club_Inline,Person_to_Association_Inline)
     actions = ['send_conflict_email']
     ordering = ('firstname','lastname','birthdate')
-
+    
     def eligibile_u17(self, obj):
         return obj.eligibile_u17
     eligibile_u17.boolean=True
@@ -117,12 +145,15 @@ class PersonAdmin(GuardedModelAdmin):
         mail.send_conflict_notification(request,queryset)
 
 
-class OrganistaionAdmin(GuardedModelAdmin):
-    list_display = ('id','name','founded_on', 'dissolved_on',)
-    list_display_links = ('id',)
+class OrganistaionAdmin(CustomGuardedModelAdmin):
+    list_display = ('name','image_45p_tag','founded_on', 'dissolved_on','members')
+    list_display_links = ('name',)
     search_fields = ('name',)
     ordering = ('name',)
-    
+    readonly_fields = ['image_500p_tag']
+    if not settings.DEBUG:
+        list_editable = ('founded_on', 'dissolved_on')
+
     def get_queryset(self, request):
         objects = get_objects_for_user(user=request.user, perms=[f'view_{self.model.__name__.lower()}', ], klass=self.model,accept_global_perms=False)
         return objects
@@ -136,19 +167,28 @@ class OrganistaionAdmin(GuardedModelAdmin):
         return form
 
 
-
 class AssociationAdmin(OrganistaionAdmin):
     inlines = (Association_to_Association_Inline,Club_to_Association_Inline,Person_to_Association_Inline)
+    
+    def members(self,obj):
+        return models.ClubToAssociationMembership.objects.filter(association=obj).count()
+    
 
 class ClubAdmin(OrganistaionAdmin):
+    list_display = OrganistaionAdmin.list_display +('votes','teams',)
     inlines = (Club_to_Association_Inline,Person_to_Club_Inline)
     ordering = ('name',)
-    fake_readonly_fields = ("name",)
-    def get_form(self, *args, **kwargs):
-        form = super(ClubAdmin, self).get_form(*args, **kwargs)
-        for field_name in self.fake_readonly_fields:
-            form.base_fields[field_name].disabled = True
-        return form
+
+
+    def members(self,obj):
+        return models.PersonToClubMembership.objects.filter(club=obj).count()
+    
+    def votes(self,obj):
+        return math.sqrt(self.members(obj))*10
+
+    def teams(self,obj):
+        return models.Team.objects.filter(club_membership=obj).count()
+
 
 class TeamAdmin(OrganistaionAdmin):
     list_display = OrganistaionAdmin.list_display +('club',)
@@ -158,8 +198,9 @@ class TeamAdmin(OrganistaionAdmin):
         if instance.club_membership:
             return instance.club_membership.name
         return None
-
     
+    def members(self,obj):
+        return models.PersonToTeamMembership.objects.filter(team=obj).count()
 
 
 admin.site.register(models.Person, PersonAdmin)
