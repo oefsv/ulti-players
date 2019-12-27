@@ -1,12 +1,9 @@
+from importlib import import_module
+import os
 from .base import *
-from .production import *
 
-try:
-    from .test import *
-except:
-    pass
+environment = os.getenv("ENVIRONMENT", "base")
+l = locals()
+d = import_module(f"ultimate_frisbee_management.settings.{environment}").__dict__
 
-try:
-    from .dev import *
-except:
-    pass
+l.update(d)
