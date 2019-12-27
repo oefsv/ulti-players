@@ -1,0 +1,476 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+	<title></title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<br />
+	<style type="text/css">
+		p {
+			margin: 0;
+			padding: 0;
+		}
+
+		.ft10 {
+			font-size: 14px;
+			font-family: Times;
+			color: #000000;
+		}
+
+		.ft11 {
+			font-size: 10px;
+			font-family: Times;
+			color: #000080;
+		}
+
+		.ft12 {
+			font-size: 10px;
+			font-family: Times;
+			color: #000000;
+		}
+
+		.ft13 {
+			font-size: 10px;
+			font-family: Times;
+			color: #0000ff;
+		}
+
+		.ft14 {
+			font-size: 14px;
+			font-family: Times;
+			color: #000000;
+		}
+
+		.ft15 {
+			font-size: 14px;
+			font-family: Times;
+			color: #000080;
+		}
+
+		.ft16 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(-0.0287355612, 1.0287355612, -1.0287355612, -0.0287355612, 0, 0);
+			-webkit-transform: matrix(-0.0287355612, 1.0287355612, -1.0287355612, -0.0287355612, 0, 0);
+			-o-transform: matrix(-0.0287355612, 1.0287355612, -1.0287355612, -0.0287355612, 0, 0);
+			-ms-transform: matrix(-0.0287355612, 1.0287355612, -1.0287355612, -0.0287355612, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft17 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(0.1093573339, 0.8906426661, -0.8906426661, 0.1093573339, 0, 0);
+			-webkit-transform: matrix(0.1093573339, 0.8906426661, -0.8906426661, 0.1093573339, 0, 0);
+			-o-transform: matrix(0.1093573339, 0.8906426661, -0.8906426661, 0.1093573339, 0, 0);
+			-ms-transform: matrix(0.1093573339, 0.8906426661, -0.8906426661, 0.1093573339, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft18 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(0.2636539259, 0.7363460741, -0.7363460741, 0.2636539259, 0, 0);
+			-webkit-transform: matrix(0.2636539259, 0.7363460741, -0.7363460741, 0.2636539259, 0, 0);
+			-o-transform: matrix(0.2636539259, 0.7363460741, -0.7363460741, 0.2636539259, 0, 0);
+			-ms-transform: matrix(0.2636539259, 0.7363460741, -0.7363460741, 0.2636539259, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft19 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(0.4562580297, 0.5437419703, -0.5437419703, 0.4562580297, 0, 0);
+			-webkit-transform: matrix(0.4562580297, 0.5437419703, -0.5437419703, 0.4562580297, 0, 0);
+			-o-transform: matrix(0.4562580297, 0.5437419703, -0.5437419703, 0.4562580297, 0, 0);
+			-ms-transform: matrix(0.4562580297, 0.5437419703, -0.5437419703, 0.4562580297, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft110 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(0.6255905512, 0.3744094488, -0.3744094488, 0.6255905512, 0, 0);
+			-webkit-transform: matrix(0.6255905512, 0.3744094488, -0.3744094488, 0.6255905512, 0, 0);
+			-o-transform: matrix(0.6255905512, 0.3744094488, -0.3744094488, 0.6255905512, 0, 0);
+			-ms-transform: matrix(0.6255905512, 0.3744094488, -0.3744094488, 0.6255905512, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft111 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(0.8488020209, 0.1511979791, -0.1511979791, 0.8488020209, 0, 0);
+			-webkit-transform: matrix(0.8488020209, 0.1511979791, -0.1511979791, 0.8488020209, 0, 0);
+			-o-transform: matrix(0.8488020209, 0.1511979791, -0.1511979791, 0.8488020209, 0, 0);
+			-ms-transform: matrix(0.8488020209, 0.1511979791, -0.1511979791, 0.8488020209, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft112 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+		}
+
+		.ft113 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(1.1881842023, -0.1881842023, 0.1881842023, 1.1881842023, 0, 0);
+			-webkit-transform: matrix(1.1881842023, -0.1881842023, 0.1881842023, 1.1881842023, 0, 0);
+			-o-transform: matrix(1.1881842023, -0.1881842023, 0.1881842023, 1.1881842023, 0, 0);
+			-ms-transform: matrix(1.1881842023, -0.1881842023, 0.1881842023, 1.1881842023, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft114 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(1.4094965507, -0.4094965507, 0.4094965507, 1.4094965507, 0, 0);
+			-webkit-transform: matrix(1.4094965507, -0.4094965507, 0.4094965507, 1.4094965507, 0, 0);
+			-o-transform: matrix(1.4094965507, -0.4094965507, 0.4094965507, 1.4094965507, 0, 0);
+			-ms-transform: matrix(1.4094965507, -0.4094965507, 0.4094965507, 1.4094965507, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft115 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(1.7131060845, -0.7131060845, 0.7131060845, 1.7131060845, 0, 0);
+			-webkit-transform: matrix(1.7131060845, -0.7131060845, 0.7131060845, 1.7131060845, 0, 0);
+			-o-transform: matrix(1.7131060845, -0.7131060845, 0.7131060845, 1.7131060845, 0, 0);
+			-ms-transform: matrix(1.7131060845, -0.7131060845, 0.7131060845, 1.7131060845, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft116 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(2.5987978275, -1.5987978275, 1.5987978275, 2.5987978275, 0, 0);
+			-webkit-transform: matrix(2.5987978275, -1.5987978275, 1.5987978275, 2.5987978275, 0, 0);
+			-o-transform: matrix(2.5987978275, -1.5987978275, 1.5987978275, 2.5987978275, 0, 0);
+			-ms-transform: matrix(2.5987978275, -1.5987978275, 1.5987978275, 2.5987978275, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft117 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(9.1713548704, -8.1713548704, 8.1713548704, 9.1713548704, 0, 0);
+			-webkit-transform: matrix(9.1713548704, -8.1713548704, 8.1713548704, 9.1713548704, 0, 0);
+			-o-transform: matrix(9.1713548704, -8.1713548704, 8.1713548704, 9.1713548704, 0, 0);
+			-ms-transform: matrix(9.1713548704, -8.1713548704, 8.1713548704, 9.1713548704, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft118 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(4.7893906379, -5.7893906379, 5.7893906379, 4.7893906379, 0, 0);
+			-webkit-transform: matrix(4.7893906379, -5.7893906379, 5.7893906379, 4.7893906379, 0, 0);
+			-o-transform: matrix(4.7893906379, -5.7893906379, 5.7893906379, 4.7893906379, 0, 0);
+			-ms-transform: matrix(4.7893906379, -5.7893906379, 5.7893906379, 4.7893906379, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft119 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(1.4473699175, -2.4473699175, 2.4473699175, 1.4473699175, 0, 0);
+			-webkit-transform: matrix(1.4473699175, -2.4473699175, 2.4473699175, 1.4473699175, 0, 0);
+			-o-transform: matrix(1.4473699175, -2.4473699175, 2.4473699175, 1.4473699175, 0, 0);
+			-ms-transform: matrix(1.4473699175, -2.4473699175, 2.4473699175, 1.4473699175, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft120 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(0.5821069135, -1.5821069135, 1.5821069135, 0.5821069135, 0, 0);
+			-webkit-transform: matrix(0.5821069135, -1.5821069135, 1.5821069135, 0.5821069135, 0, 0);
+			-o-transform: matrix(0.5821069135, -1.5821069135, 1.5821069135, 0.5821069135, 0, 0);
+			-ms-transform: matrix(0.5821069135, -1.5821069135, 1.5821069135, 0.5821069135, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft121 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(0.2035692052, -1.2035692052, 1.2035692052, 0.2035692052, 0, 0);
+			-webkit-transform: matrix(0.2035692052, -1.2035692052, 1.2035692052, 0.2035692052, 0, 0);
+			-o-transform: matrix(0.2035692052, -1.2035692052, 1.2035692052, 0.2035692052, 0, 0);
+			-ms-transform: matrix(0.2035692052, -1.2035692052, 1.2035692052, 0.2035692052, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft122 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(-0.0205168498, -0.9794831502, 0.9794831502, -0.0205168498, 0, 0);
+			-webkit-transform: matrix(-0.0205168498, -0.9794831502, 0.9794831502, -0.0205168498, 0, 0);
+			-o-transform: matrix(-0.0205168498, -0.9794831502, 0.9794831502, -0.0205168498, 0, 0);
+			-ms-transform: matrix(-0.0205168498, -0.9794831502, 0.9794831502, -0.0205168498, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft123 {
+			font-size: 71px;
+			font-family: Times;
+			color: #fdfdfd;
+		}
+
+		.ft124 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(3.5721496954, -4.5721496954, 4.5721496954, 3.5721496954, 0, 0);
+			-webkit-transform: matrix(3.5721496954, -4.5721496954, 4.5721496954, 3.5721496954, 0, 0);
+			-o-transform: matrix(3.5721496954, -4.5721496954, 4.5721496954, 3.5721496954, 0, 0);
+			-ms-transform: matrix(3.5721496954, -4.5721496954, 4.5721496954, 3.5721496954, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft125 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(32.3190819082, -31.3190819082, 31.3190819082, 32.3190819082, 0, 0);
+			-webkit-transform: matrix(32.3190819082, -31.3190819082, 31.3190819082, 32.3190819082, 0, 0);
+			-o-transform: matrix(32.3190819082, -31.3190819082, 31.3190819082, 32.3190819082, 0, 0);
+			-ms-transform: matrix(32.3190819082, -31.3190819082, 31.3190819082, 32.3190819082, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft126 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(3.5202182007, -2.5202182007, 2.5202182007, 3.5202182007, 0, 0);
+			-webkit-transform: matrix(3.5202182007, -2.5202182007, 2.5202182007, 3.5202182007, 0, 0);
+			-o-transform: matrix(3.5202182007, -2.5202182007, 2.5202182007, 3.5202182007, 0, 0);
+			-ms-transform: matrix(3.5202182007, -2.5202182007, 2.5202182007, 3.5202182007, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft127 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(2.0207602273, -1.0207602273, 1.0207602273, 2.0207602273, 0, 0);
+			-webkit-transform: matrix(2.0207602273, -1.0207602273, 1.0207602273, 2.0207602273, 0, 0);
+			-o-transform: matrix(2.0207602273, -1.0207602273, 1.0207602273, 2.0207602273, 0, 0);
+			-ms-transform: matrix(2.0207602273, -1.0207602273, 1.0207602273, 2.0207602273, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft128 {
+			font-size: 15px;
+			font-family: Times;
+			color: #3a421d;
+			-moz-transform: matrix(1.5389130754, -0.5389130754, 0.5389130754, 1.5389130754, 0, 0);
+			-webkit-transform: matrix(1.5389130754, -0.5389130754, 0.5389130754, 1.5389130754, 0, 0);
+			-o-transform: matrix(1.5389130754, -0.5389130754, 0.5389130754, 1.5389130754, 0, 0);
+			-ms-transform: matrix(1.5389130754, -0.5389130754, 0.5389130754, 1.5389130754, 0, 0);
+			-moz-transform-origin: left 75%;
+			-webkit-transform-origin: left 75%;
+			-o-transform-origin: left 75%;
+			-ms-transform-origin: left 75%;
+		}
+
+		.ft129 {
+			font-size: 12px;
+			font-family: Times;
+			color: #000000;
+		}
+
+		.ft130 {
+			font-size: 12px;
+			font-family: Times;
+			color: #000000;
+		}
+
+		.ft131 {
+			font-size: 16px;
+			font-family: Times;
+			color: #000000;
+		}
+
+		.ft132 {
+			font-size: 10px;
+			line-height: 15px;
+			font-family: Times;
+			color: #000000;
+		}
+
+		.ft133 {
+			font-size: 12px;
+			line-height: 18px;
+			font-family: Times;
+			color: #000000;
+		}
+
+		.ft134 {
+			font-size: 12px;
+			line-height: 18px;
+			font-family: Times;
+			color: #000000;
+		}
+	</style>
+</head>
+
+<body vlink="blue" link="blue">
+	<div id="page1-div" style="position:relative;width:892px;height:1262px;">
+		<img width="892" height="1262" src="{% static 'ultimate_frisbee_management/img/background_invoice.jpg' %}"
+			alt="background image" />
+		<p style="position:absolute;top:53px;left:114px;white-space:nowrap" class="ft10">
+			<b>ÖSTERREICHISCHER&#160;FRISBEE-SPORT&#160;VERBAND</b></p>
+		<p style="position:absolute;top:58px;left:556px;white-space:nowrap" class="ft11"><b>&#160;</b></p>
+		<p style="position:absolute;top:73px;left:114px;white-space:nowrap" class="ft132">
+			Linzackerg.&#160;5/3&#160;<br />1130&#160;Wien&#160;</p>
+		<p style="position:absolute;top:105px;left:114px;white-space:nowrap" class="ft13"><a
+				href="http://www.oefsv.at/">www.oefsv.at</a></p>
+		<p style="position:absolute;top:105px;left:196px;white-space:nowrap" class="ft12"><a
+				href="http://www.oefsv.at/">&#160;</a></p>
+		<p style="position:absolute;top:132px;left:114px;white-space:nowrap" class="ft12">ZVR-Zahl:&#160;297193118&#160;
+		</p>
+		<p style="position:absolute;top:160px;left:114px;white-space:nowrap" class="ft14">&#160;</p>
+		<p style="position:absolute;top:195px;left:844px;white-space:nowrap" class="ft15"><b>&#160;</b></p>
+		<p style="position:absolute;top:211px;left:106px;white-space:nowrap" class="ft14">&#160;</p>
+		<p style="position:absolute;top:1198px;left:714px;white-space:nowrap" class="ft14">&#160;</p>
+		<p style="position:absolute;top:105px;left:678px;white-space:nowrap" class="ft16">F</p>
+		<p style="position:absolute;top:117px;left:678px;white-space:nowrap" class="ft17">ris</p>
+		<p style="position:absolute;top:141px;left:684px;white-space:nowrap" class="ft18">b</p>
+		<p style="position:absolute;top:152px;left:690px;white-space:nowrap" class="ft19">ee</p>
+		<p style="position:absolute;top:169px;left:708px;white-space:nowrap" class="ft110">-Sport&#160;Ve</p>
+		<p style="position:absolute;top:158px;left:796px;white-space:nowrap" class="ft118">rb</p>
+		<p style="position:absolute;top:140px;left:808px;white-space:nowrap" class="ft120">a</p>
+		<p style="position:absolute;top:129px;left:812px;white-space:nowrap" class="ft121">n</p>
+		<p style="position:absolute;top:116px;left:814px;white-space:nowrap" class="ft122">d</p>
+		<p style="position:absolute;top:110px;left:749px;white-space:nowrap" class="ft123"><b>F</b></p>
+		<p style="position:absolute;top:81px;left:698px;white-space:nowrap" class="ft124">st</p>
+		<p style="position:absolute;top:69px;left:709px;white-space:nowrap" class="ft126">err</p>
+		<p style="position:absolute;top:57px;left:730px;white-space:nowrap" class="ft113">eichisch</p>
+		<p style="position:absolute;top:78px;left:791px;white-space:nowrap" class="ft19">er</p>
+		<p style="position:absolute;top:228px;left:106px;white-space:nowrap" class="ft134">
+			&#160;<br /><b>&#160;<br />SPORTUNION&#160;Ultimate&#160;Vienna&#160;<br />Bujattigasse&#160;3/B/4&#160;<br />1140&#160;Wien&#160;<br />&#160;<br />&#160;<br />&#160;<br />&#160;<br />&#160;<br />&#160;</b>
+		</p>
+		<p style="position:absolute;top:428px;left:106px;white-space:nowrap" class="ft131">
+			<b>RECHNUNG&#160;A16&#160;</b></p>
+		<p style="position:absolute;top:450px;left:106px;white-space:nowrap" class="ft134">
+			<b>vom&#160;04.06.2018&#160;<br />&#160;</b></p>
+		<p style="position:absolute;top:487px;left:114px;white-space:nowrap" class="ft130">
+			<b>Pos&#160;&#160;Bezeichnung&#160;</b></p>
+		<p style="position:absolute;top:487px;left:444px;white-space:nowrap" class="ft130">
+			<b>Menge&#160;&#160;Einh&#160;</b></p>
+		<p style="position:absolute;top:487px;left:587px;white-space:nowrap" class="ft130">
+			<b>Preis&#160;&#160;Gesamt&#160;&#160;&#160;</b></p>
+		<p style="position:absolute;top:525px;left:114px;white-space:nowrap" class="ft129">1&#160;</p>
+		<p style="position:absolute;top:525px;left:165px;white-space:nowrap" class="ft129">
+			Verbandsabgabe&#160;2018&#160;</p>
+		<p style="position:absolute;top:525px;left:455px;white-space:nowrap" class="ft129">67,00&#160;&#160;Stk&#160;
+		</p>
+		<p style="position:absolute;top:525px;left:586px;white-space:nowrap" class="ft129">
+			20,00&#160;&#160;1340,00&#160;&#160;EUR&#160;</p>
+		<p style="position:absolute;top:543px;left:114px;white-space:nowrap" class="ft129">&#160;</p>
+		<p style="position:absolute;top:543px;left:165px;white-space:nowrap" class="ft129">&#160;</p>
+		<p style="position:absolute;top:543px;left:499px;white-space:nowrap" class="ft129">&#160;&#160;&#160;</p>
+		<p style="position:absolute;top:543px;left:630px;white-space:nowrap" class="ft129">&#160;</p>
+		<p style="position:absolute;top:543px;left:713px;white-space:nowrap" class="ft129">&#160;&#160;&#160;</p>
+		<p style="position:absolute;top:561px;left:114px;white-space:nowrap" class="ft129">&#160;</p>
+		<p style="position:absolute;top:561px;left:165px;white-space:nowrap" class="ft129">Liebe&#160;Vereine!&#160;</p>
+		<p style="position:absolute;top:580px;left:114px;white-space:nowrap" class="ft133">&#160;<br />&#160;</p>
+		<p style="position:absolute;top:598px;left:165px;white-space:nowrap" class="ft133">
+			Auf&#160;der&#160;Generalversammlung&#160;des&#160;Österreichischen&#160;Frisbee-Sport&#160;<br />Verbandes&#160;vom
+			04.03.2017
+			wurde&#160;die&#160;Einführung&#160;einer&#160;<br />Verbandsabgabe&#160;beschlossen.&#160;Mit&#160;Umlaufbeschluss&#160;vom
+			23.10.2017&#160;<br />wurde&#160;die&#160;Höhe&#160;der&#160;Verbandsabgabe&#160;auf&#160;20,00&#160;EUR&#160;pro&#160;Spieler/in&#160;und&#160;<br />Jahr&#160;festgesetzt.&#160;<br />&#160;<br />Euer&#160;Verein&#160;hat&#160;lt.&#160;Angaben&#160;67&#160;aktive&#160;Mitglieder.&#160;Daraus&#160;ergibt&#160;sich
+			die&#160;&#160;<br />&#160;<br /><b>Verbandsabgabe&#160;für&#160;das&#160;Jahr&#160;2018&#160;in&#160;Höhe&#160;von&#160;€&#160;1340,-.&#160;<br /></b>&#160;<br />Wir&#160;ersuchen&#160;um&#160;Überweisung&#160;auf&#160;unser&#160;Konto&#160;bis&#160;zum&#160;<b>22.06.2018</b>:&#160;<br />IBAN&#160;AT19
+			6000&#160;0000&#160;7786
+			8402&#160;<br />BIC&#160;&#160;&#160;BAWAATWW&#160;<br />&#160;<br />Als&#160;Verwendungszweck&#160;bitte&#160;die&#160;Rechnungsnummer&#160;angeben.&#160;<br />&#160;<br />Vielen&#160;Dank!&#160;<br />&#160;<br />&#160;<br />Herzliche&#160;Grüße&#160;<br />&#160;<br />Mag.&#160;Gerhard&#160;Petz&#160;<br />Finanzreferent&#160;<br />&#160;
+		</p>
+		<p style="position:absolute;top:598px;left:730px;white-space:nowrap" class="ft129">&#160;</p>
+		<p style="position:absolute;top:616px;left:114px;white-space:nowrap" class="ft129">&#160;</p>
+		<p style="position:absolute;top:616px;left:730px;white-space:nowrap" class="ft129">&#160;</p>
+		<p style="position:absolute;top:1036px;left:106px;white-space:nowrap" class="ft129">&#160;</p>
+	</div>
+</body>
+
+</html>
