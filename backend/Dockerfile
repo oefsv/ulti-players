@@ -1,5 +1,9 @@
 FROM python:3 as install
 
+# for image recognition
+RUN apt update -y && \
+    apt install cmake -y
+
 RUN pip install --upgrade pip
 RUN pip install pipenv
 WORKDIR /workspace
