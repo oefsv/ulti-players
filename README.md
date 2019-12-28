@@ -10,7 +10,6 @@ Is a container stack defined in `docker-compose`.
 it is a django application with a posgresql database backend, managed via gunicorn and served via nginx.
 
 ## Tests
-on the test instance you can find test coverage reports at `/tests/index.html` and test report under `tests/report.htm`
 
 ## Testing Locally
 You can set up your local test environment.
@@ -27,8 +26,11 @@ You can set up your local test environment.
     docker exec -it ulti-players_django_1 bash -c "python manage.py shell < ultimate_frisbee_management/utils/import_from_google_sheet.py"
     ``` 
     This takes about 10 minutes. progress (loaded objects) should be visible in the webapp
-
-
+3. run automated tests: 
+   ```
+   docker exec -it ulti-players_django_1 bash -c "pytest"
+   ```
+   the results are available under on the test instance you can find test coverage reports at `localhost:8080/tests/index.html` and test report under `localhost:8080/tests/report.html`
 
 
 # Frontend
