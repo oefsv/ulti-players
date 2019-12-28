@@ -28,6 +28,7 @@ numpy
 #Testing
 pytest-django
 pytest-cov
+pytest-html
 mixer
 gunicorn
 
