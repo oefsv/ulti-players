@@ -1,0 +1,35 @@
+
+gspread
+oauth2client
+python-dateutil
+django-viewflow
+django-rest-swagger
+django-filter
+djangorestframework
+django-rest-auth
+django-seed
+django-debug-toolbar
+django-guardian
+django-sesame
+django-imagekit
+Django
+django_polymorphic
+pillow 
+psycopg2-binary
+
+# services
+## pdf creation from html
+xhtml2pdf
+
+## image recognition
+face_recognition
+numpy 
+
+#Testing
+pytest-django
+pytest-cov
+mixer
+gunicorn
+
+#misc
+Markdown
