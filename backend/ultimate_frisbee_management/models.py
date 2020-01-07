@@ -129,27 +129,24 @@ class Organisation(models.Model):
     founded_on = models.DateField()
     dissolved_on = models.DateField(blank=True,null=True)
     description = models.TextField(blank=True)
-    logo = models.ImageField(upload_to="images/logos/",blank=True, null=True)
-    
-    image = ProcessedImageField(upload_to="images/organisations/",
-                                           processors=[DetectFaceAndResizeToFit(width=500,height=500)],
+    logo = ProcessedImageField(upload_to="images/logos/",
+                                           processors=[ResizeToFit(width=500,height=500)],
                                            format='JPEG',
                                            options={'quality': 80},blank=True, null=True)
-    
 
     def image_45p_tag(self):
-        if self.image and hasattr(self.image,'url'):
-            return mark_safe('<img src="%s" style="height:45px;" />' % self.image.url)
+        if self.logo and hasattr(self.logo,'url'):
+            return mark_safe('<img src="%s" style="height:45px;" />' % self.logo.url)
         else:
             return '-'
-    image_45p_tag.short_description = 'image'
+    image_45p_tag.short_description = 'logo'
 
     def image_500p_tag(self):
-        if self.image and hasattr(self.image,'url'):
-            return mark_safe('<img src="%s" style="max-width: 500px;" />' % self.image.url)
+        if self.logo and hasattr(self.logo,'url'):
+            return mark_safe('<img src="%s" style="max-width: 500px;" />' % self.logo.url)
         else:
             return '-'
-    image_500p_tag.short_description = 'image'
+    image_500p_tag.short_description = 'logo'
 
 
     @property
