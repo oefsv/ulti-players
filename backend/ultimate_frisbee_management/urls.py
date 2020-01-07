@@ -58,13 +58,12 @@ def protected_serve(request, path, document_root=None, show_indexes=False):
 
 urlpatterns = [
 
-    path('',admin.site.urls),
+    path('',admin.site.urls,name="admin"),
     path('api/', views.api_root),  # root api view. routes to the submodules
     path('api/auth/', views.rest_auth_root,name="auth_root"), # hack because rest-auth does not provide root view
     path('api/auth/', include(('rest_auth.urls','rest_auth'), namespace="rest_auth")),
     path('api/iam/',  include(router.urls)),  # identity and access management users, groups etc..
     path('api/ultimate_frisbee_management/',  include(ultimate_frisbee_management_router.urls)),
-    path('admin/', admin.site.urls, name='admin'),
     path('deeplink/<str:model_name>/<int:id>/',views.DeepLinkView.as_view()),
     path('pdf/<str:template>',views.GeneratePdf.as_view()),
     path('tmp/<str:template>',views.dummyHtml.as_view()),
