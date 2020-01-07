@@ -31,13 +31,14 @@ permissions= {
 def assign_permissions_based_on_membership(instances, permission_source_obj):
     permission_prefix= permission_source_obj.__class__.__name__.lower()
 
-    for role,model_permissions in permissions[permission_prefix].items():
-        group = Group.objects.get_or_create(name=f"{permission_prefix}_{role}_{permission_source_obj.name}")[0]
+    if permission_prefix in permissions:
+        for role,model_permissions in permissions[permission_prefix].items():
+            group = Group.objects.get_or_create(name=f"{permission_prefix}_{role}_{permission_source_obj.name}")[0]
 
-        for obj in instances:
-            for permission in model_permissions[obj.__class__]:
-                p = f"{permission}_{obj.__class__.__name__.lower()}"
-                assign_perm(p,group,obj)
+            for obj in instances:
+                for permission in model_permissions[obj.__class__]:
+                    p = f"{permission}_{obj.__class__.__name__.lower()}"
+                    assign_perm(p,group,obj)
 
 def delete_permissions_for_organisation(instances, permission_source_obj):
     permission_prefix= permission_source_obj.__class__.__name__.lower()
