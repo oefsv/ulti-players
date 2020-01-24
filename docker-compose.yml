@@ -17,7 +17,7 @@ services:
       - ./backend:/workspace
       - ./backend/credentials:/etc/credentials
     environment:
-      - ENVIRONMENT=testing
+      - ENVIRONMENT=production
   nginx:
     image: nginx:alpine
     ports:

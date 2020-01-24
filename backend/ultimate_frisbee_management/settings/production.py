@@ -27,16 +27,6 @@ except FileNotFoundError as e:
     with open(secret_key_file,"w+") as f:
         f.write(SECRET_KEY)
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'db', # set in docker-compose.yml
-        'PORT': 5432 # default postgres port
-    }
-}
-
 # Email settings
 EMAIL_HOST_USER = 'm04b2882'
 EMAIL_HOST_PASSWORD = ""
