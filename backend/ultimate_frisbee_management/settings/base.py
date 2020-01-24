@@ -28,7 +28,8 @@ ALLOWED_HOSTS = ['venv.hbqg3zr3a3.us-west-2.elasticbeanstalk.com',
                  'django',
                  '62.178.108.138',
                  'frisbee-db.flokain.com',
-                 'frisbee-db-test.oefsv.at']
+                 'frisbee-db-test.oefsv.at',
+                 '159.69.181.225']
 
 # Application definition
 
