@@ -13,6 +13,20 @@ from django.contrib.auth.models import User
 
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+
+# create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# add formatter to ch
+ch.setFormatter(formatter)
+
+# add ch to logger
+logger.addHandler(ch)
 
 SCOPES = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
@@ -119,7 +133,7 @@ def get_player_data(gsheet: gspread.Worksheet):
             logger.info("mitgliedschaft besteht bereits.")
             continue
 
-        role= row[h.index("club_membership_role")],
+        role= row[h.index("club_membership_role")]
         if role == "":
             role = "Member"
 
