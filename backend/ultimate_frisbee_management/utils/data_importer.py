@@ -41,7 +41,7 @@ def get_google_sheet(spreadsheet_id, range_name) -> gspread.Worksheet:
     # time.
     creds = ServiceAccountCredentials.from_json_keyfile_name('/etc/credentials/google_drive_credentials.json', SCOPES)  
     client = gspread.authorize(creds)
-    return client.open_by_key(spreadsheet_id).sheet1
+    return client.open_by_key(spreadsheet_id).worksheet(range_name)
  
 
 
