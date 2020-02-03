@@ -120,7 +120,7 @@ class CustomGuardedModelAdmin(GuardedModelAdmin):
 
 class PersonAdmin(CustomGuardedModelAdmin):
     list_display = ('id','firstname', 'lastname','image_45p_tag','birthdate','sex', 'user',
-        'eligibile_u17','eligibile_u20','eligibile_u24','elegible_nationals')
+        'u17','u20','u24','nationals')
     readonly_fields = ['image_500p_tag']
     # editable list fields cause huge performance issues when in debug mode
     if not settings.DEBUG:
@@ -133,13 +133,21 @@ class PersonAdmin(CustomGuardedModelAdmin):
     actions = ['send_conflict_email']
     ordering = ('firstname','lastname','birthdate')
     
-    def eligibile_u17(self, obj):
-        return obj.eligibile_u17
-    eligibile_u17.boolean=True
+    def u20(self, obj):
+        return obj.eligibile_u20
+    u20.boolean=True
 
-    def elegible_nationals(self, instance):
+    def u17(self, obj):
+        return obj.eligibile_u17
+    u17.boolean=True
+
+    def u24(self, obj):
+        return obj.eligibile_u24
+    u24.boolean=True
+
+    def nationals(self, instance):
         return instance.eligibile_nationals
-    elegible_nationals.boolean= True
+    nationals.boolean= True
 
     def send_conflict_email(self, request, queryset):
         mail.send_conflict_notification(request,queryset)
