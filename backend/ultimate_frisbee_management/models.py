@@ -40,7 +40,7 @@ class Person(models.Model):
     club_memberships = models.ManyToManyField('Club', through='PersonToClubMembership')
     team_memberships = models.ManyToManyField('Team', through='PersonToTeamMembership')
     association_memberships = models.ManyToManyField('Association', through='PersonToAssociationMembership')
-    ## todo this should me models.oneTooneField but the faking factory is not capable atm to build unique relationships between person and user
+    ## todo this should be models.oneTooneField but the faking factory is not capable atm to build unique relationships between person and user
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     image = ProcessedImageField(upload_to="images/persons/",
@@ -242,9 +242,8 @@ class Membership(models.Model):
 class PersonToAssociationMembership(Membership):
     ASSOCIATION_ROLES = (
         ['President'] * 2,
-        ['Vicepresident'] * 2,
         ['Treasurer'] * 2,
-        ['Secretary'] * 2,
+        ['Boardmember'] * 2,
     )   # there are no member roles since members are clubs
 
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
@@ -259,9 +258,8 @@ class PersonToAssociationMembership(Membership):
 class PersonToClubMembership(Membership):
     ASSOCIATION_ROLES = (
         ['President'] * 2,
-        ['Vicepresident'] * 2,
         ['Treasurer'] * 2,
-        ['Secretary'] * 2,
+        ['Boardmember'] * 2,
         ['Member'] * 2,
     )
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
