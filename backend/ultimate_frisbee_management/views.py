@@ -72,7 +72,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAdminUser,)
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -80,6 +80,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
 
@@ -89,6 +90,7 @@ def index(response):
 
 class IndexView(generic.TemplateView):
     template_name = 'player_management/index.html'
+    permission_classes = [permissions.IsAdminUser]
 
 
 
@@ -99,6 +101,7 @@ class managedClubViewset(viewsets.ModelViewSet):
     current user is managing. it filters out all the clubs the person is managing
     """
     serializer_class = serializers.ClubSerializer
+    permission_classes = [permissions.IsAdminUser]
     def get_queryset(self):
         user = self.request.user
         person = pm.Club.objects.filter(~Q(persontoclubmembership__role = 'member'), persontoclubmembership__person__user=user)
@@ -111,7 +114,7 @@ class PersonalClubViewset(viewsets.ModelViewSet):
     current user is managing.
     """
     serializer_class = serializers.ClubSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAdminUser,)
 
     def get_queryset(self):
         user = self.request.user
@@ -125,6 +128,7 @@ class PersonViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.Person.objects.all()
     serializer_class = serializers.PersonSerializer
+    permission_classes = [permissions.IsAdminUser]
     # permission_classes = (permissions.IsAuthenticated,)
 
     # def retrieve(self, request, pk=None, *args, **kwargs):
@@ -144,6 +148,7 @@ class AssociationViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.Association.objects.all()
     serializer_class = serializers.AssociationSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 class ClubViewSet(viewsets.ModelViewSet):
     """
@@ -151,7 +156,7 @@ class ClubViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.Club.objects.all()
     serializer_class = serializers.ClubSerializer
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = [permissions.IsAdminUser]
 
 
 class TeamViewSet(viewsets.ModelViewSet):
@@ -160,7 +165,7 @@ class TeamViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.Team.objects.all()
     serializer_class = serializers.TeamSerializer
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = [permissions.IsAdminUser]
 
 
 class PersonToAssociationMembershipViewSet(viewsets.ModelViewSet):
@@ -170,6 +175,7 @@ class PersonToAssociationMembershipViewSet(viewsets.ModelViewSet):
 
     queryset = pm.PersonToAssociationMembership.objects.all()
     serializer_class = serializers.PersonToAssociationMembershipSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
 class PersonToClubMembershipViewSet(viewsets.ModelViewSet):
@@ -178,6 +184,7 @@ class PersonToClubMembershipViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.PersonToClubMembership.objects.all()
     serializer_class = serializers.PersonToClubMembershipSerializer
+    permission_classes = [permissions.IsAdminUser]
 
     @flow_start_view
     def create(self, request, *args, **kwargs):
@@ -190,6 +197,7 @@ class PersonToTeamMembershipViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.PersonToTeamMembership.objects.all()
     serializer_class = serializers.PersonToTeamMembershipSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
 class ClubToAssociationMembershipViewSet(viewsets.ModelViewSet):
@@ -198,6 +206,7 @@ class ClubToAssociationMembershipViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.ClubToAssociationMembership.objects.all()
     serializer_class = serializers.ClubToAssociationMembershipSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
 class AssociationToAssociationMembershipViewSet(viewsets.ModelViewSet):
@@ -206,6 +215,7 @@ class AssociationToAssociationMembershipViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.AssociationToAssociationMembership.objects.all()
     serializer_class = serializers.AssociationToAssociationMembershipSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
 
@@ -216,6 +226,7 @@ from django.template.loader import get_template
 from .utils.pdf import render_to_pdf #created in step 4
 
 class GeneratePdf(View):
+    permission_classes = [permissions.IsAdminUser]
     def get(self, request, template):
         data = {
              'today': datetime.date.today(), 
@@ -228,6 +239,7 @@ class GeneratePdf(View):
         return HttpResponse(pdf, content_type='application/pdf')
 
 class dummyHtml(View):
+    permission_classes = [permissions.IsAdminUser]
     def get(self, request, template):
         data = {
              'today': datetime.date.today(), 
