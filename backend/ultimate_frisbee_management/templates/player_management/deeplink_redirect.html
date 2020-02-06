@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<html>
+
+<head>
+    <meta http-equiv="refresh" content="10;url={% url 'admin:login' %}">
+</head>
+
+<body>
+    <h1>
+        <p>Success! your data has been updated</p>
+        <p>After 10 seconds you will be redirected to the main page</p>
+    </h1>
+</body>
+
+</html>
+{% endblock content%}
