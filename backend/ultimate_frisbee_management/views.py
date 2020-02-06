@@ -1,6 +1,7 @@
 from _ast import Import
 import datetime
 
+from django.contrib.auth import logout
 from django.db.models import Q
 from django.shortcuts import render
 from django.views import generic, View
@@ -39,7 +40,9 @@ class DeepLinkView(LoginRequiredMixin,View):
        # if f'change_{model_name.lower()}'in get_perms(request.user,instance):
         instance.valid_until = request.GET['valid-until']    
         instance.save()
-        return HttpResponse("its done")
+        logout(request)
+        return render(request, 'player_management/deeplink_redirect.html', {})
+
       #  else:
       #      return HttpResponseForbidden('you dont have permission (anymore) to do this.')
 
