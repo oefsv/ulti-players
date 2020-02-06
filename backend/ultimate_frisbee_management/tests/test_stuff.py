@@ -12,6 +12,8 @@ from rest_framework import status
 
 from django.conf import settings
 from django.urls import URLResolver, URLPattern, exceptions
+from django.core.mail import send_mail
+from django.test.utils import override_settings    
 
 
 logger = logging.getLogger(__name__)
@@ -34,6 +36,18 @@ def get_all_view_names(urlpatterns,namespace=None):
                     name = namespace + ":" + name
                 detail_views_list.append(name)
 
+
+@override_settings(EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend')
+class TestEmailVerification(TestCase):
+    def test_email_simple():
+        send_mail(
+        'test_email_simple from django',
+        'Here is the message.',
+        'flokain11@gmail.com',
+        ['flokain11@gmail.com'],
+        fail_silently=False,
+        assert False
+    )
 
 class testApiStartSession(TestCase):
 
