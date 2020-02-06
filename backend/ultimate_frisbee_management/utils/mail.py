@@ -14,7 +14,6 @@ from ..models import Person,PersonToClubMembership
 from _datetime import date
 
 
-
 def send_conflict_notification(request, persons: QuerySet ):
     connection = mail.get_connection()
 
@@ -32,16 +31,18 @@ def send_conflict_notification(request, persons: QuerySet ):
                 'person': p,
                 'club_memberships': club_memberships,
                 'last_year': last_year,
+                'request':request
             }
-            messages.append( 
-                mail.EmailMessage(
+            msg = mail.EmailMessage(
                     subject=f'Konflikt bei der Vereinsmeldung von {p.firstname} {p.lastname}',
                     body= templates[0].render(context),
                     to= [p.user.email],
                     from_email="admin@admin.admin",
                     connection=connection
                 )
-            )
+            msg.content_subtype="html"
+            messages.append(msg)
+
             for m in club_memberships:
                 for admin in User.objects.filter(groups__name=f'club_admin_{m.club.name}'):
                     admin_p = Person.objects.get(user=admin)
@@ -62,14 +63,15 @@ def send_conflict_notification(request, persons: QuerySet ):
                 
                     body +=f'<a href="http://localhost:8000/{get_query_string(admin)}">Mitgliedschaft von {p.firstname} {p.lastname} bei {m.club.name} mit {last_year.strftime("%d.%m.%Y")}  beenden.</a><br>'
 
-                    messages.append( 
-                        mail.EmailMessage(
+                    msg = mail.EmailMessage(
                             subject=f'Konflikt bei der Vereinsmeldung von {p.firstname} {p.lastname}',
                             body=body,
                             to= [admin.email],
                             connection=connection,  
                         )
-            )
+                    msg.content_subtype="html"
+                    messages.append(msg)
+
 
     # Send the two emails in a single call -
     connection.send_messages(messages)
