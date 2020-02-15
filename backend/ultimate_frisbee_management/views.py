@@ -41,7 +41,7 @@ class DeepLinkView(LoginRequiredMixin,View):
         instance.valid_until = request.GET['valid-until']    
         instance.save()
         logout(request)
-        return render(request, 'player_management/deeplink_redirect.html', {})
+        return render(request, 'player_management/deeplink_redirect.html', context={'title':'Success'})
 
       #  else:
       #      return HttpResponseForbidden('you dont have permission (anymore) to do this.')

@@ -1,0 +1,40 @@
+{% extends "mails/base.j2" %}
+{% block subject %}Konflikt bei der Vereinsmeldung von {{person.firstname}} {{person.lastname}}{% endblock subject%}
+{% block greeting %}<p>Liebe Vereins admins von {{affected_club_membership.club.name}},<p>{% endblock greeting %}
+        {% block content %}
+        <p>{{person.firstname}} {{person.lastname}} wurde für dieses Jahr bei den folgenden Vereinen gemeldet</p>
+        <ul>
+            {% for m in club_memberships %}
+            <li>{{m.club.name}}</li>
+            {% endfor %}
+        </ul>
+        <p>
+            Dies hat zur Folge, dass von allen Vereinen der Verbandsbeitrag
+            am Stichtag eingezogen wird. Die anderen Vereine wurden ebenfalls kontaktiert um dieses Problem zu lösen.
+
+        </p>
+        <p>
+            Für eine schnelle Lösung des Problems kannst du durch Klicken des folgenden Buttons die Mitgliedschaft von
+            {{person.firstname}} {{person.lastname}} bei {{affected_club_membership.club.name}} mit 31.12. des letzten
+            Jahres in der Datenbank als beendet eingetragen. Dadurch wird dieses Jahr kein
+            Verbandsbeitrag für {{person.firstname}} {{person.lastname}} verrechnet. 
+        </p>
+        <p>
+            Es kann auch vorkommen, dass der
+            Spieler mehrmals bei deinem Verein gemeldet wurde. Dann erhältst du diese Mail auch mehrfach. Das kann
+            vorkommen, wenn der Spieler den Verein zwischen zeitlich verlassen hat und seine alte Mitgliedschaft nicht
+            beendet wurde. Bitte beende alle bis auf eine Mitgliedschaft für diesen Spieler um den Konflikt zu beheben.
+        </p>
+        <p>
+            Dies lässt sich im Falle eines Fehlers auch direkt in der <a
+                href="{{ request.META.HTTP_ORIGIN }}{{ url('admin:ultimate_frisbee_management_club_change',args=(affected_club_membership.club.id,))}}">Datenbank</a>
+            wieder korrigieren.
+        </p>
+        {% endblock content %}
+        {% block links %}
+        <tr>
+            <td><a
+                    href="{{ request.META.HTTP_ORIGIN }}{{ url('deeplink',kwargs={'model_name':'PersonToClubMembership','id':affected_club_membership.id}) }}{{ get_query_string(person.user) }}&valid-until={{last_year}}">Mitgliedschaft
+                    bei {{affected_club_membership.club.name}} mit Enddatum {{last_year}} beenden.</a></td>
+        </tr>
+        {% endblock links %}

@@ -69,3 +69,6 @@ backend/frisbee-venv/**
 
 # certbot
 **certbot/data
+
+# test artifacts
+ultimate_frisbee_management/tests/mails/**

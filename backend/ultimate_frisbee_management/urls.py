@@ -64,7 +64,7 @@ urlpatterns = [
     path('api/auth/', include(('rest_auth.urls','rest_auth'), namespace="rest_auth")),
     path('api/iam/',  include(router.urls)),  # identity and access management users, groups etc..
     path('api/ultimate_frisbee_management/',  include(ultimate_frisbee_management_router.urls)),
-    path('deeplink/<str:model_name>/<int:id>/',views.DeepLinkView.as_view()),
+    path('deeplink/<str:model_name>/<int:id>/',views.DeepLinkView.as_view(),name="deeplink"),
     path('pdf/<str:template>',views.GeneratePdf.as_view()),
     path('tmp/<str:template>',views.dummyHtml.as_view()),
 ] + static.static(settings.MEDIA_URL,view=protected_serve, document_root=settings.MEDIA_ROOT)
