@@ -27,7 +27,8 @@ services:
       - 8082:8080 # expose gunicorn server
   nginx:
     ports:
-      - 8083:80 # expose nginx webserver under nonstandard port
+      - "8083:80" # expose nginx webserver under nonstandard port
+      - "8443:443"
     volumes:
       - test-results:/www/data/tests # mount test results html
   db:
