@@ -5,3 +5,27 @@
 {% block extrahead %}
 <link rel="shortcut icon" href="{% static 'ultimate_frisbee_management/img/oefsv_logo.ico' %}" />
 {% endblock %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Ultimate Frisbee Management admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'ultimate_frisbee_management/img/datenbank_logo.png' %}" height="60px"
+            style="max-width:100%;max-height:4%" />
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block footer %}
+
+<div style="text-align:center">
+    <div style="display:inline-block">
+        <a href="{% url 'admin:index' %}">
+            <img src="{% static 'ultimate_frisbee_management/img/2019_sig.png' %}" height="60px"
+                style="max-width:100%;max-height:5%" />
+        </a>
+    </div>
+</div> {% endblock %}
