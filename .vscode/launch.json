@@ -17,6 +17,16 @@
             "django": true
         },
         {
+            "name": "Python: Django shell",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/manage.py",
+            "args": [
+                "shell",
+            ],
+            "django": true
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
