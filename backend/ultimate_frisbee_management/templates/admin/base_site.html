@@ -8,6 +8,11 @@
 
 {% block title %}{{ title }} | {{ site_title|default:_('Ultimate Frisbee Management admin') }}{% endblock %}
 
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css"
+    href="{% static 'ultimate_frisbee_management/css/admin_custom_base_extra.css' %}" />{% endblock %}
+
+
 {% block branding %}
 <h1 id="site-name">
     <a href="{% url 'admin:index' %}">

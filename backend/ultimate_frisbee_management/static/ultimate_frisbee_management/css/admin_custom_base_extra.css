@@ -1,0 +1,58 @@
+module h2, .module caption, .inline-group h2, div.breadcrumbs, #header,
+.button.default, input[type=submit].default, .submit-row input.default 
+{
+    background: rgb(75, 74, 42);
+}
+
+.button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover
+{
+    background: rgb(29, 28, 16);
+}
+
+
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: rgb(138, 137, 79);
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+    background: rgb(102, 101, 59)
+}
+
+#header {
+    color: #47473f;
+}
+
+#header a:link, #header a:visited {
+    color:white;
+}
+div.breadcrumbs, h1{
+color: #a7a489;
+}
+
+a:link, a:visited {
+    color: rgb(75, 74, 42);
+}
+
+div.breadcrumbs a:hover,.module caption a:hover {
+    color: #d0ce98;
+    text-decoration: none;
+}
+
+.inline-group h2 a:hover,a:hover {
+    color: #a5a376;
+    text-decoration: none;
+}
+
+#header a:hover{
+    text-decoration: none;
+    border-bottom-color: rgb(126, 124, 70);
+    color: rgb(126, 124, 70);
+}
+
+div #header{
+    background: rgb(170,170,170);
+background: linear-gradient(0deg, rgba(170,170,170,1) 0%, rgba(255,255,255,1) 100%);
+}
+
+#container {
+}

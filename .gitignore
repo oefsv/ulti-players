@@ -50,8 +50,8 @@ testem.log
 # Database
 backend/*.db
 backend/ultimate_frisbee_management/migrations/**
-backend/ultimate_frisbee_management/static/**
-!backend/ultimate_frisbee_management/static/ultimate_frisbee_management/**
+backend/ultimate_frisbee_management/static/*
+!backend/ultimate_frisbee_management/static/ultimate_frisbee_management/
 
 backend/dev_db_dump.json
 
