@@ -69,6 +69,10 @@ backend/frisbee-venv/**
 
 # certbot
 **certbot/data
+<<<<<<< HEAD
 
 # test artifacts
 ultimate_frisbee_management/tests/mails/**
+=======
+backend/ultimate_frisbee_management/tests/mails/**
+>>>>>>> added tournament sceleton
