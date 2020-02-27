@@ -11,6 +11,7 @@ django-debug-toolbar
 django-guardian
 django-sesame
 django-imagekit
+django-picklefield
 Django
 django_polymorphic
 pillow 
@@ -31,5 +32,7 @@ pytest-html
 mixer
 gunicorn
 
-#misc
+#dev
 Markdown
+flake8
+black

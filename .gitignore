@@ -71,3 +71,6 @@ backend/frisbee-venv/**
 **certbot/data
 backend/ultimate_frisbee_management/tests/mails/**
 backend/ultimate_frisbee_management/migrations/0001_initial.py
+
+
+
