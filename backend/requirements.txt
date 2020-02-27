@@ -7,7 +7,6 @@ django-rest-swagger
 django-filter
 djangorestframework
 django-rest-auth
-django-seed
 django-debug-toolbar
 django-guardian
 django-sesame

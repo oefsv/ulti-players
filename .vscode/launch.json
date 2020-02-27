@@ -33,8 +33,9 @@
             "program": "${file}",
             "pythonPath": "${config:python.pythonPath}",
             "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
             "env": {
-                "PYTHONPATH": "${workspaceFolder}/backend",
+                "PYTHONPATH": "/workspace/backend",
                 "DJANGO_SETTINGS_MODULE": "ultimate_frisbee_management.settings"
             },
         },
