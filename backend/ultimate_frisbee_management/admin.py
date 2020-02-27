@@ -371,9 +371,9 @@ class TournamentDivisionAdmin(CustomGuardedModelAdmin):
 
 
 class RosterAdmin(CustomGuardedModelAdmin):
-    list_display = ("name", "team", "tournament", "division")
+    list_display = ("name", "team", "tournament_division","tournament", "division")
     inlines = (Person_To_Roster_Relationship_Inline,)
-    search_fields = ("team", "persons", "tournament_division")
+    search_fields = ("team__name","tournament_division__tournament__name","tournament_division__division__name")
     autocomplete_fields = ("team", "persons", "tournament_division")
     list_filter = ("team", "tournament_division")
 
