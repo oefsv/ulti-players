@@ -6,7 +6,7 @@ from picklefield.fields import PickledObjectField, dbsafe_encode
 from django.contrib.auth.models import User
 from django.contrib.auth import models as authModels
 from django.core.validators import MinValueValidator
-from django.db.models import Q
+from django.db.models import F, Q
 from django.utils.safestring import mark_safe
 
 from viewflow.models import Process
@@ -59,6 +59,9 @@ class Person(models.Model):
     club_memberships = models.ManyToManyField("Club", through="PersonToClubMembership")
     team_memberships = models.ManyToManyField("Team", through="PersonToTeamMembership")
     association_memberships = models.ManyToManyField("Association", through="PersonToAssociationMembership")
+    
+    # other relationships
+    roster_relationships = models.ManyToManyField("Roster", through="PersonToRosterRelationship")
     # todo this should be models.oneTooneField but the faking factory is not capable atm to build unique relationships between person and user
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -141,9 +144,12 @@ class Person(models.Model):
         )
         return club_memberships
 
-    @property
     def eligibile_nationals(self) -> bool:
         return self.get_current_clubmemberships().count() < 2
+    
+    eligibile_nationals.boolean = True
+    eligibile_nationals.short_description = "Verbandsabgabe Konflikt"
+    eligibile_nationals.help_text = "huhu"
 
     def __str__(self):
         return f"{self.firstname} {self.lastname} ({self.birthdate.year})"
@@ -265,14 +271,21 @@ class EventSeries(models.Model):
 class Tournament(Event):
     divisions = models.ManyToManyField("Division", through="TournamentDivision")
 
+    def __str__(self):
+        return f"{self.name} | {self.start.date()}"
+
 
 class Roster(models.Model):
-    """ A roster is a set of person that compete in a Team at a TournamentDivision
+    """ A roster is a set of persons that compete in a Team at a TournamentDivision
+        with a teamrole and number.
     """
 
     tournament_division = models.ForeignKey("TournamentDivision", on_delete=models.CASCADE)
     team = models.ForeignKey("Team", on_delete=models.CASCADE)
-    persons = models.ManyToManyField("Person")
+    persons = models.ManyToManyField("Person", through="PersonToRosterRelationship")
+
+    def __str__(self):
+        return f"{self.team.name} @ {self.tournament_division.__str__()}"
 
 
 class TournamentDivision(models.Model):
@@ -283,6 +296,9 @@ class TournamentDivision(models.Model):
     tournament = models.ForeignKey("Tournament", on_delete=models.CASCADE)
     division = models.ForeignKey("Division", on_delete=models.CASCADE)
     teams = models.ManyToManyField("Team", through="Roster")
+
+    def __str__(self):
+        return f"{self.tournament.name} | {self.division.name}"
 
 
 class Division(models.Model):
@@ -296,7 +312,7 @@ class Division(models.Model):
     to the EUCR roster
     """
 
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=300, unique=True)
     description = models.TextField(blank=True)
 
     def default_eligible_person_query():
@@ -344,14 +360,7 @@ class Division(models.Model):
         return f"{self.name} (id= {self.id})"
 
 
-class Membership(models.Model):
-    """ A membership connects an organization as target with another organization
-    or person as member. It is reported by, and  confirmed by a person
-    it my have a from and until date. missing values assume an infinite Membership period"""
-
-    valid_from = models.DateField()
-    valid_until = models.DateField(null=True, blank=True)
-
+class BaseRelationship(models.Model):
     reporter: User = models.ForeignKey(
         authModels.User,
         on_delete=models.CASCADE,
@@ -370,6 +379,22 @@ class Membership(models.Model):
     class Meta:
         abstract = True
 
+
+class Membership(BaseRelationship):
+    """ A membership connects an organization as target with another organization
+    or person as member. It is reported by, and  confirmed by a person
+    it my have a from and until date. missing values assume an infinite Membership period"""
+
+    valid_from = models.DateField()
+    valid_until = models.DateField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+        # TODO: constraint does not work
+        constraints = [
+            models.CheckConstraint(check=Q(valid_from__lte=F('valid_until')), name='%(app_label)s_%(class)s valid_from is earlier than valid_until')
+        ]
+
     def is_active(self) -> bool:
         return self.valid_from <= date.now() <= self.valid_until
 
@@ -387,6 +412,7 @@ class PersonToAssociationMembership(Membership):
 
     class Meta(Membership.Meta):
         db_table = "pm_PersonToAssociationMembership"
+        # TODO: constraint memberships time periods may not overlap for a person and association  
 
 
 class PersonToClubMembership(Membership):
@@ -402,6 +428,7 @@ class PersonToClubMembership(Membership):
 
     class Meta(Membership.Meta):
         db_table = "pm_PersonToClubMembership"
+        # TODO: constraint memberships time periods may not overlap for a person and club  
 
 
 class PersonToTeamMembership(Membership):
@@ -415,6 +442,7 @@ class PersonToTeamMembership(Membership):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     role = models.CharField(max_length=300, choices=TEAM_ROLES, default="Player", null=True)
     number = models.IntegerField(validators=[MinValueValidator(0)], null=True, blank=True)
+    #TODO: remove this relationship 
 
     class Meta(Membership.Meta):
         db_table = "pm_PersonToTeamMembership"
@@ -426,6 +454,7 @@ class ClubToAssociationMembership(Membership):
 
     class Meta(Membership.Meta):
         db_table = "pm_ClubToAssociationMembership"
+        # TODO: constraint memberships time periods may not overlap for a club and association
 
 
 class AssociationToAssociationMembership(Membership):
@@ -438,3 +467,27 @@ class AssociationToAssociationMembership(Membership):
 
 class PersonToClubMembershipProcess(Process):
     membership = models.ForeignKey(PersonToClubMembership, blank=True, null=True, on_delete=models.CASCADE)
+    # TODO: remove this
+
+
+class PersonToRosterRelationship(BaseRelationship):
+    TEAM_ROLES = (
+        ["Player"] * 2,
+        ["Coach"] * 2,
+        ["Captain"] * 2,
+        ["Spiritcaptain"] * 2,
+    )
+
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    roster = models.ForeignKey(Roster, on_delete=models.CASCADE)
+    role = models.CharField(max_length=300, choices=TEAM_ROLES, default="Player", null=True)
+    number = models.IntegerField(validators=[MinValueValidator(0)], null=True, blank=True)
+
+    class Meta(BaseRelationship.Meta):
+        db_table = "pm_PersonToRosterRelationship"
+        constraints = [
+            models.UniqueConstraint(fields=["roster", "number"], condition=~Q(number=0), name="No duplicate numbers on Roster Constraint"),
+            models.UniqueConstraint(
+                fields=["roster", "person"], name="No duplicate Person entries in Roster Constraint"
+            ),
+        ]

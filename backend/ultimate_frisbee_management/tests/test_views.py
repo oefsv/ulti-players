@@ -1,10 +1,26 @@
 import pytest
+from guardian.models import GroupObjectPermission
+from django.contrib.auth.models import Group
+from guardian.shortcuts import get_group_perms, get_perms
 
 # Create your tests here.
 from django.contrib.auth.models import User
-from ..models import Person, Club, PersonToClubMembership, Division
+from ..models import (
+    PersonToClubMembership,
+    Club,
+    Person,
+    Association,
+    ClubToAssociationMembership,
+    Team,
+    PersonToTeamMembership,
+    Division,
+    Tournament,
+    TournamentDivision,
+    Roster,
+    PersonToRosterRelationship,
+)
+
 from django.test import TestCase
-from django_seed import Seed
 from mixer.backend.django import mixer
 import pytest
 from django.contrib.auth.models import User
@@ -19,7 +35,7 @@ from picklefield.fields import dbsafe_encode
 
 class TestViews(APITestCase):
     def setUp(self):
-        self.factory: APIRequestFactory = APIRequestFactory()
+        self.factory: APIRequestFactory = APIRequesget_permstFactory()
 
     def test_get_user_profile(self):
 
@@ -56,6 +72,29 @@ class TestDivision(TestCase):
 
 
 @pytest.mark.django_db
+class TestClubAdminPermissions(TestCase):
+    def setUp(self):
+        club_name = "TestClub"
+        team_name = "TestTeam"
+        self.club = mixer.blend(Club, name=club_name)
+        self.team = mixer.blend(Team, club_membership=self.club, name=team_name)
+        mixer.cycle(5).blend(Association)
+        mixer.cycle(5).blend(ClubToAssociationMembership, club=self.club)
+        mixer.cycle(5).blend(Person)
+        mixer.cycle(5).blend(PersonToClubMembership, club=self.club)
+        mixer.cycle(5).blend(Roster, team__club_membership=self.club)
+        mixer.cycle(5).blend(PersonToRosterRelationship, roster__team__club_membership=self.club)
+        mixer.cycle(5).blend(Tournament)
+        mixer.cycle(5).blend(TournamentDivision)
+
+    def test_division_lifecycle(self):
+        assert 5 == ClubToAssociationMembership.objects.filter(club=self.club).count()
+        # delete all permission for current target, role and granting class
+
+        permissions = GroupObjectPermission.objects.filter(group__name__startswith=f"club_admin_{self.club.name}")
+
+
+@pytest.mark.django_db
 class TestModel(TestCase):
     def setUp(self):
 
@@ -75,4 +114,3 @@ class TestModel(TestCase):
 
     def test_getCurrentUserClubs(self):
         assert True
-
