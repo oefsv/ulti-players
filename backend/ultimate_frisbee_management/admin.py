@@ -239,8 +239,8 @@ class PersonAdmin(CustomGuardedModelAdmin):
     )
     readonly_fields = ["image_500p_tag"]
     # editable list fields cause huge performance issues when in debug mode
-    if not settings.DEBUG:
-        list_editable = ("lastname", "sex", "birthdate")
+    #if not settings.DEBUG:
+    #    list_editable = ("lastname", "sex", "birthdate")
 
     list_filter = (Eligibile_u17, Eligibile_u20, Eligibile_u24, Elegible_Nationals)
     list_display_links = ("firstname",)
