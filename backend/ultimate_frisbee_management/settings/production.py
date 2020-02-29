@@ -13,22 +13,26 @@ import os
 
 DEBUG = False
 
+ALLOWED_HOSTS = ["159.69.181.225", "db-ultimate.frisbeeverband.at", "db-ultimate.oevsf.at"]
+
+
 # Try reading the secret key from file. if not existent rewrite it.
-secret_key_file='/etc/credentials/django_secret_key.txt'
+secret_key_file = "/etc/credentials/django_secret_key.txt"
 try:
     with open(secret_key_file) as f:
         SECRET_KEY = f.read().strip()
 
 except FileNotFoundError as e:
     import random
-    
+
     SECRET_KEY = "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])
     os.makedirs(os.path.dirname(secret_key_file), exist_ok=True)
-    with open(secret_key_file,"w+") as f:
+    with open(secret_key_file, "w+") as f:
         f.write(SECRET_KEY)
 
 # Email settings
-EMAIL_HOST_USER = 'm04b2882'
+EMAIL_HOST_USER = "m04b2882"
 EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "Admin<datenbank@frisbeeverband.at>" 
+DEFAULT_FROM_EMAIL = "Admin<datenbank@frisbeeverband.at>"
+
