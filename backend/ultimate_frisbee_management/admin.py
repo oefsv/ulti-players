@@ -48,7 +48,7 @@ class Person_To_Roster_Relationship_Inline(BaseRelationship_Inline):
 
 
 class Roster_To_Person_Relationship_Inline(Person_To_Roster_Relationship_Inline):
-    verbose_name = "Person to another Roster"
+    verbose_name = "Roster"
     verbose_name_plural = "Rosters listed on"
 
 
@@ -225,7 +225,6 @@ class CustomGuardedModelAdmin(GuardedModelAdmin):
 
 
 class customFilteredGuardedModelAdmin(GuardedModelAdmin):
-    
     def get_queryset(self, request):
         objects = get_objects_for_user(
             user=request.user,
@@ -251,7 +250,7 @@ class PersonAdmin(CustomGuardedModelAdmin):
     )
     readonly_fields = ["image_500p_tag"]
     # editable list fields cause huge performance issues when in debug mode
-    #if not settings.DEBUG:
+    # if not settings.DEBUG:
     #    list_editable = ("lastname", "sex", "birthdate")
 
     list_filter = (Eligibile_u17, Eligibile_u20, Eligibile_u24, Elegible_Nationals)
@@ -374,9 +373,9 @@ class TournamentDivisionAdmin(CustomGuardedModelAdmin):
 
 
 class RosterAdmin(customFilteredGuardedModelAdmin):
-    list_display = ("name", "team", "tournament_division","tournament", "division")
+    list_display = ("name", "team", "tournament_division", "tournament", "division")
     inlines = (Person_To_Roster_Relationship_Inline,)
-    search_fields = ("team__name", "tournament_division__tournament__name","tournament_division__division__name")
+    search_fields = ("team__name", "tournament_division__tournament__name", "tournament_division__division__name")
     autocomplete_fields = ("team", "persons", "tournament_division")
     list_filter = ("team", "tournament_division")
 
