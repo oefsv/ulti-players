@@ -224,6 +224,18 @@ class CustomGuardedModelAdmin(GuardedModelAdmin):
     save_as = True
 
 
+class customFilteredGuardedModelAdmin(GuardedModelAdmin):
+    
+    def get_queryset(self, request):
+        objects = get_objects_for_user(
+            user=request.user,
+            perms=[f"view_{self.model.__name__.lower()}"],
+            klass=self.model,
+            accept_global_perms=False,
+        )
+        return objects
+
+
 class PersonAdmin(CustomGuardedModelAdmin):
     list_display = (
         "firstname",
@@ -253,7 +265,7 @@ class PersonAdmin(CustomGuardedModelAdmin):
         mail.send_conflict_notification(request, queryset)
 
 
-class OrganistaionAdmin(CustomGuardedModelAdmin):
+class OrganistaionAdmin(customFilteredGuardedModelAdmin):
     list_display = ("name", "image_45p_tag", "founded_on", "dissolved_on", "members")
     list_display_links = ("name",)
     search_fields = ("name",)
@@ -262,15 +274,6 @@ class OrganistaionAdmin(CustomGuardedModelAdmin):
     disabled_fields = []
     if not settings.DEBUG:
         list_editable = ("founded_on", "dissolved_on")
-
-    def get_queryset(self, request):
-        objects = get_objects_for_user(
-            user=request.user,
-            perms=[f"view_{self.model.__name__.lower()}"],
-            klass=self.model,
-            accept_global_perms=False,
-        )
-        return objects
 
     def get_form(self, *args, **kwargs):
         """ allow diabled_fields for form"""
@@ -370,10 +373,10 @@ class TournamentDivisionAdmin(CustomGuardedModelAdmin):
         return obj.tournament.end
 
 
-class RosterAdmin(CustomGuardedModelAdmin):
+class RosterAdmin(customFilteredGuardedModelAdmin):
     list_display = ("name", "team", "tournament_division","tournament", "division")
     inlines = (Person_To_Roster_Relationship_Inline,)
-    search_fields = ("team__name","tournament_division__tournament__name","tournament_division__division__name")
+    search_fields = ("team__name", "tournament_division__tournament__name","tournament_division__division__name")
     autocomplete_fields = ("team", "persons", "tournament_division")
     list_filter = ("team", "tournament_division")
 
