@@ -15,7 +15,7 @@ from ..models import (
     Roster,
     PersonToRosterRelationship,
 )
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from itertools import chain
 from guardian.shortcuts import assign_perm
 from guardian.models import GroupObjectPermission
@@ -46,10 +46,12 @@ def set_permissions(granting_class, role, permission_target, granting_objects_se
     Keyword Arguments:
         permissions {list} -- list of Permissions on permission_target (default: {["view"]})
     """
+
     granting_objects = granting_objects_selector(permission_target)
     target_class_name = permission_target.__class__.__name__.lower()
     granting_class_name = granting_class.__name__.lower()
 
+    # check and assign model level permissions
     # delete all permission for current target, role and granting class
     old_permissions = GroupObjectPermission.objects.filter(
         Q(group__name__startswith=f"{ granting_class_name}_{role}")
@@ -67,9 +69,11 @@ def set_permissions(granting_class, role, permission_target, granting_objects_se
         Group.objects.get_or_create(name=f"{granting_class_name}_{role}_{name}")[0].name
         for name in granting_object_names_list
     ]
-    groups = Group.objects.filter(name__in=groups_names)
+    groups: Group = Group.objects.filter(name__in=groups_names)
 
     for perm in permissions:
+        for group in groups:
+            group.permissions.add(Permission.objects.get(codename=f"{perm}_{target_class_name}"))
         assign_perm(f"{perm}_{target_class_name}", groups, permission_target)
 
 
@@ -96,7 +100,7 @@ permissions = {
     # },
     Club: {
         "admin": {
-            Club: {"selector": lambda club: club, "permissions": ["view"]},
+            Club: {"selector": lambda club: club, "permissions": ["add", "delete", "view", "change"]},
             Association: {
                 "selector": lambda association: Club.objects.filter(associations_memberships__pk=association.pk),
                 "permissions": ["view"],
@@ -107,7 +111,7 @@ permissions = {
             },
             Person: {
                 "selector": lambda person: Club.objects.filter(member_persons__pk=person.pk),
-                "permissions": ["view"],
+                "permissions": ["add", "delete", "view", "change"],
             },
             PersonToClubMembership: {
                 "selector": lambda membership: membership.club,
