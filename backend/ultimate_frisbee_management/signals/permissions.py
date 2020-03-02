@@ -157,3 +157,10 @@ def update_permissions_based_on_granting_objects_and_roles(sender, instance, **k
         # TODO: if permission is granted for all objects of class, create global permission
         for update_permissions in grant_permissions_for_target[sender]:
             update_permissions(instance)
+
+
+@receiver([post_save, post_delete], sender=Team)
+def update_permissions_when_changing_team(sender, instance: Team, **kwargs):
+    for roster in Roster.objects.filter(team=instance):
+        roster.save()
+
