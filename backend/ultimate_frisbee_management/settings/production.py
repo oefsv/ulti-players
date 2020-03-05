@@ -18,7 +18,6 @@ ALLOWED_HOSTS = ["159.69.181.225", "db-ultimate.frisbeeverband.at", "db-ultimate
 
 # Try reading the secret key from file. if not existent rewrite it.
 secret_key_file = "/etc/credentials/django_secret_key.txt"
-email_password_file = "/etc/credentials/email_pass.txt"
 try:
     with open(secret_key_file) as f:
         SECRET_KEY = f.read().strip()
@@ -33,7 +32,7 @@ except FileNotFoundError:
 
 # Email settings
 email_password_file = "/etc/credentials/email_pass.txt"
-with open(secret_key_file) as f:
+with open(email_password_file) as f:
     EMAIL_HOST_PASSWORD = f.read().strip()
 
 EMAIL_HOST_USER = "db-ultimate@frisbeeverband.at"
@@ -42,3 +41,5 @@ DEFAULT_FROM_EMAIL = "Datenbank Ultimate Österreich<db-ultimate@frisbeeverband.
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
+
+ADMIN=[('Florian Kain', 'flokain11@gmail.com')]
