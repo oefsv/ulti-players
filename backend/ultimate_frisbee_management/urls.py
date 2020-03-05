@@ -21,35 +21,42 @@ from django.contrib import admin
 from django.conf.urls import url, include, static
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth import views as auth_views
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 
 from . import views
 from django.views.static import serve
 
-app_name = 'ultimate_frisbee_management'
+app_name = "ultimate_frisbee_management"
 
-ultimate_frisbee_management_router = routers.DefaultRouter() # todo change the view so its not called "API Root" https://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
-ultimate_frisbee_management_router.register('PersonalClubs', views.PersonalClubViewset, 'personal-clubs')
-ultimate_frisbee_management_router.register('persons', views.PersonViewSet)
-ultimate_frisbee_management_router.register('associations', views.AssociationViewSet)
-ultimate_frisbee_management_router.register('clubs', views.ClubViewSet)
-ultimate_frisbee_management_router.register('teams', views.TeamViewSet)
-ultimate_frisbee_management_router.register('personToAssociationMemberships', views.PersonToAssociationMembershipViewSet)
-ultimate_frisbee_management_router.register('personToClubMemberships', views.PersonToClubMembershipViewSet)
-ultimate_frisbee_management_router.register('personToTeamMemberships', views.PersonToTeamMembershipViewSet)
-ultimate_frisbee_management_router.register('clubToAssociationMemberships', views.ClubToAssociationMembershipViewSet)
-ultimate_frisbee_management_router.register('AssociationToAssociationMemberships', views.AssociationToAssociationMembershipViewSet)
+ultimate_frisbee_management_router = (
+    routers.DefaultRouter()
+)  # todo change the view so its not called "API Root" https://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
+ultimate_frisbee_management_router.register("PersonalClubs", views.PersonalClubViewset, "personal-clubs")
+ultimate_frisbee_management_router.register("persons", views.PersonViewSet)
+ultimate_frisbee_management_router.register("associations", views.AssociationViewSet)
+ultimate_frisbee_management_router.register("clubs", views.ClubViewSet)
+ultimate_frisbee_management_router.register("teams", views.TeamViewSet)
+ultimate_frisbee_management_router.register(
+    "personToAssociationMemberships", views.PersonToAssociationMembershipViewSet
+)
+ultimate_frisbee_management_router.register("personToClubMemberships", views.PersonToClubMembershipViewSet)
+ultimate_frisbee_management_router.register("personToTeamMemberships", views.PersonToTeamMembershipViewSet)
+ultimate_frisbee_management_router.register("clubToAssociationMemberships", views.ClubToAssociationMembershipViewSet)
+ultimate_frisbee_management_router.register(
+    "AssociationToAssociationMemberships", views.AssociationToAssociationMembershipViewSet
+)
 
 router = routers.DefaultRouter()
-router.register('users', views.UserViewSet)
-router.register('groups', views.GroupViewSet)
+router.register("users", views.UserViewSet)
+router.register("groups", views.GroupViewSet)
 
 
 admin.site.site_header = "ULTIMATE_FRISBEE_MANAGEMENT Admin Portal"
 admin.site.site_title = "ULTIMATE_FRISBEE_MANAGEMENT Admin Portal"
 admin.site.index_title = "ULTIMATE_FRISBEE_MANAGEMENT Admin Portal"
+
 
 @login_required
 def protected_serve(request, path, document_root=None, show_indexes=False):
@@ -57,21 +64,25 @@ def protected_serve(request, path, document_root=None, show_indexes=False):
 
 
 urlpatterns = [
-
-    path('',admin.site.urls,name="admin"),
-    path('api/', views.api_root),  # root api view. routes to the submodules
-    path('api/auth/', views.rest_auth_root,name="auth_root"), # hack because rest-auth does not provide root view
-    path('api/auth/', include(('rest_auth.urls','rest_auth'), namespace="rest_auth")),
-    path('api/iam/',  include(router.urls)),  # identity and access management users, groups etc..
-    path('api/ultimate_frisbee_management/',  include(ultimate_frisbee_management_router.urls)),
-    path('deeplink/<str:model_name>/<int:id>/',views.DeepLinkView.as_view(),name="deeplink"),
-    path('pdf/<str:template>',views.GeneratePdf.as_view()),
-    path('tmp/<str:template>',views.dummyHtml.as_view()),
-] + static.static(settings.MEDIA_URL,view=protected_serve, document_root=settings.MEDIA_ROOT)
+    path("", admin.site.urls, name="admin"),
+    path("password_reset/", auth_views.PasswordResetView.as_view(), name="admin_password_reset",),
+    path("password_reset/done/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done",),
+    path("reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm",),
+    path("reset/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete",),
+    path("api/", views.api_root),  # root api view. routes to the submodules
+    path("api/auth/", views.rest_auth_root, name="auth_root"),  # hack because rest-auth does not provide root view
+    path("api/auth/", include(("rest_auth.urls", "rest_auth"), namespace="rest_auth")),
+    path("api/iam/", include(router.urls)),  # identity and access management users, groups etc..
+    path("api/ultimate_frisbee_management/", include(ultimate_frisbee_management_router.urls)),
+    path("deeplink/<str:model_name>/<int:id>/", views.DeepLinkView.as_view(), name="deeplink"),
+    path("pdf/<str:template>", views.GeneratePdf.as_view()),
+    path("tmp/<str:template>", views.dummyHtml.as_view()),
+] + static.static(settings.MEDIA_URL, view=protected_serve, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
+
     urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-        #url(r'^silk/', include('silk.urls', namespace='silk'))
+        path("__debug__/", include(debug_toolbar.urls)),
+        # url(r'^silk/', include('silk.urls', namespace='silk'))
     ] + urlpatterns
