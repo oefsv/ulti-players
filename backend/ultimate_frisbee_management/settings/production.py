@@ -12,9 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 DEBUG = False
-
 ALLOWED_HOSTS = ["159.69.181.225", "db-ultimate.frisbeeverband.at", "db-ultimate.oevsf.at"]
-
 
 # Try reading the secret key from file. if not existent rewrite it.
 secret_key_file = "/etc/credentials/django_secret_key.txt"
@@ -42,4 +40,4 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 
-ADMIN=[('Florian Kain', 'flokain11@gmail.com')]
+ADMIN = [("Florian Kain", "flokain11@gmail.com")]
