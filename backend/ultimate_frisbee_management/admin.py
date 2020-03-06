@@ -226,7 +226,7 @@ class CustomGuardedModelAdmin(GuardedModelAdmin):
     save_as = True
 
 
-class customFilteredGuardedModelAdmin(GuardedModelAdmin):
+class customFilteredGuardedModelAdmin(CustomGuardedModelAdmin):
     def get_queryset(self, request):
         objects = get_objects_for_user(
             user=request.user,
