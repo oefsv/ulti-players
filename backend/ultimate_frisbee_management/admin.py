@@ -1,10 +1,12 @@
 import math
 
 from django.contrib import admin
+from django.contrib.auth.models import User 
 from . import models
 from .utils import mail
 from datetime import date, timedelta
 from django.db.models import Count, Q
+from django import forms
 from django.conf import settings
 
 from guardian.admin import GuardedModelAdmin
@@ -235,6 +237,18 @@ class customFilteredGuardedModelAdmin(GuardedModelAdmin):
         return objects
 
 
+class PersonForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.initial['email'] = kwargs['instance'].user.email
+
+    class Meta:
+        model = models.Person
+        exclude = ["user"]
+
+
 class PersonAdmin(CustomGuardedModelAdmin):
     list_display = (
         "firstname",
@@ -260,19 +274,38 @@ class PersonAdmin(CustomGuardedModelAdmin):
     actions = ["send_conflict_email"]
     ordering = ("firstname", "lastname", "birthdate")
 
+    form = PersonForm
+
+    def save_model(self, request, obj, form, change):
+        email = form.cleaned_data["email"]
+        firstname = form.cleaned_data["firstname"]
+        lastname = form.cleaned_data["lastname"]
+        birthdate = form.cleaned_data["birthdate"].year
+        
+        try:
+            user = obj.user
+            user.username = f"{birthdate}{lastname}{firstname}"
+            user.email = email
+
+        except AttributeError:
+            user, _ = User.objects.get_or_create(username=f"{birthdate}{lastname}{firstname}", email=email)
+
+        user.save()
+
+        obj.user = user
+        super().save_model(request, obj, form, change)
+
     def send_conflict_email(self, request, queryset):
         mail.send_conflict_notification(request, queryset)
 
 
 class OrganistaionAdmin(customFilteredGuardedModelAdmin):
-    list_display = ("name", "image_45p_tag", "founded_on", "dissolved_on", "members")
+    list_display = ("name", "image_45p_tag", "founded_on", "members")
     list_display_links = ("name",)
     search_fields = ("name",)
     ordering = ("name",)
     readonly_fields = ["image_500p_tag"]
     disabled_fields = []
-    if not settings.DEBUG:
-        list_editable = ("founded_on", "dissolved_on")
 
     def get_form(self, *args, **kwargs):
         """ allow diabled_fields for form"""
