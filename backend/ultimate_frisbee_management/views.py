@@ -31,15 +31,19 @@ from . import serializers
 from .serializers import User, GroupSerializer, UserSerializer
 from . import models as pm
 
-class DeepLinkView(LoginRequiredMixin,View):
-    def get(self, request:HttpRequest,model_name,id, format=None):
+
+class DeepLinkView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest, model_name, id, format=None):
 
         request.user
         model = getattr(pm, model_name)
         instance = model.objects.get(id=id)
        # if f'change_{model_name.lower()}'in get_perms(request.user,instance):
-        instance.valid_until = request.GET['valid-until']    
-        instance.save()
+        instance.valid_until = datetime.datetime.strptime(request.GET['valid-until'], "%Y-%m-%d").date()
+        if instance.valid_until > instance.valid_from:
+            instance.save()
+        else:
+            instance.delete()
         logout(request)
         return render(request, 'player_management/deeplink_redirect.html', context={'title':'Success'})
 
