@@ -249,7 +249,7 @@ class PersonForm(forms.ModelForm):
         exclude = ["user"]
 
 
-class PersonAdmin(CustomGuardedModelAdmin):
+class PersonAdmin(GuardedModelAdmin):
     list_display = (
         "firstname",
         "lastname",
