@@ -244,7 +244,7 @@ class PersonForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         #check if an instance is parsed if not then a new object is added
-        if hasattr(kwargs, 'instance'):
+        if 'instance' in kwargs:
             self.initial['email'] = kwargs['instance'].user.email
             
     class Meta:
@@ -265,6 +265,10 @@ class PersonAdmin(GuardedModelAdmin):
         "eligibile_u24",
         "eligibile_nationals",
     )
+
+    def has_change_permission(self, request, obj=None):
+        return super().has_change_permission(request, obj=obj)
+
     readonly_fields = ["image_500p_tag"]
     # editable list fields cause huge performance issues when in debug mode
     # if not settings.DEBUG:
