@@ -40,4 +40,5 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 
+SERVER_EMAIL = "Datenbank Ultimate Error<db-ultimate@frisbeeverband.at>"
 ADMIN = [("Florian Kain", "flokain11@gmail.com")]
