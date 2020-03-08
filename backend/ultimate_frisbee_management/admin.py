@@ -242,8 +242,11 @@ class PersonForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.initial['email'] = kwargs['instance'].user.email
 
+        #check if an instance is parsed if not then a new object is added
+        if hasattr(kwargs, 'instance'):
+            self.initial['email'] = kwargs['instance'].user.email
+            
     class Meta:
         model = models.Person
         exclude = ["user"]
@@ -275,6 +278,12 @@ class PersonAdmin(GuardedModelAdmin):
     ordering = ("firstname", "lastname", "birthdate")
 
     form = PersonForm
+
+    def has_change_permission(self, request, obj=None):
+        return super().has_change_permission(request, obj=obj)
+
+    def has_view_permission(self, request, obj=None):
+        return super().has_view_permission(request, obj=obj)
 
     def save_model(self, request, obj, form, change):
         email = form.cleaned_data["email"]
