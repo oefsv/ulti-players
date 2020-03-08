@@ -244,7 +244,7 @@ class PersonForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         #check if an instance is parsed if not then a new object is added
-        if 'instance' in kwargs:
+        if 'instance' in kwargs and kwargs['instance'] is not None:
             self.initial['email'] = kwargs['instance'].user.email
             
     class Meta:
