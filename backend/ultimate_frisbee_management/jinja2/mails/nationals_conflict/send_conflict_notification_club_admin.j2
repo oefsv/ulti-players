@@ -34,7 +34,7 @@
         {% block links %}
         <tr>
             <td><a
-                    href="{{ request.META.HTTP_ORIGIN }}{{ url('deeplink',kwargs={'model_name':'PersonToClubMembership','id':affected_club_membership.id}) }}{{ get_query_string(person.user) }}&valid-until={{last_year}}">Mitgliedschaft
+                    href="{{ request.META.HTTP_ORIGIN }}{{ url('deeplink',kwargs={'model_name':'PersonToClubMembership','id':affected_club_membership.id}) }}{{ get_query_string(recepient) }}&valid-until={{last_year}}">Mitgliedschaft
                     bei {{affected_club_membership.club.name}} mit Enddatum {{last_year}} beenden.</a></td>
         </tr>
         {% endblock links %}
