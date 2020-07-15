@@ -24,6 +24,7 @@ Django = "*"
 django_polymorphic = "*"
 pillow = "*" 
 psycopg2-binary = "*"
+djangorestframework-csv ="*"
 
 # services
 

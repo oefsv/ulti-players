@@ -30,9 +30,7 @@ from django.views.static import serve
 
 app_name = "ultimate_frisbee_management"
 
-ultimate_frisbee_management_router = (
-    routers.DefaultRouter()
-)  # todo change the view so its not called "API Root" https://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
+ultimate_frisbee_management_router = routers.DefaultRouter()
 ultimate_frisbee_management_router.register("PersonalClubs", views.PersonalClubViewset, "personal-clubs")
 ultimate_frisbee_management_router.register("persons", views.PersonViewSet)
 ultimate_frisbee_management_router.register("associations", views.AssociationViewSet)

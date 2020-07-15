@@ -30,9 +30,9 @@ conf = confs[os.getenv("ENVIRONMENT", "default")]()
 #       Must be a positive integer. Generally set in the 64-2048
 #       range.
 #
-bind = getattr(conf, 'bind', '127.0.0.1:8080')
-backlog = getattr(conf, 'backlog', 2048)
-reload = getattr(conf, 'reload', False)
+bind = getattr(conf, "bind", "127.0.0.1:8080")
+backlog = getattr(conf, "backlog", 2048)
+reload = getattr(conf, "reload", False)  # set to true to relaod server whe code changes.
 
 #
 # Worker processes
@@ -78,11 +78,11 @@ reload = getattr(conf, 'reload', False)
 #       A positive integer. Generally set in the 1-5 seconds range.
 #
 
-workers = getattr(conf, 'workers', 1)
-worker_class = getattr(conf, 'worker_class', 'sync')
-worker_connections = getattr(conf, 'worker_connections', 1000)
-timeout = getattr(conf, 'timeout', 30)
-keepalive = getattr(conf, 'keepalive', 2)
+workers = getattr(conf, "workers", 1)
+worker_class = getattr(conf, "worker_class", "sync")
+worker_connections = getattr(conf, "worker_connections", 1000)
+timeout = getattr(conf, "timeout", 30)
+keepalive = getattr(conf, "keepalive", 2)
 
 #
 #   spew - Install a trace function that spews every line of Python
@@ -92,7 +92,7 @@ keepalive = getattr(conf, 'keepalive', 2)
 #       True or False
 #
 
-spew = getattr(conf, 'spew', False)
+spew = getattr(conf, "spew", False)
 
 #
 # Server mechanics
@@ -135,16 +135,16 @@ spew = getattr(conf, 'spew', False)
 #       None to signal that Python should choose one on its own.
 #
 
-daemon = getattr(conf, 'daemon', False)
+daemon = getattr(conf, "daemon", False)
 raw_env = [
-    'DJANGO_SECRET_KEY=something',
-    'SPAM=eggs',
+    "DJANGO_SECRET_KEY=something",
+    "SPAM=eggs",
 ]
-pidfile = getattr(conf, 'pidfile', None)
-umask = getattr(conf, 'umask', 0)
-user = getattr(conf, 'user', None)
-group = getattr(conf, 'group', None)
-tmp_upload_dir = getattr(conf, 'tmp_upload_dir', None)
+pidfile = getattr(conf, "pidfile", None)
+umask = getattr(conf, "umask", 0)
+user = getattr(conf, "user", None)
+group = getattr(conf, "group", None)
+tmp_upload_dir = getattr(conf, "tmp_upload_dir", None)
 
 #
 #   Logging
@@ -158,12 +158,11 @@ tmp_upload_dir = getattr(conf, 'tmp_upload_dir', None)
 #       A string of "debug", "info", "warning", "error", "critical"
 #
 
-errorlog = getattr(conf, 'errorlog', '-')
-loglevel = getattr(conf, 'loglevel', 'info')
-accesslog = getattr(conf, 'accesslog', '-')
-access_log_format = getattr(conf, 'access_log_format',
-                            '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"')
-logsyslog = getattr(conf, 'logsyslog', True)
+errorlog = getattr(conf, "errorlog", "-")
+loglevel = getattr(conf, "loglevel", "info")
+accesslog = getattr(conf, "accesslog", "-")
+access_log_format = getattr(conf, "access_log_format", '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"')
+logsyslog = getattr(conf, "logsyslog", True)
 
 #
 # Process naming
@@ -178,7 +177,7 @@ logsyslog = getattr(conf, 'logsyslog', True)
 #       A string or None to choose a default of something like 'gunicorn'.
 #
 
-proc_name = getattr(conf, 'proc_name', None)
+proc_name = getattr(conf, "proc_name", None)
 
 #
 # Server hooks
@@ -222,14 +221,13 @@ def worker_int(worker):
     import threading
     import sys
     import traceback
+
     id2name = {th.ident: th.name for th in threading.enumerate()}
     code = []
     for threadId, stack in sys._current_frames().items():
-        code.append("\n# Thread: %s(%d)" % (id2name.get(threadId, ""),
-                                            threadId))
+        code.append("\n# Thread: %s(%d)" % (id2name.get(threadId, ""), threadId))
         for filename, lineno, name, line in traceback.extract_stack(stack):
-            code.append('File: "%s", line %d, in %s' % (filename,
-                                                        lineno, name))
+            code.append('File: "%s", line %d, in %s' % (filename, lineno, name))
             if line:
                 code.append("  %s" % (line.strip()))
     worker.log.debug("\n".join(code))

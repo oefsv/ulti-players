@@ -16,7 +16,7 @@ Django
 django_polymorphic
 pillow 
 psycopg2-binary
-
+djangorestframework-csv
 # services
 ## pdf creation from html
 xhtml2pdf
