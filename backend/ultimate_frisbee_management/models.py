@@ -144,12 +144,11 @@ class Person(models.Model):
         )
         return club_memberships
 
-    def eligibile_nationals(self) -> bool:
+    def eligibile_onlyOneClub(self) -> bool:
         return self.get_current_clubmemberships().count() < 2
     
-    eligibile_nationals.boolean = True
-    eligibile_nationals.short_description = "Verbandsabgabe Konflikt"
-    eligibile_nationals.help_text = "huhu"
+    eligibile_onlyOneClub.boolean = True
+    eligibile_onlyOneClub.short_description = "Nur ein Verein"
 
     def __str__(self):
         return f"{self.firstname} {self.lastname} ({self.birthdate.year})"
@@ -283,6 +282,8 @@ class Roster(models.Model):
     tournament_division = models.ForeignKey("TournamentDivision", on_delete=models.CASCADE)
     team = models.ForeignKey("Team", on_delete=models.CASCADE)
     persons = models.ManyToManyField("Person", through="PersonToRosterRelationship")
+    
+    # TODO: check if roster is valid
 
     def __str__(self):
         return f"{self.team.name} @ {self.tournament_division.__str__()}"
@@ -483,6 +484,8 @@ class PersonToRosterRelationship(BaseRelationship):
     role = models.CharField(max_length=300, choices=TEAM_ROLES, default="Player", null=True)
     number = models.IntegerField(validators=[MinValueValidator(0)], null=True, blank=True)
 
+    # TODO: check if roster membership is valid
+
     class Meta(BaseRelationship.Meta):
         db_table = "pm_PersonToRosterRelationship"
         constraints = [
@@ -491,3 +494,4 @@ class PersonToRosterRelationship(BaseRelationship):
                 fields=["roster", "person"], name="No duplicate Person entries in Roster Constraint"
             ),
         ]
+
