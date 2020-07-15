@@ -40,15 +40,12 @@ def get_all_view_names(urlpatterns, namespace=None):
 
 @override_settings(EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend")
 class TestEmailVerification(TestCase):
-    def test_email_simple():
-        send_mail(
-            "test_email_simple from django",
-            "Here is the message.",
-            "flokain11@gmail.com",
-            ["flokain11@gmail.com"],
-            fail_silently=False,
-        )
-        assert False
+    send_mail(
+        "test_email_simple from django",
+        "Here is the message.",
+        "db-ultimate@frisbeeverband.at",
+        ["flokain11@gmail.com"],
+    )
 
 
 class testApiStartSession(TestCase):

@@ -19,6 +19,7 @@ services:
       - media_data:/media
       - ./backend/credentials:/etc/credentials
       - test-results:/test-results
+      - ~/.ssh:/root/.ssh
     entrypoint: ["bash", "-c", "sleep infinity"]
     environment:
       - ENVIRONMENT=development
