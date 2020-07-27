@@ -1,8 +1,8 @@
 import math
 
 from django.contrib import admin
-from django.contrib.auth.models import User 
-from . import models
+from django.contrib.auth.models import User
+from . import models, views
 from .utils import mail
 from datetime import date, timedelta
 from django.db.models import Count, Q
@@ -11,6 +11,9 @@ from django.conf import settings
 
 from guardian.admin import GuardedModelAdmin
 from guardian.shortcuts import get_objects_for_user
+from django.shortcuts import redirect
+from urllib.request import Request
+from django.http.request import HttpRequest
 
 # Register your models here..
 
@@ -54,7 +57,11 @@ class Roster_To_Person_Relationship_Inline(Person_To_Roster_Relationship_Inline)
     verbose_name_plural = "Rosters listed on"
 
 
-class Person_to_Team_Inline(BaseRelationship_Inline):
+class BaseMembership_Inline(BaseRelationship_Inline):
+    ordering = ("valid_until",)
+
+
+class Person_to_Team_Inline(BaseMembership_Inline):
     model = models.PersonToTeamMembership
     autocomplete_fields = ("person", "team")
     list_filter = autocomplete_fields
@@ -68,7 +75,7 @@ class Team_to_Person_Inline(Person_to_Team_Inline):
     verbose_name_plural = "Team Memberships"
 
 
-class Person_to_Club_Inline(BaseRelationship_Inline):
+class Person_to_Club_Inline(BaseMembership_Inline):
     model = models.PersonToClubMembership
     autocomplete_fields = ("person", "club")
     list_filter = autocomplete_fields
@@ -81,7 +88,7 @@ class Club_to_Person_Inline(Person_to_Club_Inline):
     verbose_name_plural = "Club Memberships"
 
 
-class Person_to_Association_Inline(BaseRelationship_Inline):
+class Person_to_Association_Inline(BaseMembership_Inline):
     model = models.PersonToAssociationMembership
     autocomplete_fields = ("association", "person")
     verbose_name = "Person to the Association"
@@ -105,7 +112,7 @@ class Association_To_Club_Inline(Club_to_Association_Inline):
     verbose_name_plural = "Association Memberships"
 
 
-class Member_Association_to_Association_Inline(BaseRelationship_Inline):
+class Member_Association_to_Association_Inline(BaseMembership_Inline):
     model = models.AssociationToAssociationMembership
     fk_name = "governor"
     autocomplete_fields = ("member", "governor")
@@ -171,9 +178,9 @@ class Eligibile_u24(BaseFilter):
     age = 24
 
 
-class Elegible_Nationals(admin.SimpleListFilter):
-    title = "Elegible_Nationals"
-    parameter_name = "Elegible_Nationals"
+class Eligible_onlyOneClub(admin.SimpleListFilter):
+    title = "nur ein Verein"
+    parameter_name = "Eligible_onlyOneClub"
     age = 0
 
     def lookups(self, request, model_admin):
@@ -243,10 +250,10 @@ class PersonForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        #check if an instance is parsed if not then a new object is added
-        if 'instance' in kwargs and kwargs['instance'] is not None:
-            self.initial['email'] = kwargs['instance'].user.email
-            
+        # check if an instance is parsed if not then a new object is added
+        if "instance" in kwargs and kwargs["instance"] is not None:
+            self.initial["email"] = kwargs["instance"].user.email
+
     class Meta:
         model = models.Person
         exclude = ["user"]
@@ -263,22 +270,22 @@ class PersonAdmin(GuardedModelAdmin):
         "eligibile_u17",
         "eligibile_u20",
         "eligibile_u24",
-        "eligibile_nationals",
+        "eligibile_onlyOneClub",
+        "eligibile_nationals_ow",
+        "eligibile_nationals_mixed",
+        "eligibile_nationals_beach",
     )
-
-    def has_change_permission(self, request, obj=None):
-        return super().has_change_permission(request, obj=obj)
 
     readonly_fields = ["image_500p_tag"]
     # editable list fields cause huge performance issues when in debug mode
     # if not settings.DEBUG:
     #    list_editable = ("lastname", "sex", "birthdate")
 
-    list_filter = (Eligibile_u17, Eligibile_u20, Eligibile_u24, Elegible_Nationals)
+    list_filter = (Eligibile_u17, Eligibile_u20, Eligibile_u24, Eligible_onlyOneClub)
     list_display_links = ("firstname",)
     search_fields = ("firstname", "lastname", "birthdate")
     inlines = (Club_to_Person_Inline, Roster_To_Person_Relationship_Inline, Association_to_Person_Inline)
-    actions = ["send_conflict_email"]
+    actions = ["export_to_csv", "send_conflict_email"]
     ordering = ("firstname", "lastname", "birthdate")
 
     form = PersonForm
@@ -294,7 +301,7 @@ class PersonAdmin(GuardedModelAdmin):
         firstname = form.cleaned_data["firstname"]
         lastname = form.cleaned_data["lastname"]
         birthdate = form.cleaned_data["birthdate"].year
-        
+
         try:
             user = obj.user
             user.username = f"{birthdate}{lastname}{firstname}"

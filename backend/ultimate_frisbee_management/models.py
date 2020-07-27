@@ -59,7 +59,7 @@ class Person(models.Model):
     club_memberships = models.ManyToManyField("Club", through="PersonToClubMembership")
     team_memberships = models.ManyToManyField("Team", through="PersonToTeamMembership")
     association_memberships = models.ManyToManyField("Association", through="PersonToAssociationMembership")
-    
+
     # other relationships
     roster_relationships = models.ManyToManyField("Roster", through="PersonToRosterRelationship")
     # todo this should be models.oneTooneField but the faking factory is not capable atm to build unique relationships between person and user
@@ -146,9 +146,39 @@ class Person(models.Model):
 
     def eligibile_onlyOneClub(self) -> bool:
         return self.get_current_clubmemberships().count() < 2
-    
+
     eligibile_onlyOneClub.boolean = True
     eligibile_onlyOneClub.short_description = "Nur ein Verein"
+
+    # TODO: refactor into elegibilty framework
+    def eligibile_nationals(self, tournament: str, year=date.today().year) -> bool:
+
+        current_clubs = Club.objects.filter(persontoclubmembership__in=self.get_current_clubmemberships().all())
+        roster = Roster.objects.filter(
+            Q(person=self)
+            & Q(tournament_division__tournament__name__contains=tournament)
+            & Q(tournament_division__tournament__start__year__gte=year)  # change to +1
+            & ~Q(team__club_membership__in=current_clubs)
+        )
+        return roster.count() < 2
+
+    def eligibile_nationals_ow(self):
+        return self.eligibile_nationals("ÖSTM OPEN")
+
+    eligibile_nationals_ow.boolean = True
+    eligibile_nationals_ow.short_description = "El. ÖSTM OW"
+
+    def eligibile_nationals_mixed(self):
+        return self.eligibile_nationals("ÖSTM Mixed")
+
+    eligibile_nationals_mixed.boolean = True
+    eligibile_nationals_mixed.short_description = "El. ÖSTM X"
+
+    def eligibile_nationals_beach(self):
+        return self.eligibile_nationals("ÖSTM BÖSTM")
+
+    eligibile_nationals_beach.boolean = True
+    eligibile_nationals_beach.short_description = "El. BÖSTM"
 
     def __str__(self):
         return f"{self.firstname} {self.lastname} ({self.birthdate.year})"
@@ -282,7 +312,7 @@ class Roster(models.Model):
     tournament_division = models.ForeignKey("TournamentDivision", on_delete=models.CASCADE)
     team = models.ForeignKey("Team", on_delete=models.CASCADE)
     persons = models.ManyToManyField("Person", through="PersonToRosterRelationship")
-    
+
     # TODO: check if roster is valid
 
     def __str__(self):
@@ -393,7 +423,10 @@ class Membership(BaseRelationship):
         abstract = True
         # TODO: constraint does not work
         constraints = [
-            models.CheckConstraint(check=Q(valid_from__lte=F('valid_until')), name='%(app_label)s_%(class)s valid_from is earlier than valid_until')
+            models.CheckConstraint(
+                check=Q(valid_from__lte=F("valid_until")),
+                name="%(app_label)s_%(class)s valid_from is earlier than valid_until",
+            )
         ]
 
     def is_active(self) -> bool:
@@ -413,7 +446,7 @@ class PersonToAssociationMembership(Membership):
 
     class Meta(Membership.Meta):
         db_table = "pm_PersonToAssociationMembership"
-        # TODO: constraint memberships time periods may not overlap for a person and association  
+        # TODO: constraint memberships time periods may not overlap for a person and association
 
 
 class PersonToClubMembership(Membership):
@@ -429,7 +462,7 @@ class PersonToClubMembership(Membership):
 
     class Meta(Membership.Meta):
         db_table = "pm_PersonToClubMembership"
-        # TODO: constraint memberships time periods may not overlap for a person and club  
+        # TODO: constraint memberships time periods may not overlap for a person and club
 
 
 class PersonToTeamMembership(Membership):
@@ -443,7 +476,7 @@ class PersonToTeamMembership(Membership):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     role = models.CharField(max_length=300, choices=TEAM_ROLES, default="Player", null=True)
     number = models.IntegerField(validators=[MinValueValidator(0)], null=True, blank=True)
-    #TODO: remove this relationship 
+    # TODO: remove this relationship
 
     class Meta(Membership.Meta):
         db_table = "pm_PersonToTeamMembership"
@@ -489,7 +522,9 @@ class PersonToRosterRelationship(BaseRelationship):
     class Meta(BaseRelationship.Meta):
         db_table = "pm_PersonToRosterRelationship"
         constraints = [
-            models.UniqueConstraint(fields=["roster", "number"], condition=~Q(number=0), name="No duplicate numbers on Roster Constraint"),
+            models.UniqueConstraint(
+                fields=["roster", "number"], condition=~Q(number=0), name="No duplicate numbers on Roster Constraint"
+            ),
             models.UniqueConstraint(
                 fields=["roster", "person"], name="No duplicate Person entries in Roster Constraint"
             ),
