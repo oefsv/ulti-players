@@ -252,6 +252,7 @@ class Eligible_Nationals_BEACH(Eligible_Nationals_BaseFilter):
     parameter_name = "eligible_nationals_beach"
     event_name = "BÖSTM"
 
+
 class CustomGuardedModelAdmin(GuardedModelAdmin):
     def has_change_permission(self, request, obj=None):
         if obj is not None:
@@ -354,6 +355,17 @@ class PersonAdmin(GuardedModelAdmin):
 
     def send_conflict_email(self, request, queryset):
         mail.send_conflict_notification(request, queryset)
+
+    def export_to_csv(self, request, queryset):
+        old_queryset = views.PersonViewSet.queryset
+        views.PersonViewSet.queryset = queryset
+
+        request.method = "GET"
+        request.META['HTTP_ACCEPT'] = 'text/csv'
+
+        response = views.PersonViewSet.as_view({'get': 'list'})(request)
+        views.PersonViewSet.queryset = old_queryset
+        return response
 
 
 class OrganistaionAdmin(customFilteredGuardedModelAdmin):
