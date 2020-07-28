@@ -214,6 +214,44 @@ class Eligible_onlyOneClub(admin.SimpleListFilter):
         return queryset
 
 
+class Eligible_Nationals_BaseFilter(admin.SimpleListFilter):
+    title = "Eligible ÖSTM"
+    parameter_name = "eligible_nationals"
+    event_name = ""
+
+    def lookups(self, request, model_admin):
+        return (
+            ("Yes", "Yes"),
+            ("No", "No"),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == "Yes":
+            persons = [p.pk for p in queryset if (p.eligibile_nationals(self.event_name))]
+            return queryset.filter(pk__in=persons)
+        elif self.value() == "No":
+            persons = [p.pk for p in queryset if (not p.eligibile_nationals(self.event_name))]
+            return queryset.filter(pk__in=persons)
+        return queryset
+
+
+class Eligible_Nationals_OW(Eligible_Nationals_BaseFilter):
+    title = "Eligible ÖSTM OPEN / DAMEN"
+    parameter_name = "eligible_nationals_ow"
+    event_name = "ÖSTM OPEN"
+
+
+class Eligible_Nationals_X(Eligible_Nationals_BaseFilter):
+    title = "Eligible ÖSTM Mixed"
+    parameter_name = "eligible_nationals_x"
+    event_name = "ÖSTM MIXED"
+
+
+class Eligible_Nationals_BEACH(Eligible_Nationals_BaseFilter):
+    title = "Eligible BÖSTM OPEN"
+    parameter_name = "eligible_nationals_beach"
+    event_name = "BÖSTM"
+
 class CustomGuardedModelAdmin(GuardedModelAdmin):
     def has_change_permission(self, request, obj=None):
         if obj is not None:
@@ -266,7 +304,6 @@ class PersonAdmin(GuardedModelAdmin):
         "image_45p_tag",
         "birthdate",
         "sex",
-        "user",
         "eligibile_u17",
         "eligibile_u20",
         "eligibile_u24",
@@ -281,7 +318,7 @@ class PersonAdmin(GuardedModelAdmin):
     # if not settings.DEBUG:
     #    list_editable = ("lastname", "sex", "birthdate")
 
-    list_filter = (Eligibile_u17, Eligibile_u20, Eligibile_u24, Eligible_onlyOneClub)
+    list_filter = (Eligibile_u17, Eligibile_u20, Eligibile_u24, Eligible_onlyOneClub, Eligible_Nationals_OW, Eligible_Nationals_X, Eligible_Nationals_BEACH)
     list_display_links = ("firstname",)
     search_fields = ("firstname", "lastname", "birthdate")
     inlines = (Club_to_Person_Inline, Roster_To_Person_Relationship_Inline, Association_to_Person_Inline)

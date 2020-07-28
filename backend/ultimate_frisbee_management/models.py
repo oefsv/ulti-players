@@ -157,7 +157,7 @@ class Person(models.Model):
         roster = Roster.objects.filter(
             Q(person=self)
             & Q(tournament_division__tournament__name__contains=tournament)
-            & Q(tournament_division__tournament__start__year__gte=year)  # change to +1
+            & Q(tournament_division__tournament__start__year__gte=year)
             & ~Q(team__club_membership__in=current_clubs)
         )
         return roster.count() < 2
@@ -169,13 +169,13 @@ class Person(models.Model):
     eligibile_nationals_ow.short_description = "El. ÖSTM OW"
 
     def eligibile_nationals_mixed(self):
-        return self.eligibile_nationals("ÖSTM Mixed")
+        return self.eligibile_nationals("ÖSTM MIXED")
 
     eligibile_nationals_mixed.boolean = True
     eligibile_nationals_mixed.short_description = "El. ÖSTM X"
 
     def eligibile_nationals_beach(self):
-        return self.eligibile_nationals("ÖSTM BÖSTM")
+        return self.eligibile_nationals("BÖSTM")
 
     eligibile_nationals_beach.boolean = True
     eligibile_nationals_beach.short_description = "El. BÖSTM"
