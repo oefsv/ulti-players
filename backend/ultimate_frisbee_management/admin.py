@@ -235,10 +235,16 @@ class Eligible_Nationals_BaseFilter(admin.SimpleListFilter):
         return queryset
 
 
-class Eligible_Nationals_OW(Eligible_Nationals_BaseFilter):
-    title = "Eligible ÖSTM OPEN / DAMEN"
-    parameter_name = "eligible_nationals_ow"
+class Eligible_Nationals_O(Eligible_Nationals_BaseFilter):
+    title = "Eligible ÖSTM OPEN"
+    parameter_name = "eligible_nationals_o"
     event_name = "ÖSTM OPEN"
+
+
+class Eligible_Nationals_W(Eligible_Nationals_BaseFilter):
+    title = "Eligible ÖM DAMEN"
+    parameter_name = "eligible_nationals_w"
+    event_name = "ÖM WOMEN"
 
 
 class Eligible_Nationals_X(Eligible_Nationals_BaseFilter):
@@ -309,7 +315,8 @@ class PersonAdmin(GuardedModelAdmin):
         "eligibile_u20",
         "eligibile_u24",
         "eligibile_onlyOneClub",
-        "eligibile_nationals_ow",
+        "eligibile_nationals_w",
+        "eligibile_nationals_o",
         "eligibile_nationals_mixed",
         "eligibile_nationals_beach",
     )
@@ -319,7 +326,7 @@ class PersonAdmin(GuardedModelAdmin):
     # if not settings.DEBUG:
     #    list_editable = ("lastname", "sex", "birthdate")
 
-    list_filter = (Eligibile_u17, Eligibile_u20, Eligibile_u24, Eligible_onlyOneClub, Eligible_Nationals_OW, Eligible_Nationals_X, Eligible_Nationals_BEACH)
+    list_filter = (Eligibile_u17, Eligibile_u20, Eligibile_u24, Eligible_onlyOneClub, Eligible_Nationals_W, Eligible_Nationals_O, Eligible_Nationals_X, Eligible_Nationals_BEACH)
     list_display_links = ("firstname",)
     search_fields = ("firstname", "lastname", "birthdate")
     inlines = (Club_to_Person_Inline, Roster_To_Person_Relationship_Inline, Association_to_Person_Inline)

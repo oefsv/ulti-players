@@ -162,11 +162,17 @@ class Person(models.Model):
         )
         return roster.count() < 2
 
-    def eligibile_nationals_ow(self):
+    def eligibile_nationals_o(self):
         return self.eligibile_nationals("ÖSTM OPEN")
 
-    eligibile_nationals_ow.boolean = True
-    eligibile_nationals_ow.short_description = "El. ÖSTM OW"
+    eligibile_nationals_o.boolean = True
+    eligibile_nationals_o.short_description = "El. ÖSTM O"
+
+    def eligibile_nationals_w(self):
+        return self.eligibile_nationals("ÖM WOMEN")
+
+    eligibile_nationals_w.boolean = True
+    eligibile_nationals_w.short_description = "El. ÖSTM W"
 
     def eligibile_nationals_mixed(self):
         return self.eligibile_nationals("ÖSTM MIXED")
