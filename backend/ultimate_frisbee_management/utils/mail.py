@@ -24,7 +24,7 @@ def send_conflict_notification(request, persons: QuerySet):
     connection.open()
     messages = []
     for p in persons:
-        if not p.eligibile_nationals():
+        if not p.eligibile_onlyOneClub():
             club_memberships: List[PersonToClubMembership] = p.get_current_clubmemberships()
 
             for m in club_memberships:
