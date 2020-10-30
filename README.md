@@ -7,7 +7,7 @@
 
 # Backend
 Is a container stack defined in `docker-compose`.
-it is a django application with a posgresql database backend, managed via gunicorn and served via nginx.
+it is a django application with a postgresql database backend, managed via gunicorn and served via nginx.
 
 ## Tests
 
@@ -65,3 +65,7 @@ sudo systemctl disable nginx
 sudo systemctl stop nginx
 sudo nginx -c  $PWD/frontend/nginx/conf/nginx.conf
 ```
+
+### OEFSV specific troubleshooting
+The Mail account to send send mail verifications etc runs on the organisations gsuite account.
+this needs to allow less secure apps tu use the mail service. set it on https://myaccount.google.com/security for the db-ultimate account
