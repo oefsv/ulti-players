@@ -37,6 +37,7 @@ services:
       - certbot
   certbot:
     image: certbot/certbot
+    restart: always
     volumes:
       - ./certbot/data/conf:/etc/letsencrypt
       - ./certbot/data/www:/var/www/certbot
