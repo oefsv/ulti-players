@@ -30,7 +30,14 @@ You can set up your local test environment.
    ```
    docker exec -it ulti-players_django_1 bash -c "pytest"
    ```
-   the results are available under on the test instance you can find test coverage reports at `localhost:8080/tests/index.html` and test report under `localhost:8080/tests/report.html`
+   the results are available on the test instance. you can find test coverage reports at `localhost:8080/tests/index.html` and test report under `localhost:8080/tests/report.html`
+
+
+
+## Development
+
+
+
 
 
 # Frontend
@@ -53,17 +60,6 @@ In order to initialize the backend server, use
 
 ```
 > ./gradlew :backend:initDev
-```
-
-
-### 1. Install configure nginx
-in the first terminal:
-```
-sudo apt update
-sudo apt install nginx -y
-sudo systemctl disable nginx
-sudo systemctl stop nginx
-sudo nginx -c  $PWD/frontend/nginx/conf/nginx.conf
 ```
 
 ### OEFSV specific troubleshooting

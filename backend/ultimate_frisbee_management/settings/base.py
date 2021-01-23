@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'django_filters',
+    "django_filters",
     #'silk',
     #'debug_toolbar',
     "rest_framework",
@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     "viewflow",
     "guardian",
     "imagekit",
+    "dbbackup",
+    "django_crontab",
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -153,12 +155,11 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PARSER_CLASSES": ("rest_framework.parsers.JSONParser",),
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-        'rest_framework_csv.renderers.CSVRenderer',
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+        "rest_framework_csv.renderers.CSVRenderer",
     ],
- 
 }
 
 REST_AUTH_SERIALIZERS = {
@@ -176,10 +177,14 @@ GUARDIAN_RENDER_403 = True
 SESAME_MAX_AGE = 14 * 24 * 60 * 60  # Magic link tokens last 14 days
 SESAME_ONE_TIME = True
 
+DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
+DBBACKUP_STORAGE_OPTIONS = {"location": "/workspace/backend/backups/"}
+DBBACKUP_GPG_RECIPIENT = "CB82E38C91C67116"
+
+CRONJOBS = [("0 3 * * *", "ultimate_frisbee_management.cron.backup")]
 # Email settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.w0103e8b.kasserver.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "admin<datenbank@frisbeeverband.at>"
-
