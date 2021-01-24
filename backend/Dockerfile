@@ -4,6 +4,7 @@ FROM python:3 as install
 # add new user. In Production this increases security. in development this makes developing in the container easier.
 
 ARG USERNAME=django
+ARG GROUP=ulti-players
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
@@ -22,15 +23,15 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # ********************************************************
 
 # [Optional] Set the default user. Omit if you want to keep the default as root.
+WORKDIR /workspace
+RUN chown django:django /workspace
+
 USER $USERNAME
 
-# for image_recognition install cmake
-WORKDIR /workspace
-
 RUN mkdir /workspace/backend/ &&\
-    mkdir /workspace/backend/backup &&\
-    apt update -y && \
-    apt install cmake postgresql-client cron -y
+    mkdir /workspace/backend/backups &&\
+    sudo apt update -y && \
+    sudo apt install cmake postgresql-client cron -y
 
 
 RUN pip install --upgrade pip

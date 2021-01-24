@@ -1,0 +1,3 @@
+0 3 * * * /usr/local/bin/python /workspace/backend/manage.py dbbackup -ez && /usr/local/bin/python /workspace/backend/manage.py mediabackup -e
+0 3 * * * cd /workspace/backend/backups && ls -t *.psql.* | head -n1 | xargs -t -I{} ln -f -s {} db_backup.psql.gz.gpg
+0 3 * * * cd /workspace/backend/backups && ls -t *.tar.* | head -n1 | xargs -t -I{} ln -f -s {} media_backup.tar.gpg
