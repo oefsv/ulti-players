@@ -50,6 +50,7 @@ testem.log
 # Database
 backend/*.db
 backend/ultimate_frisbee_management/migrations/**
+backend/backups/**
 backend/ultimate_frisbee_management/static/*
 !backend/ultimate_frisbee_management/static/ultimate_frisbee_management/
 
