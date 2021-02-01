@@ -2,6 +2,7 @@
 gspread
 oauth2client
 python-dateutil
+django-dbbackup
 django-viewflow
 django-rest-swagger
 django-filter
@@ -24,6 +25,11 @@ xhtml2pdf
 ## image recognition
 face_recognition
 numpy 
+
+# backup
+python-gnupg #encryption
+django-crontab # scheduling backups
+
 
 #Testing
 pytest-django
