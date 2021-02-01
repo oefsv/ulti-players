@@ -178,7 +178,7 @@ SESAME_MAX_AGE = 14 * 24 * 60 * 60  # Magic link tokens last 14 days
 SESAME_ONE_TIME = True
 
 DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
-DBBACKUP_STORAGE_OPTIONS = {"location": "/workspace/backend/backups/"}
+DBBACKUP_STORAGE_OPTIONS = {"location": "/workspace/backups/"}
 DBBACKUP_GPG_RECIPIENT = "CB82E38C91C67116"
 
 # Email settings
