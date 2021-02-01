@@ -35,11 +35,6 @@ RUN mkdir /workspace/backend/ &&\
 
 
 RUN pip install --upgrade pip
-#RUN pip install pipenv
-
-#ADD Pipfile /tmp
-#RUN cd /tmp && pipenv lock --requirements > requirements.txt  && pipenv --rm
-#RUN pip install -r /tmp/requirements.txt
 ADD requirements.txt .
 RUN pip install -r /workspace/requirements.txt
 ENV PATH="/home/django/.local/bin:${PATH}"

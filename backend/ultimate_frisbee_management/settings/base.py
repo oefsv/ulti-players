@@ -181,7 +181,6 @@ DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
 DBBACKUP_STORAGE_OPTIONS = {"location": "/workspace/backend/backups/"}
 DBBACKUP_GPG_RECIPIENT = "CB82E38C91C67116"
 
-CRONJOBS = [("0 3 * * *", "ultimate_frisbee_management.cron.backup")]
 # Email settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.w0103e8b.kasserver.com"
