@@ -31,7 +31,7 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "pythonPath": "${command:python.interpreterPath}",
+            "python": "${command:python.interpreterPath}",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "env": {
