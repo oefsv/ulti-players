@@ -58,7 +58,7 @@ class Roster_To_Person_Relationship_Inline(Person_To_Roster_Relationship_Inline)
 
 
 class BaseMembership_Inline(BaseRelationship_Inline):
-    ordering = ("valid_until",)
+    ordering = ("-valid_from","valid_until",)
 
 
 class Active_Membership_Inline(BaseMembership_Inline):
