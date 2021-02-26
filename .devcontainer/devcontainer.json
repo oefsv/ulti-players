@@ -39,6 +39,7 @@
 		"hbenl.vscode-test-explorer",
 		"ms-azuretools.vscode-docker",
 		"github.vscode-pull-request-github",
-		"knisterpeter.vscode-github"
+		"knisterpeter.vscode-github",
+		"njpwerner.autodocstring"
 	]
 }
