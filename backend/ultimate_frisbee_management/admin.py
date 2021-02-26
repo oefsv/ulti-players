@@ -61,6 +61,16 @@ class BaseMembership_Inline(BaseRelationship_Inline):
     ordering = ("valid_until",)
 
 
+class Active_Membership_Inline(BaseMembership_Inline):
+    def get_queryset(self, request):
+        return super().get_queryset(request).active()
+
+
+class Inactive_Membership_Inline(BaseMembership_Inline):
+    def get_queryset(self, request):
+        return super().get_queryset(request).inactive()
+
+
 class Person_to_Team_Inline(BaseMembership_Inline):
     model = models.PersonToTeamMembership
     autocomplete_fields = ("person", "team")
@@ -75,7 +85,7 @@ class Team_to_Person_Inline(Person_to_Team_Inline):
     verbose_name_plural = "Team Memberships"
 
 
-class Person_to_Club_Inline(BaseMembership_Inline):
+class Person_to_Club_Inline(Active_Membership_Inline):
     model = models.PersonToClubMembership
     autocomplete_fields = ("person", "club")
     list_filter = autocomplete_fields
@@ -83,21 +93,46 @@ class Person_to_Club_Inline(BaseMembership_Inline):
     verbose_name_plural = "Persons in the Club"
 
 
+class Inactive_Person_to_Club_Inline(Inactive_Membership_Inline):
+    model = models.PersonToClubMembership
+    autocomplete_fields = ("person", "club")
+    list_filter = autocomplete_fields
+    verbose_name = "former Person to Club"
+    verbose_name_plural = "Former Persons in the Club"
+
+
 class Club_to_Person_Inline(Person_to_Club_Inline):
     verbose_name = "Club Membership"
     verbose_name_plural = "Club Memberships"
 
 
-class Person_to_Association_Inline(BaseMembership_Inline):
+class Inactive_Club_to_Person_Inline(Inactive_Person_to_Club_Inline):
+    verbose_name = "former Club Membership"
+    verbose_name_plural = "Former Club Memberships"
+
+
+class Person_to_Association_Inline(Active_Membership_Inline):
     model = models.PersonToAssociationMembership
     autocomplete_fields = ("association", "person")
     verbose_name = "Person to the Association"
     verbose_name_plural = "Persons in the Association"
 
 
+class Inactive_Person_to_Association_Inline(Inactive_Membership_Inline):
+    model = models.PersonToAssociationMembership
+    autocomplete_fields = ("association", "person")
+    verbose_name = "former Person to the Association"
+    verbose_name_plural = "Former Persons in the Association"
+
+
 class Association_to_Person_Inline(Person_to_Association_Inline):
     verbose_name = "Association Membership"
     verbose_name_plural = "Association Memberships"
+
+
+class Inactive_Association_to_Person_Inline(Inactive_Person_to_Association_Inline):
+    verbose_name = "former Association Membership"
+    verbose_name_plural = "Former Association Memberships"
 
 
 class Club_to_Association_Inline(BaseRelationship_Inline):
@@ -230,7 +265,9 @@ class Eligible_Nationals_BaseFilter(admin.SimpleListFilter):
             persons = [p.pk for p in queryset if (p.eligibile_nationals(self.event_name))]
             return queryset.filter(pk__in=persons)
         elif self.value() == "No":
-            persons = [p.pk for p in queryset if (not p.eligibile_nationals(self.event_name))]
+            persons = [
+                p.pk for p in queryset if (not p.eligibile_nationals(self.event_name))
+            ]
             return queryset.filter(pk__in=persons)
         return queryset
 
@@ -326,10 +363,25 @@ class PersonAdmin(GuardedModelAdmin):
     # if not settings.DEBUG:
     #    list_editable = ("lastname", "sex", "birthdate")
 
-    list_filter = (Eligibile_u17, Eligibile_u20, Eligibile_u24, Eligible_onlyOneClub, Eligible_Nationals_W, Eligible_Nationals_O, Eligible_Nationals_X, Eligible_Nationals_BEACH)
+    list_filter = (
+        Eligibile_u17,
+        Eligibile_u20,
+        Eligibile_u24,
+        Eligible_onlyOneClub,
+        Eligible_Nationals_W,
+        Eligible_Nationals_O,
+        Eligible_Nationals_X,
+        Eligible_Nationals_BEACH,
+    )
     list_display_links = ("firstname",)
     search_fields = ("firstname", "lastname", "birthdate")
-    inlines = (Club_to_Person_Inline, Roster_To_Person_Relationship_Inline, Association_to_Person_Inline)
+    inlines = (
+        Club_to_Person_Inline,
+        Roster_To_Person_Relationship_Inline,
+        Association_to_Person_Inline,
+        Inactive_Club_to_Person_Inline,
+        Inactive_Association_to_Person_Inline,
+    )
     actions = ["export_to_csv", "send_conflict_email"]
     ordering = ("firstname", "lastname", "birthdate")
 
@@ -353,7 +405,9 @@ class PersonAdmin(GuardedModelAdmin):
             user.email = email
 
         except AttributeError:
-            user, _ = User.objects.get_or_create(username=f"{birthdate}{lastname}{firstname}", email=email)
+            user, _ = User.objects.get_or_create(
+                username=f"{birthdate}{lastname}{firstname}", email=email
+            )
 
         user.save()
 
@@ -368,9 +422,9 @@ class PersonAdmin(GuardedModelAdmin):
         views.PersonViewSet.queryset = queryset
 
         request.method = "GET"
-        request.META['HTTP_ACCEPT'] = 'text/csv'
+        request.META["HTTP_ACCEPT"] = "text/csv"
 
-        response = views.PersonViewSet.as_view({'get': 'list'})(request)
+        response = views.PersonViewSet.as_view({"get": "list"})(request)
         views.PersonViewSet.queryset = old_queryset
         return response
 
@@ -398,15 +452,24 @@ class AssociationAdmin(OrganistaionAdmin):
         Association_to_Member_Association_Inline,
         Club_to_Association_Inline,
         Person_to_Association_Inline,
+        Inactive_Person_to_Association_Inline,
     )
 
     def members(self, obj):
-        return models.ClubToAssociationMembership.objects.filter(association=obj).count()
+        return (
+            models.ClubToAssociationMembership.objects.filter(association=obj)
+            .active()
+            .count()
+        )
 
 
 class ClubAdmin(OrganistaionAdmin):
     list_display = OrganistaionAdmin.list_display + ("teams",)
-    inlines = (Association_To_Club_Inline, Person_to_Club_Inline)
+    inlines = (
+        Association_To_Club_Inline,
+        Person_to_Club_Inline,
+        Inactive_Person_to_Club_Inline,
+    )
     ordering = ("name",)
     search_fields = ("name",)
 
@@ -414,7 +477,7 @@ class ClubAdmin(OrganistaionAdmin):
         list_display = list_display + ("votes",)
 
     def members(self, obj):
-        return models.PersonToClubMembership.objects.filter(club=obj).count()
+        return models.PersonToClubMembership.objects.filter(club=obj).active().count()
 
     def votes(self, obj):
         return math.sqrt(self.members(obj)) * 10
@@ -434,7 +497,7 @@ class TeamAdmin(OrganistaionAdmin):
         return None
 
     def members(self, obj):
-        return models.PersonToTeamMembership.objects.filter(team=obj).count()
+        return models.PersonToTeamMembership.objects.filter(team=obj).active().count()
 
 
 class EventAdmin(CustomGuardedModelAdmin):
@@ -484,7 +547,11 @@ class TournamentDivisionAdmin(CustomGuardedModelAdmin):
 class RosterAdmin(customFilteredGuardedModelAdmin):
     list_display = ("name", "team", "tournament_division", "tournament", "division")
     inlines = (Person_To_Roster_Relationship_Inline,)
-    search_fields = ("team__name", "tournament_division__tournament__name", "tournament_division__division__name")
+    search_fields = (
+        "team__name",
+        "tournament_division__tournament__name",
+        "tournament_division__division__name",
+    )
     autocomplete_fields = ("team", "persons", "tournament_division")
     list_filter = ("team", "tournament_division")
 

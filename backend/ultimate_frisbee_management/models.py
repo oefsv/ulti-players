@@ -37,7 +37,7 @@ class PersonEligibility(Eligibility):
 
 
 class Person(models.Model):
-    """ A Person reflects one single real Person, there shall be no two person
+    """A Person reflects one single real Person, there shall be no two person
     objects for the same Person Persons CAN be linked to users of the application,
      meaning that the person is a User of this application
     """
@@ -52,16 +52,22 @@ class Person(models.Model):
     firstname = models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     sex = models.CharField(max_length=1, choices=SEX)
-    birthdate = models.DateField()  # TODO: validator to check that date is not in the future
+    birthdate = (
+        models.DateField()
+    )  # TODO: validator to check that date is not in the future
 
     # specify image directory
     # Memberships
     club_memberships = models.ManyToManyField("Club", through="PersonToClubMembership")
     team_memberships = models.ManyToManyField("Team", through="PersonToTeamMembership")
-    association_memberships = models.ManyToManyField("Association", through="PersonToAssociationMembership")
+    association_memberships = models.ManyToManyField(
+        "Association", through="PersonToAssociationMembership"
+    )
 
     # other relationships
-    roster_relationships = models.ManyToManyField("Roster", through="PersonToRosterRelationship")
+    roster_relationships = models.ManyToManyField(
+        "Roster", through="PersonToRosterRelationship"
+    )
     # todo this should be models.oneTooneField but the faking factory is not capable atm to build unique relationships between person and user
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -91,7 +97,9 @@ class Person(models.Model):
 
     def image_500p_tag(self):
         if self.image and hasattr(self.image, "url"):
-            return mark_safe('<img src="%s" style="max-width: 500px;" />' % self.image.url)
+            return mark_safe(
+                '<img src="%s" style="max-width: 500px;" />' % self.image.url
+            )
         else:
             return "-"
 
@@ -150,10 +158,12 @@ class Person(models.Model):
     eligibile_onlyOneClub.boolean = True
     eligibile_onlyOneClub.short_description = "Nur ein Verein"
 
-    # TODO: refactor into elegibilty framework
+    # TODO: #68 #67 refactor into elegibilty framework
     def eligibile_nationals(self, tournament: str, year=date.today().year) -> bool:
 
-        current_clubs = Club.objects.filter(persontoclubmembership__in=self.get_current_clubmemberships().all())
+        current_clubs = Club.objects.filter(
+            persontoclubmembership__in=self.get_current_clubmemberships().all()
+        )
         roster = Roster.objects.filter(
             Q(person=self)
             & Q(tournament_division__tournament__name__contains=tournament)
@@ -194,7 +204,7 @@ class Person(models.Model):
 
 
 class Organisation(models.Model):
-    """ An organization is an abstract concept for people or parties
+    """An organization is an abstract concept for people or parties
     who organize themselves for a specific purpose.  Teams, clubs
     and associations are the 3 different organization types in this model"""
 
@@ -244,12 +254,14 @@ class Organisation(models.Model):
 
 
 class Association(Organisation):
-    """ An Association (german: Verband) is a legal form of an organisation. It may represent
+    """An Association (german: Verband) is a legal form of an organisation. It may represent
     people or other Organisations. In the Ultimate Frisbee context an Association represents
     multiple Clubs. By Definition it is represented by a board committee. The board is reflected
     in the PersonToAssociationMembership which defines membership roles"""
 
-    board_members = models.ManyToManyField("Person", through="PersonToAssociationMembership")
+    board_members = models.ManyToManyField(
+        "Person", through="PersonToAssociationMembership"
+    )
     member_clubs = models.ManyToManyField("Club", through="ClubToAssociationMembership")
     governing_associations = models.ManyToManyField(
         "self",
@@ -265,17 +277,21 @@ class Association(Organisation):
 
 class Club(Organisation):
     member_persons = models.ManyToManyField("Person", through="PersonToClubMembership")
-    associations_memberships = models.ManyToManyField("Association", through="ClubToAssociationMembership")
+    associations_memberships = models.ManyToManyField(
+        "Association", through="ClubToAssociationMembership"
+    )
 
     class Meta(Organisation.Meta):
         db_table = "pm_Club"
 
 
 class Team(Organisation):
-    """ A Team is an organization owned by a Club. it consists of a list
+    """A Team is an organization owned by a Club. it consists of a list
     of players which is a temporary assignment of a player to a team"""
 
-    club_membership = models.ForeignKey(Club, on_delete=models.CASCADE, null=True, blank=True)
+    club_membership = models.ForeignKey(
+        Club, on_delete=models.CASCADE, null=True, blank=True
+    )
     member_persons = models.ManyToManyField("Person", through="PersonToTeamMembership")
     tournament_divisions = models.ManyToManyField("TournamentDivision", through="Roster")
 
@@ -297,7 +313,11 @@ class EventSeries(models.Model):
     name = models.CharField(max_length=300, blank=False)
     description = models.TextField(blank=True)
     events = models.ManyToManyField("Event")
-    subseries = models.ManyToManyField("self", symmetrical=False, related_name="parent_series",)
+    subseries = models.ManyToManyField(
+        "self",
+        symmetrical=False,
+        related_name="parent_series",
+    )
 
     class Meta:
         abstract = True
@@ -311,11 +331,13 @@ class Tournament(Event):
 
 
 class Roster(models.Model):
-    """ A roster is a set of persons that compete in a Team at a TournamentDivision
-        with a teamrole and number.
+    """A roster is a set of persons that compete in a Team at a TournamentDivision
+    with a teamrole and number.
     """
 
-    tournament_division = models.ForeignKey("TournamentDivision", on_delete=models.CASCADE)
+    tournament_division = models.ForeignKey(
+        "TournamentDivision", on_delete=models.CASCADE
+    )
     team = models.ForeignKey("Team", on_delete=models.CASCADE)
     persons = models.ManyToManyField("Person", through="PersonToRosterRelationship")
 
@@ -326,8 +348,8 @@ class Roster(models.Model):
 
 
 class TournamentDivision(models.Model):
-    """ A TournamentDivision represents the hosting of a Division at a Tournament
-        and contains a list of the attending teams.
+    """A TournamentDivision represents the hosting of a Division at a Tournament
+    and contains a list of the attending teams.
     """
 
     tournament = models.ForeignKey("Tournament", on_delete=models.CASCADE)
@@ -339,13 +361,13 @@ class TournamentDivision(models.Model):
 
 
 class Division(models.Model):
-    """ a Division is a set of rules (Queryset) that defines the
+    """a Division is a set of rules (Queryset) that defines the
     eligibility of Persons, Teams and specific Rosters to compete at a related tournament.
-    A tournament can have more than one Divsion. 
+    A tournament can have more than one Divsion.
 
     Example: TournamentDivision Mixed EUCF. Eligible are all players who have
     not played at any EUCR in another Division and all Teams that have qualified through
-    eucr and whose roster for this tournament does not contain more than 3 new players compared 
+    eucr and whose roster for this tournament does not contain more than 3 new players compared
     to the EUCR roster
     """
 
@@ -417,15 +439,27 @@ class BaseRelationship(models.Model):
         abstract = True
 
 
+class MembershipQuerySet(models.QuerySet):
+    """adds object querys to Memberships"""
+
+    def inactive(self):
+        return self.filter(Q(valid_until__lte=date.today()))
+
+    def active(self):
+        return self.exclude(Q(valid_until__lte=date.today()))
+
+
 class Membership(BaseRelationship):
-    """ A membership connects an organization as target with another organization
+    """A membership connects an organization as target with another organization
     or person as member. It is reported by, and  confirmed by a person
     it my have a from and until date. missing values assume an infinite Membership period"""
 
     valid_from = models.DateField()
     valid_until = models.DateField(null=True, blank=True)
+    objects = MembershipQuerySet.as_manager()
 
     class Meta:
+
         abstract = True
         # TODO: constraint does not work
         constraints = [
@@ -480,7 +514,9 @@ class PersonToTeamMembership(Membership):
     )
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    role = models.CharField(max_length=300, choices=TEAM_ROLES, default="Player", null=True)
+    role = models.CharField(
+        max_length=300, choices=TEAM_ROLES, default="Player", null=True
+    )
     number = models.IntegerField(validators=[MinValueValidator(0)], null=True, blank=True)
     # TODO: remove this relationship
 
@@ -498,15 +534,21 @@ class ClubToAssociationMembership(Membership):
 
 
 class AssociationToAssociationMembership(Membership):
-    member = models.ForeignKey(Association, on_delete=models.CASCADE, related_name="association_memberships")
-    governor = models.ForeignKey(Association, on_delete=models.CASCADE, related_name="association_governing")
+    member = models.ForeignKey(
+        Association, on_delete=models.CASCADE, related_name="association_memberships"
+    )
+    governor = models.ForeignKey(
+        Association, on_delete=models.CASCADE, related_name="association_governing"
+    )
 
     class Meta(Membership.Meta):
         db_table = "pm_AssociationToAssociationMembership"
 
 
 class PersonToClubMembershipProcess(Process):
-    membership = models.ForeignKey(PersonToClubMembership, blank=True, null=True, on_delete=models.CASCADE)
+    membership = models.ForeignKey(
+        PersonToClubMembership, blank=True, null=True, on_delete=models.CASCADE
+    )
     # TODO: remove this
 
 
@@ -520,7 +562,9 @@ class PersonToRosterRelationship(BaseRelationship):
 
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     roster = models.ForeignKey(Roster, on_delete=models.CASCADE)
-    role = models.CharField(max_length=300, choices=TEAM_ROLES, default="Player", null=True)
+    role = models.CharField(
+        max_length=300, choices=TEAM_ROLES, default="Player", null=True
+    )
     number = models.IntegerField(validators=[MinValueValidator(0)], null=True, blank=True)
 
     # TODO: check if roster membership is valid
@@ -529,10 +573,12 @@ class PersonToRosterRelationship(BaseRelationship):
         db_table = "pm_PersonToRosterRelationship"
         constraints = [
             models.UniqueConstraint(
-                fields=["roster", "number"], condition=~Q(number=0), name="No duplicate numbers on Roster Constraint"
+                fields=["roster", "number"],
+                condition=~Q(number=0),
+                name="No duplicate numbers on Roster Constraint",
             ),
             models.UniqueConstraint(
-                fields=["roster", "person"], name="No duplicate Person entries in Roster Constraint"
+                fields=["roster", "person"],
+                name="No duplicate Person entries in Roster Constraint",
             ),
         ]
-
