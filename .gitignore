@@ -75,3 +75,4 @@ backend/ultimate_frisbee_management/migrations/0001_initial.py
 
 # secrets
 backend/credentials/**
+backend/ultimate_frisbee_management/scripts/elegibility_snippets.py
