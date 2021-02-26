@@ -35,7 +35,7 @@ from picklefield.fields import dbsafe_encode
 
 class TestViews(APITestCase):
     def setUp(self):
-        self.factory: APIRequestFactory = APIRequesget_permstFactory()
+        self.factory: APIRequestFactory = APIRequestFactory()
 
     def test_get_user_profile(self):
 
@@ -62,7 +62,9 @@ class TestDivision(TestCase):
 
     def test_division_lifecycle(self):
         Division.objects.create(
-            name="test", description="test", eligible_person_query=dbsafe_encode(Person.objects.u17().query)
+            name="test",
+            description="test",
+            eligible_person_query=dbsafe_encode(Person.objects.u17().query),
         )
         div: Division = Division.objects.get(name="test")
 
@@ -83,7 +85,9 @@ class TestClubAdminPermissions(TestCase):
         mixer.cycle(5).blend(Person)
         mixer.cycle(5).blend(PersonToClubMembership, club=self.club)
         mixer.cycle(5).blend(Roster, team__club_membership=self.club)
-        mixer.cycle(5).blend(PersonToRosterRelationship, roster__team__club_membership=self.club)
+        mixer.cycle(5).blend(
+            PersonToRosterRelationship, roster__team__club_membership=self.club
+        )
         mixer.cycle(5).blend(Tournament)
         mixer.cycle(5).blend(TournamentDivision)
 
@@ -91,7 +95,9 @@ class TestClubAdminPermissions(TestCase):
         assert 5 == ClubToAssociationMembership.objects.filter(club=self.club).count()
         # delete all permission for current target, role and granting class
 
-        permissions = GroupObjectPermission.objects.filter(group__name__startswith=f"club_admin_{self.club.name}")
+        permissions = GroupObjectPermission.objects.filter(
+            group__name__startswith=f"club_admin_{self.club.name}"
+        )
 
 
 @pytest.mark.django_db
