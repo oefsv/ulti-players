@@ -426,14 +426,14 @@ class BaseRelationship(models.Model):
         related_name="reported_%(class)ss",
         related_query_name="%(class)s_reporter",
         null=True,
-    )
+    )  # type: ignore
     approved_by: User = models.ForeignKey(
         authModels.User,
         on_delete=models.CASCADE,
         related_name="approved_%(class)ss",
         related_query_name="%(class)s_approver",
         null=True,
-    )
+    )  # type: ignore
 
     class Meta:
         abstract = True
@@ -499,6 +499,14 @@ class PersonToClubMembership(Membership):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     role = models.CharField(max_length=300, choices=ASSOCIATION_ROLES, default="Member")
+
+    def first_year_in_a_club(self) -> bool:
+        today = date.today()
+        this_year = date(year=today.year, month=1, day=1)
+        other_memberships = PersonToClubMembership.objects.filter(person=self.person).filter( Q(valid_from__lt=this_year)| Q(valid_from__isnull=True))
+        return other_memberships.count() == 0
+    first_year_in_a_club.boolean = True
+    first_year_in_a_club.short_description = "First year in  a club"
 
     class Meta(Membership.Meta):
         db_table = "pm_PersonToClubMembership"

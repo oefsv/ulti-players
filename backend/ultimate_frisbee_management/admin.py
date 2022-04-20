@@ -88,6 +88,8 @@ class Team_to_Person_Inline(Person_to_Team_Inline):
 class Person_to_Club_Inline(Active_Membership_Inline):
     model = models.PersonToClubMembership
     autocomplete_fields = ("person", "club")
+    fields = ('valid_from','valid_until','first_year_in_a_club','person', 'club','role')
+    readonly_fields = ('first_year_in_a_club',)
     list_filter = autocomplete_fields
     verbose_name = "Person to Club"
     verbose_name_plural = "Persons in the Club"

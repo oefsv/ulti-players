@@ -26,7 +26,7 @@ from guardian.ctypes import get_content_type
 
 
 def set_permissions(granting_class, role, permission_target, granting_objects_selector, permissions=["view"]):
-    """    
+    """
     gets a Queryset for groups
     based on the role and the granting class which define the prefix of the group name
     and the target Q object which define the filter for the instances of granting objects
@@ -60,7 +60,9 @@ def set_permissions(granting_class, role, permission_target, granting_objects_se
     )
     old_permissions.delete()
 
-    if isinstance(granting_objects, granting_class):
+    if granting_objects is None:
+        return
+    elif isinstance(granting_objects, granting_class):
         granting_object_names_list = [granting_objects.name]
     else:
         granting_object_names_list = granting_objects.values_list("name", flat=True)
@@ -78,7 +80,7 @@ def set_permissions(granting_class, role, permission_target, granting_objects_se
 
 
 def get_permission_assigner(granting_class, role, granting_objects_selector, permissions=["view"]):
-    """ return a function that just needs the target object
+    """return a function that just needs the target object
     on which permissions are granted
     """
     return lambda permission_target: set_permissions(
@@ -163,4 +165,3 @@ def update_permissions_based_on_granting_objects_and_roles(sender, instance, **k
 def update_permissions_when_changing_team(sender, instance: Team, **kwargs):
     for roster in Roster.objects.filter(team=instance):
         roster.save()
-

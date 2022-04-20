@@ -37,10 +37,7 @@ You can set up your local test environment.
 ## Development
 
 ### clone production database
-`backend\ultimate_frisbee_management\scripts\clone_production_to_local_db.sh` backsup the production environment copies it to the local filesystem loads it into the local database and deletes all the backup files. with this you can create a copy of the production environment within minutes. Requires ssh access to the production host. ;D
-
-
-
+`backend\ultimate_frisbee_management\scripts\clone_production_to_local_db.sh` backs up the production environment, copies it to the local filesystem, loads it into the local database and deletes all the backup files. with this you can create a copy of the production environment within minutes. Requires ssh access to the production host. ;D
 
 # Frontend
 # Develop
