@@ -15,10 +15,9 @@ Including another URLconf
 """
 from __future__ import unicode_literals
 
-from django.urls import path
 from django.urls import path, include
 from django.contrib import admin
-from django.conf.urls import url, include, static
+from django.conf.urls import include, static
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
