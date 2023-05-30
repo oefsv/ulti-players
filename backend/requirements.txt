@@ -2,7 +2,7 @@
 gspread
 oauth2client
 python-dateutil
-django-dbbackup
+django-dbbackup==3.*
 django-viewflow
 django-rest-swagger
 django-filter
@@ -13,7 +13,7 @@ django-guardian
 django-sesame
 django-imagekit
 django-picklefield
-Django
+django==3.*
 django_polymorphic
 pillow 
 psycopg2-binary
