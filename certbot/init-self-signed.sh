@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(db-ultimate.oefsv.at db-ultimate.frisbeeverband.at test-db-ultimate.oefsv.at test-db-ultimate.frisbeeverband.at 159.69.181.225)
+domains=( db-ultimate.frisbeeverband.at db-ultimate.oefsv.at test-db-ultimate.oefsv.at test-db-ultimate.frisbeeverband.at 159.69.181.225)
 rsa_key_size=4096
 data_path="./data"
 email="db-ultimate@frisbeeverband.at" # Adding a valid address is strongly recommended
