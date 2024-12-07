@@ -42,3 +42,5 @@ EMAIL_PORT = 587
 
 SERVER_EMAIL = "Datenbank Ultimate Error<db-ultimate@frisbeeverband.at>"
 ADMINS = [("Florian Kain", "flokain11@gmail.com")]
+DATA_UPLOAD_MAX_MEMORY_SIZE=52428800
+DATA_UPLOAD_MAX_NUMBER_FIELDS=10000
